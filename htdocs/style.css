@@ -1,0 +1,553 @@
+/*
+    RESET
+*/
+* { margin: 0; padding: 0; }
+.clear { clear: both; }
+img, a img { border: none; }
+input { outline: none; }
+html {overflow-y: scroll;}
+
+.sp { background: url(images/sprite.png) no-repeat;}
+
+/*
+    STRUCTURE
+*/
+body {font-size: 13px; font-family: "lucida grande",tahoma,verdana,arial,sans-serif; background: url(images/stripe.png) repeat-x; }
+#page-wrap { width:981px; margin:0 auto; position:relative; direction:ltr; }
+hr { height: 1px; background: #ccc; clear: both; margin: 20px 0; border: none; display: block; }
+
+/*
+    TYPOGRAPHY
+    border-bottom: 1px dotted #900
+*/
+a  { text-decoration: none; color:#104E8B;font-family: "lucida grande",tahoma,verdana,arial,sans-serif; outline: none; }
+a:hover {text-decoration:underline;cursor:pointer;}
+h1 { font: bold 30px Calibri; margin: 0 0 8px 0; }
+h2 { margin:0; text-align:left; }
+#loginheading {height:30px; padding:20px 0px 10px}
+p { margin: 0 0 6px 0; }
+.headerbutton {position:relative; padding:4px 7px; margin:5px; background-position:-2px -72px; width:58px; height:27px; top:40px; color:white; font: 16px Calibri; border:none;cursor:pointer; }
+.headerbutton:hover {background-position:-2px -100px; text-decoration:none}
+.headertext {position:relative;left:65px;width:160px;top:23px;text-align:right}
+.programName {width:75%;border-bottom: 1px solid #c0cdd8; padding-bottom:10px}
+
+/* INDEX
+*/
+#index{background:none; margin:0px auto;height:600px; width:700px;}
+#index h2 {text-align:center;padding-top:20px; padding-bottom:5px}
+.indextext{font-family:tahoma; text-align:left; left:117px;font-size:20px; top:5px;position:relative; }
+.indextext2{font-family:tahoma; font-size:20px; position:relative; left:17px; display:inline}
+.indextext3 {font-family:tahoma; font-size:20px; position:relative; left:17px; color:white; display:inline}
+.indextext4{font-family:tahoma; font-size:20px; top:3px;position:relative; left:300px; }
+.box1 {position:relative; left:-100px;width:500px;}
+#emailenter {position:relative; left:392px; top:10px;border: 1px solid #c0cdd8;margin:10px;}
+.indexbg {z-index:-1;position:relative;  top:-190px; background:url(images/indexart.png) no-repeat;width:755px; height:330px}
+#emailbutton {position:relative; left:690px;top:-365px;background:url(images/enter.png) no-repeat;width:32px; height:32px; cursor:pointer}
+#emailerror {position:relative; left:400px; top:-340px;font-size:16px;color:#555;}
+#trackcrazelogo {position:relative;top:20px;right:5px;}
+/*
+    HEADER
+*/
+#header { height: 70px; width:981px;}
+#header h1 { float:left; width:600px;height:70px; z-index: 2; text-indent: -9999px; overflow: hidden; }
+#header h1 a { display: block; text-indent: -9999px; width: 496px; height: 50px; border: none; background: url(images/logo.png) no-repeat; position:relative;top:10px;left:30px;}
+/*#header h1 a { display: block; text-indent: -9999px; width: 496px; height: 50px; border: none; background: url(images/indexlogo.png) no-repeat; position:relative;top:5px;left:30px; background-position:-180px 0px;}*/
+#container{padding-top:8px;}
+#control {float:right; width: 300px;   text-align: right; }
+.loggedinas {position:relative;right:15px; top:15px;}
+.usernameurl {color:#104E8B;}
+.logout {background-position:-278px -2px; position:absolute; right:0px;top:38px; width:74px; height:30px;}
+.logout:hover{background-position:-278px -40px}
+.account {background-position:-198px -2px; position:absolute; right:73px; top:38px; width:80px; height:30px}
+.account:hover{background-position:-198px -40px;}
+.programlists {background-position:-120px -2px; position:absolute; right:153px; top:38px; width:85px; height:30px;}
+.programlists:hover{background-position:-120px -40px;}
+#mainNSB{float:left;padding:0px 20px 0px; }
+#main {float:left;padding:0px 20px 0px;width:690px; }
+
+/*
+    FORM STUFF
+*/
+label { background: #1D5F7A; color: white; padding: 3px 5px; }
+label.normal {background:none; color: black;}
+.inputfields {width: 324px;font-size: 18px;}
+input[type="text"], input[type="password"], .inputtextarea {  border: 2px solid #C0CDD8; padding: 7px; display: block; }
+/*THIS LINE FUCKS UP AUTOGROW ul.list li span input[style] { width: 90% !important; } */
+input[name="gender"]{position:relative;top:1px;margin:0px 3px 0px 15px;}
+
+.exerciseAdd {height:60px;}
+.addsubmit {position:relative; float:right; background-position:-2px -72px; width:58px; height:27px; top:5px; color:white; font:bold 16px Calibri; border:none;cursor:pointer;}
+.addsubmit:hover{background-position:-2px -100px} //Add button on each split
+.addexercisetextbox {float:left; left:30px; top:10px; height:20px; padding:7px; cursor:text; font: 14px Calibri; border: 1px solid #999999;}
+.addexercisetextbox:focus { border-color: #73B8BF; }
+
+
+#addsplittrigger {position:absolute;float:left;z-index:1;padding:10px 0px 0px 10px;cursor:pointer;}
+#addsplittextbox {float:left; left:30px; top:10px; height:20px; padding:7px; width:160px;cursor:text; font: 14px Calibri; border: 1px solid #999999;}
+#addsplittextbox:focus { border-color: #73B8BF; }
+#addsplitbuttons {float:left; padding-left:10px}
+
+#addprogramtrigger {position:absolute;float:left;z-index:1;padding:10px 0px 0px 10px;cursor:pointer;}
+#addprogramtextbox {float:left; left:30px; top:10px; height:20px; padding:7px; width:160px;cursor:text; font: 14px Calibri; border: 1px solid #999999;}
+#addprogramtextbox:focus { border-color: #73B8BF; }
+#addprogrambuttons {float:left; padding-left:10px}
+
+/*SIGN UP*/
+.errorsignup {position:relative;}
+/*
+    MESSAGING
+*/
+.message { padding: 10px; margin: 0 0 10px 0; width: 607px; }
+.good { background: #9ff5b6; }
+.bad { color: #ef0040; }
+
+
+/*
+    LISTS
+*/
+li {list-style:none;} //ALL LIST = no dots
+.list { list-style: none; }
+//.list li { position: relative; margin: 0 0 8px 0; padding: 20px 0px 20px 40px; width: 700px; }
+//.list li span { padding: 8px; -moz-border-radius: 5px; -webkit-border-radius: 5px; width: 589px; display: block; position: relative;}
+.setnrep {position:relative; margin:1px;}
+.setnrep li{position:relative; padding:2px 0px 30px;width:700px}
+#moreprograms{float:right;}
+
+
+
+#mainNSB .list ul {position:relative;width:810px;}
+#main .list ul {position:relative;width:690px;}
+
+
+/*PROGRAM PAGE*/
+.programview{float:right;padding:15px}
+.programedit{float:right;padding:15px}
+.program {padding:20px;width:240px}
+.hidden {height:40px;}/*WHAT IF THERE"S A LOT OF SPLITS?"*/
+.hiddensplits {font-size:12px;	font-weight:bold;	font-family: 'lucida grande',tahoma,verdana,arial,sans-serif; padding:5px 15px; float:left}
+
+#programlist {width:720px;}
+.tablesure {width:110px;}
+
+#editview {float:right;margin-top:25px; margin-right:20px;}
+/*FOR INPUT
+*/
+#exercise{position:absolute; left:37px;}
+#set{position:absolute; left:205px;width:20px; text-align:center}
+#weight{position:absolute; left:280px;width:40px;text-align:right}
+#lbkg{position:absolute; left:325px;}
+#rep{position:absolute; left:400px;width:30px; text-align:center}
+#comment{position:absolute; left:482px;}
+
+/*FOR DISPLAY
+*/
+.exercise{position:absolute; left:37px; width:140px;padding-top:20px;z-index:1}
+.set{position:absolute; left:213px;}
+.weight{position:absolute; right:385px;}
+.lbkg{position:absolute; left:320px;}
+.rep{position:absolute; left:415px;}
+.comment{position:absolute; left:482px;width: 200px; font: 12px Calibri}
+
+/*Side buttons PROGRAMS
+*/
+.exerciseEdit{min-height:50px}
+.exerciseEdit button { position:relative;background: url(images/button-bg.png) no-repeat; border:none; color: white; cursor: pointer; font: 14px Helvetica;}
+.setnrep button{right:-650px; top:-10px; padding:1px; margin:3px;}
+.jeditable-activate {position:absolute; right: 55px; top:19px; width: 16px; height: 16px;background-position:-34px -2px; border:none; cursor: pointer;}
+.jeditable-activate:hover{background-position:-34px -22px;}
+.draggertab { position: absolute; left: 0px; top:12px; width: 12.2px; height:34px; cursor: move; background-position:-2px -2px }
+.draggertab:hover { background-position: -2px -37px; }
+.deletetab { position: absolute; right: 0px; top:15px; width: 26px; height: 26px; background-position: -64.9px -101.5px; cursor: pointer; }
+.morelists {position:absolute; top:18px; right:30px; width:19px; height: 19px;background-position:-15.3px -1.5px; border:none; cursor:pointer}
+
+.setdelete {position:absolute; right:0px; background-position: -16px -40px; top:5px; width:12.1px; height:12.1px; cursor:pointer}
+.dragup {position:absolute; left:180px; top:-5px; background-position: -55px -2px; width:12.2px; height:12px; cursor:pointer; z-index:1}
+.dragup:hover {background-position:-55px -33px;}
+.dragdown {position:absolute; left:180px; top:15px; background-position: -55px -19px; width:12.2px; height:12px;cursor:pointer}
+.dragdown:hover {background-position:-55px -50px;}
+
+.exerciseAdd{list-style:none;}
+.exerciseAdd button{position:relative; right:-580px;top:20px; background: url(images/button-bg.png) no-repeat; border:none; color: white; cursor: pointer; font: 14px Helvetica;width: 40px;height:20px;}
+.setAdd button{right:-620px;top:10px;padding:2px 5px;margin:5px;}
+.setAdd {height:50px;}
+
+.oldexercisediv{float:left;}/*no code attached to this*/
+.addexercisediv{float:left;width:350px;}
+#popup{position:absolute; z-index:1; height:300px; width:400px; border: 2px solid #c0cdd8; background-color:white; overflow:scroll;}
+.searchexercise {float:left;}
+#popup li{float:left;padding:3px;min-width:400px;font-family: "lucida grande",tahoma,verdana,arial,sans-serif;	font-size:16px; cursor:pointer}
+#popup li:hover{background-color:#e1f0fd;}
+
+#share-area { margin: 20px 0 0 69px; width: 600px; }
+
+.deletered {background-position: -16px -40px; top:5px; width:12.1px; height:12.1px; cursor:pointer}
+.sectionname{height:40px; padding-bottom:15px}
+.sectionname h1{float:left}
+.sectionname .edit {float:left; margin:15px 5px 10px 10px; width:30px; height:30px}
+.sectionname .deletered {float:left; margin:15px 5px; }
+.readydelete {float:left;width:110px;margin:10px 5px;font-weight:bold;color:#900;font-family: "lucida grande",tahoma,verdana,arial,sans-serif;	font-size:16px;}
+
+.programName{height:40px; padding-bottom:15px}/*same line as sectionname*/
+.programName h1{float:left;}
+.programName .edit{float:left;margin:15px 5px 10px 10px; width:30px; height:30px}
+/* Left Side Bar
+*/
+.photo{height:120px; width:120px;}
+#lsbar .photo a{padding:0px; width:125px; height:125px;}
+#lsbar a:hover {background:#e1f0fd;text-decoration:none}
+#lsbar {
+	float:left;
+	padding:5px 0px 7px 0px;	
+	width:125px;
+	text-align:justify;
+	border-right:1px solid #c0cdd8;
+	height:500px;
+}
+#lsbar a {
+	float:left;
+	width:115px;
+	font-size:14px;
+	color:#333;
+	padding:4px;
+}
+.break{float:left;width:100%;border-bottom:1px solid #c0cdd8;padding-top:5px;}
+/* TOP sidebar
+*/
+#topbar {float:left; width:690px; padding:5px 20px 0px;}
+.progressbar {position:relative; top:-20px;background:url(images/loadingbar.png) no-repeat;width:489px; height:55px}
+/*
+    RIGHT SIDEBAR
+*/
+#ribbon { float:right; width: 110px; padding-top:20px;} /*fix height problem later*/
+#ribbon ul {position:relative; list-style: none;background-color: #e1f0fd; width:149px;top:-20px;padding:0px 20px 20px; }
+#ribbon ul li {  color: black; width:150px; padding: 10px 0 10px 0; margin: 10px 0 10px 0; 	font-family: "lucida grande",tahoma,verdana,arial,sans-serif;	font-size:12px;	color:#333; border-top: 1px solid #c0cdd8; margin-bottom: 1em}
+#rsidetitle {position:relative; right: 0; background: #D6E4F0; width:189px; height:40px; top: -10px; border-top: 1px solid #c0cdd8;}
+#rsidetitle p {text-align:center; margin-top:10px; color: black; font: 18px Calibri;}
+.feedback {background-position: -2px -130px;  width:103px; height:32px;  cursor:pointer}
+.feedbacktext {position:relative; top:-33px; left:110px;width:75px;font-size:14px}
+/* Profile Page
+*/
+
+#profile {
+	font-family: 'lucida grande',tahoma,verdana,arial,sans-serif;
+	color:#404040;
+	padding-left:10px;
+}
+#profile h1 {
+	font-size:30px;
+	padding:10px 0px;
+}
+#profile label {
+	background:none;
+	color:black;
+	padding:0;
+}
+#editbutton {
+	font-size:12px;
+	font-weight:normal;
+	font-family: 'lucida grande',tahoma,verdana,arial,sans-serif;
+	padding-left:10px;
+}
+#profile h2 {
+	font-weight:normal;
+	background:#e1f0fd;
+	font-size:18px;
+	padding:7px 0px 7px 5px;
+	color:#909090;
+	width:650px;
+	border-top:1px solid #c0cdd8;
+}
+#profile table {
+	font-size:14px;
+}
+#profile table td {
+	height:38px; padding:5px;
+}
+#profile input[type="text"]{
+	 width: 150px; 
+	 border: 2px inset; 
+	 font-size: 100%; 
+	 padding: 1px 0px; 
+	 display: inline-block;
+}
+#profile input[type="text"].inputnumber{
+	width: 75px;
+}
+#profile textarea{
+	font-family: 'lucida grande',tahoma,verdana,arial,sans-serif;
+	padding: 3px 4px;
+	width: 400px;
+	height: 50px;
+}
+#profile #sportsinput { width:180px;}
+.pbody {
+	font-size:14px;
+}
+.tal {
+	text-align:left;
+	font-weight:bold;
+}
+.tar {
+	text-align:right;
+	font-weight:bold;
+}
+.tat {
+	vertical-align:top;
+	font-weight:bold;
+}
+.tarp {
+	text-align:right;
+	font-size:18px;
+	width:325px;
+}
+.heading {
+	padding:5px !important;
+	font-size:18px;
+	width:325px;
+}
+.hoverheading{
+	padding:7px;
+}
+.hoverheading:hover{
+	background:#bed5fd;cursor:pointer;
+}
+
+/*Edit prfile*/
+#eprofile{
+	padding:7px;
+}
+#privacyoptions{ padding:7px; }
+#trackeroptions{ padding:7px;}
+#goaloptions{ padding:7px;}
+#eprofile:hover {
+	background:#bed5fd;cursor:pointer;
+}
+#privacyoptions:hover{
+	background:#bed5fd;cursor:pointer;
+}
+#trackeroptions:hover{
+	background:#bed5fd;cursor:pointer;
+}
+#goaloptions:hover{
+	background:#bed5fd;cursor:pointer;
+}
+.hovered {
+	background:#bed5fd;cursor:pointer;
+}
+#othergoals {
+	width:200px;
+	height:20px;
+}
+
+/*BOARD LAYOUT
+*/
+
+.search{position:relative;float:left;background-position: -32px -43px;  width:17.8px; height:17.8px; cursor:pointer;}
+.searchtracki {float:left;height:20px;font-size:16px}
+.headersearchi {position:absolute;float:left;width:200px;height:15px;right:460px;font-size:16px;top:28px;length:180px}
+.headersearch {position:absolute;right:467px;top:35px}
+.searchsport{float:left;height:20px;font-size:16px}
+
+.h3 {font-weight:bold;font-weight:bold;font-family: "lucida grande",tahoma,verdana,arial,sans-serif;color: black; font-size:15px;}
+.hover:hover{background:#e1f0fd;cursor:pointer}
+.link {color: #0E63C4;font-weight:bold;font-family: "lucida grande",tahoma,verdana,arial,sans-serif;}
+#mininews {border: #8DAFEB 4px solid; border-bottom: #8DAFEB 4px solid; border-left:none; border-right:none; border-top-style: ridge; padding:10px 0px; margin:10px 0px;max-height:300px;overflow-y:scroll;}
+.mininews {padding:5px 0px;}
+#newscontent{padding:5px 20px; }
+#TR {background:#EEE;padding:10px; margin:10px 10px;}
+#newsheader {font-size:13px;word-wrap:break-word;font-weight:bold;font-family: "lucida grande",tahoma,verdana,arial,sans-serif;padding:5px 0px}
+#status{max-height:80px; word-wrap:break-word;overflow:hidden;resize: none;}
+#status1{ word-wrap:break-word;overflow:hidden;border:0; resize:none;font-size:13px;font-family: "lucida grande",tahoma,verdana,arial,sans-serif;}
+.statustop {width:500px;height:40px;}
+.statusboard {width:120px;height:80px;margin:0px}
+.statusboard button[type=submit]{position:absolute; top:180px}
+.statusboard button[type=cancel]{position:absolute; top:200px}
+.statustop button[type=submit]{position:absolute; top:110px}
+.statustop button[type=cancel]{position:absolute; top:130px}
+.editprofile {background-position: -111px -148px; width:16px; height:16px; float:right;position:relative; top:-30px;margin:10px;cursor:pointer}
+.statushover{border:#FFF 2px solid;}
+.statushover:hover{border:#8DAFEB 2px solid;}
+
+.ticked {background-position: -67.7px -64px; top:15px; width:26px; height:18px; margin:10px;}
+/*POST INPUT*/
+#add-post {width:520px;padding:20px 10px}
+#addposttextbox {width:450px; outline:none;font-size:13px;word-wrap:break-word;font-family: "lucida grande",tahoma,verdana,arial,sans-serif; padding: 7px; display: block; resize:none; overflow:hidden; }
+#addtextbox:focus { outline: #73B8BF; }
+.charcounter {float:right; padding-right:20px; font-size:11px; font-family: "lucida grande",tahoma,verdana,arial,sans-serif;color:#999}
+.delete {float:right;background-position: -16px -55px; top:15px; width:12.1px; height:12.1px; margin:10px; cursor:pointer}
+
+.container{float:left; width:260px;height:250px;border: 2px solid #c0cdd8;margin:10px;}
+.TitleCon{width:250;padding:10px;}
+.TitleConlink:hover {text-decoration:none}
+#profileCon .TitleCon {height:18px;padding:10px 10px }
+#profileCon .h3 {font-size:18px;}
+#wrap {float:left;width:855px}
+#newsCon{float:left;width:260px;height:300px;border: 1px solid #c0cdd8;margin:10px;border: #8DAFEB 4px solid; border-bottom: #8DAFEB 4px solid; border-left: 2px solid #c0cdd8;margin:10px;; border-right:none; border-top-style: ridge;overflow-y:scroll;}
+#newscontent{padding:5px 20px; }
+#boardCon{float:right;width:544px;min-height:600px;border: 2px solid #c0cdd8;margin:10px 12px;}
+#profileCon .photo{float:left; padding:5px;}
+#profileinfo{float:left;width:120px; padding:5px;}
+#trackerCon{float:left; width:260px;height:300px;border: 2px solid #c0cdd8;margin:9px;}
+.halftrack {float:left; height:150px;width:260px}
+#trackerCon .break {width:180px; margin-left:40px}
+#toptracks {float:left; width:260px;height:100px;border: 2px solid #c0cdd8;margin:9px;}
+#profileCon table{padding-left:5px;}
+#profileCon td{height:23px;}
+
+#overlay { position: absolute; left: 295px; top: 372px; width: 548px; height:34px; background: url("/images/transpBlue_overlay.png"); }
+#overlay img { position:relative; left:274px; bottom:-10px; }
+
+.kudostext {padding: 5px 10px 10px;}
+.kudoscount {float:right}
+.commentbreak {position:relative;left:240px;background-position: -110px -123px; width:32px; height:24px; cursor:pointer}
+.pointer {cursor:pointer;}
+/*POST*/
+#add-post .miniphoto{float:right;}
+#posts{padding:0px 20px 0px; width:500px;}
+.miniphoto{float:left;width:50px; height:50px;}
+.postcontent .miniphoto {padding-right:10px}
+.miniphoto img{max-height:50px; max-width:50px;}
+.posttext{width:450px;padding-bottom:5px;font-size:13px;word-wrap:break-word;font-family: "lucida grande",tahoma,verdana,arial,sans-serif;}
+.posttext2{float:left; width:200px;font-size:13px;word-wrap:break-word;font-family: "lucida grande",tahoma,verdana,arial,sans-serif;}
+.postname{float:left;width:400px; padding-bottom:5px;}
+.pin{float:right;}
+.postcontent{min-height:50px;padding:15px 0px;width:500px}
+.agotext{color:#888;}
+.postcontent .break {width:60%;margin-left:100px;padding-top:15px;}
+.commentbox {padding-bottom:10px;}
+
+#programcomment {padding:0px 40px;}
+
+.addpostcomment {width:450px; outline:none;font-size:13px;word-wrap:break-word;font-family: "lucida grande",tahoma,verdana,arial,sans-serif; padding: 7px; display: block; resize:none; overflow:hidden; }
+
+.postcomment{color:#0E63C4;padding-left:10px;}
+
+.kudos2u{color:#0E63C4;}
+.commenttext{width:450px;padding-top:5px;margin:0px;font-size:13px;word-wrap:break-word;font-family: "lucida grande",tahoma,verdana,arial,sans-serif;}
+/*PROGRESS*/
+#progressTitle {position:relative;height:35px;}
+#progressLeft {float:left; width:400px; font: bold 28px Calibri;}
+#progressRight {float:right;padding-top:8px;}
+#progressRight p{font-size:20px;float:left;width:3px;padding: 3px 10px;font: bold 20px Calibri; color:black}
+#progressRight a{float:left;font-size:20px;padding: 5px 10px;font: bold 20px Calibri; color:black; cursor:pointer}
+#progressRight a:hover{background:#CCC;text-decoration:none;}
+#trackoptions {position:relative;height:50px;padding-top:8px;}
+#trackoptions p{font-size:20px;float:left;width:3px;padding: 3px 10px;font: bold 20px Calibri; color:black}
+#trackoptions a{float:left;font-size:20px;padding: 5px 10px;font: bold 20px Calibri; color:black; cursor:pointer}
+#trackoptions a:hover{background:#CCC;text-decoration:none;}/*same as progressright*/
+#InputTable .zeropadding {padding:0px;}
+
+#recordsubmit {position:relative; left:20px; top:5px;}
+
+#progressSelector {width:400px; padding-top:15px; }
+#progressSelector p {width:200px; padding:0px 10px; font-weight:bold;font-size:15px;display:inline}
+#inputLine #programoption {margin:5px 10px;}
+#inputLine #splitoption {margin:5px 20px;}
+#InputTable td {padding:5px;}
+.InputTitle {font-size:20px;word-wrap:break-word;font-family: "lucida grande",tahoma,verdana,arial,sans-serif;}
+.prevInputTable {font-size:13px;color:#666;word-wrap:break-word;font-family: "lucida grande",tahoma,verdana,arial,sans-serif;}
+.weightInputTable {float:left;margin: 5px 0px 5px 0px;}
+#TrackTable td {padding:5px;}
+
+.sameprev{float:left;margin:1px;background-position: -70px -2px; width:30px; height:30px; cursor:pointer}
+.samelast{float:left;margin:1px;background-position: -70px -31px; width:30px; height:30px; cursor:pointer}
+
+#selectandbutton {position:absolute; left:250px;}
+#viewbyExercise {position:relative; left:20px; top:5px;}
+#sortby {padding:10px 0px 10px;}
+/*GRAPH*/
+#InputTable {position:relative;top:0px;}
+#inputLine {position:relative;height:30px;top:10px;padding-bottom:30px}
+#inputLine a{float:left; margin:6px 0px}
+#errordate {float:right;width:250px;margin:0px;}
+#weightChart {left:20px; width:650px; height:300px;}
+#newWeightInput {float:left; margin: 5px 0px 5px 5px;}
+#inputLine select{float:left;margin: 5px 0px 5px 0px;}
+#InputTable select{float:left;margin: 5px 0px 5px 0px;}
+#inputLine p{float:left;padding:5px 10px; font-weight:bold;font-size:15px;display:inline;}
+#weightdate{float:left; margin:5px 3px 0px 10px; font-weight:bold;font-size:13px;display:inline; color:#999}
+#weightsubmit {float:left; padding:5px 10px;margin:0px 10px;}
+#weightchartoptions {position:relative; height:30px;}
+#weightoptionsubmit {position:relative;left:10px;}
+#weightstartfinal {padding:30px;}
+#weightstartfinal input{margin-left:20px;}
+/*TABLE*/
+#weightheader {width: 85px; float:left;border-spacing:0px;}
+#weightheader td {padding:5px 10px 5px;border:1px solid #D3D3D3; background:#E6E6E6 url(js/images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x; color:#555;font-weight:normal}
+#weightdiv {margin:0;width:605px; float:left; overflow-x:scroll; height:105px;overflow-y:hidden}
+#weightcontent {width:100%; table-layout:fixed;border-spacing:0px;border-left: 1px solid #999;}
+#weightcontent td {width:85px;height:28px;text-align: center;border-bottom:1px solid #999;border-right: 1px solid #999;}
+.weightcontenthover {background:#DADADA url(js/images/ui-bg_glass_75_dadada_1x400.png) 50% 50% repeat-x;}
+.weightdelete {position:relative; left:50px; top:-8px;background-position: -16px -40px; width:12.1px; height:12.1px; cursor:pointer}
+#weightcontentheader {padding: 5px 10px; position: relative;margin-top:10px}
+.weightedit {position:relative; left:20px; top:5px;width: 16px; height: 16px;background-position:-34px -2px; border:none; cursor: pointer;}
+.weightedit:hover {background-position:-34px -22px;}
+
+
+
+.day {width:88px; height:60px; overflow:hidden; }
+.weekday {background-color:white;}
+.day:hover{background-color:#bed5fd;cursor:pointer}
+.weekend{background-color:#def}
+#calendar td, th{padding:0px; margin:0px;border: 1px solid #c0cdd8;}
+#calendar {float:left; border-collapse:collapse; border: 1px solid #c0cdd8;margin-left:3px}
+.previous, .next {background-color:#EEE;}
+#oneMonth {height:30px;}
+#calleft{float:left;width:30px; height:414px; background-color:#e1f0fd}
+#calleft:hover{background-color:#bed5fd;cursor:pointer}
+#calright{float:right;width:30px;height:414px;background-color:#e1f0fd}
+#calright:hover{background-color:#bed5fd;cursor:pointer}
+.selected {background-color:#bed5fd;}
+
+#recordleft{float:left;width:30px; background-color:#e1f0fd}
+#recordleft:hover{background-color:#bed5fd;cursor:pointer}
+#recordright{float:right;width:30px;background-color:#e1f0fd}
+#recordright:hover{background-color:#bed5fd;cursor:pointer}
+#recordsbydate table{float:left;}
+#recordsbydate {overflow:hidden;}
+/*PHOTO*/
+#gallery .photo {float:left;border: 1px solid #c0cdd8;margin:10px;}
+#photochooser .photo{cursor:pointer;float:left;border: 1px solid #c0cdd8;margin:10px;}
+
+/*JQGRID*/
+.ui-pg-input[type="text"] {display:inline;padding:0px;}
+.input-elm[type="text"]{display:inline;padding:0px;}
+/*AUTOCOMPLETE PLUGIN*/
+.acInput {
+	width: 250px;
+}
+.acResults {
+	padding: 0px;
+	border: 1px solid WindowFrame;
+	background-color: Window;
+	overflow: hidden;
+	z-index:2;/*can change if the program is displayed as a table*/
+}
+
+.acResults ul {
+	width: 100%;
+	list-style-position: outside;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.acResults li {
+	margin: 0px;
+	padding: 2px 5px;
+	cursor: pointer;
+	display: block;
+	width: 100%;
+	font: menu;
+	font-size: 12px;
+	overflow: hidden;
+}
+
+.acLoading {
+	background : url('indicator.gif') right center no-repeat;
+}
+
+.acSelect {
+	background-color: Highlight;
+	color: HighlightText;
+}

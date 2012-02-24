@@ -1,0 +1,1 @@
+Sorry you can't delete your account :)
