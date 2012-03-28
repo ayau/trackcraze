@@ -153,6 +153,7 @@
 	};
 		profile("<?php echo $Measurements[0] ?>","<?php echo $Measurements[1] ?>","<?php echo $Measurements[2] ?>","<?php echo $Measurements[3] ?>","<?php echo $Measurements[4] ?>","<?php echo $Measurements[5] ?>","<?php echo $Measurements[6] ?>","<?php echo $Measurements[7] ?>","<?php echo $Measurements[8] ?>","<?php echo $Unit ?>","<?php echo $Heighti ?>","<?php echo $Weight ?>","<?php echo $lbkg ?>","<?php echo $Height ?>","<?php echo $Gender ?>","<?php echo $DOB ?>");
 		$("#topbar").hide();//do it in the bar
+alert("lol");
 	</script>
 <?php
     		if ($cuser!=$_SESSION['UserID']):
