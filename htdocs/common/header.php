@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<?php
-	if (!isset($_SESSION['LoggedIn'])&&substr($_SERVER['REQUEST_URI'],0,10)!="/login.php"&&substr($_SERVER['REQUEST_URI'],0,11)!="/signup.php"):
+	if (!isset($_SESSION['LoggedIn'])&&substr($_SERVER['REQUEST_URI'],0,10)!="/login.php"&&substr($_SERVER['REQUEST_URI'],0,11)!="/signup.php"&&substr($_SERVER['REQUEST_URI'],0,18)!="/accountverify.php"):
 	echo '<meta http-equiv="REFRESH" content="0;url=/index.php">';	
 	die();
 	endif;?>
@@ -29,7 +29,7 @@
 
         <div id="header">
 
-            <h1><a href="/board.php">trackCraze</a></h1>
+            <h1 class="headerhover gradientShadows"><a href="/board.php" class="">trackCraze</a></h1>
 
             <div id="control">
 
@@ -51,7 +51,7 @@
 		if(substr($_SERVER['REQUEST_URI'],0,10)=="/login.php"):
 			echo "<a class='headerbutton sp' href='signup.php'>Sign up</a><p class='headertext'>New to trackCraze?</p>";
         elseif(substr($_SERVER['REQUEST_URI'],0,11)=="/signup.php"):
-        	echo "<a href='login.php' class='headerbutton sp'>Log in </a><p class='headertext'>Have an account?</p>";
+        	echo "<a href='login.php' class='headerbutton sp'>&nbspLog in&nbsp</a><p class='headertext'>Have an account?</p>";
                 else:
                 echo '<a href="login.php" class="headerbutton sp">Log in </a> <a class="headerbutton sp" href="signup.php">Sign up</a>';
                 endif;

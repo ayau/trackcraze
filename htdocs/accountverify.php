@@ -7,7 +7,7 @@
 ?>
  
         <div id="loginheading"><h2>Thanks for using this website...Can't really think of some ass-kissing thankful message, but just know that we are thankful, really, we are.</h2></div>
- 
+ 		<br /><br /><br />
         <form method="post" action="accountverify.php">
                 <input type="hidden" name="v" value="<?php echo $_GET['v'] ?>" />
                 <input type="button" name="verify" id="verify" value="Verify Your Account" />
@@ -21,7 +21,7 @@ $("#verify").live("click",function(){
        "&vercode="+"<?php echo $_GET['v']?>",
        success:function(){
        	alert("Lol");
-     window.location.replace("profile.php");       	
+    	window.location.replace("profile.php");       	
    },
      error:function(){
  }  

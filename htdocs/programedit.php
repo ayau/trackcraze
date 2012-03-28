@@ -15,13 +15,15 @@
 	if($UID==NULL):
 	else:
 	include_once "common/sidebar.php";
-	endif;?>
+	endif;
+	$OSID = $program->getDefaultProgram($UID);?>
 <div id="mainNSB">
             <noscript>This site just doesn't work, period, without JavaScript</noscript>
             
 <?php
 
 if(isset($_SESSION['LoggedIn']) && isset($_SESSION['Username'])&&($_SESSION['UserID']==$UID))://PROBLEM HERE IS THAT USERID COULD BE NULL(VISITOR)AND ABLE TO VIEW PAGES THAT DON"T EXIST"
+if($PID!=$OSID):
 echo "<a id='moreprograms' href=\"programlists.php?user=".$UID."\">View More Programs</a>";
 echo "<a id='editview' href=\"program.php?program=".$PID."\">View Program</a>";
 list($LID, $URL, $order) = $program->loadProgramByUser($PID);    //ORDER IS WRONG BECAUSE IT IS READING PER FORMAT LIST. DONT NEED ORDER IF WE DONT ALLOW EDIT POSITION OF SPLITS IN MAIN PAGE
@@ -60,6 +62,9 @@ list($LID, $URL, $order) = $program->loadProgramByUser($PID);    //ORDER IS WRON
 elseif($UID==NULL):                 
     echo "This program does not exist!";
 else:
+	echo "Don't try to edit your Default Program. This is built in and changing something may destroy your account. Stop messing with the URL";
+	endif;
+	else:
 ?>
                      Don't try to edit something that's not yours! Stop messing with the URL. I mean it.
             <!--<img src="/assets/images/newlist.jpg" alt="Your new list here!" />-->

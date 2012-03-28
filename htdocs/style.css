@@ -9,10 +9,20 @@ html {overflow-y: scroll;}
 
 .sp { background: url(images/sprite.png) no-repeat;}
 
+@font-face {
+	font-family: Roboto;
+	src: url('fonts/Roboto-Regular.ttf');
+}
+@font-face {
+	font-family: Roboto;
+	font-weight:bold;
+	src: url('fonts/Roboto-Bold.ttf');
+}
 /*
     STRUCTURE
+     "lucida grande",tahoma,verdana,arial,sans-serif
 */
-body {font-size: 13px; font-family: "lucida grande",tahoma,verdana,arial,sans-serif; background: url(images/stripe.png) repeat-x; }
+body {font-size: 13px; font-family:"lucida grande",tahoma,verdana,arial,sans-serif; background: url(images/stripe.png) repeat-x; }
 #page-wrap { width:981px; margin:0 auto; position:relative; direction:ltr; }
 hr { height: 1px; background: #ccc; clear: both; margin: 20px 0; border: none; display: block; }
 
@@ -24,12 +34,31 @@ a  { text-decoration: none; color:#104E8B;font-family: "lucida grande",tahoma,ve
 a:hover {text-decoration:underline;cursor:pointer;}
 h1 { font: bold 30px Calibri; margin: 0 0 8px 0; }
 h2 { margin:0; text-align:left; }
-#loginheading {height:30px; padding:20px 0px 10px}
+#loginheading {height:30px; padding:10px 0px 10px}
 p { margin: 0 0 6px 0; }
 .headerbutton {position:relative; padding:4px 7px; margin:5px; background-position:-2px -72px; width:58px; height:27px; top:40px; color:white; font: 16px Calibri; border:none;cursor:pointer; }
 .headerbutton:hover {background-position:-2px -100px; text-decoration:none}
-.headertext {position:relative;left:65px;width:160px;top:23px;text-align:right}
+.headertext {position:relative;left:65px;width:160px;top:23px;text-align:right; font-size:18px}
 .programName {width:75%;border-bottom: 1px solid #c0cdd8; padding-bottom:10px}
+
+.wide {width:350px;height:50px; font-size:20px; border-radius: 5px;}
+.fitwidth {padding:6px 12px 6px 12px;}
+.mid{width:80px;height:25px; font-size:18px;}
+.box {background-color:#2D79B3; border:none; font-family:Roboto; color:#FFFFFF;text-align: center;cursor:pointer;border-radius: 3px;}
+.box:hover {background-color:#276B9E;}
+
+.lightgreen{background-color:#3EBD58;}
+.lightgreen:hover{background-color:#3AB152}
+
+.grey {background-color:#B5B5B5;}
+.grey:hover {background-color:#A1A1A1;}
+
+.twentyfont{font:20px Rotobo;}
+
+.tags li {float:left; padding:6px 6px 4px 6px; margin: 0 8px 8px 0}
+.tags li a{color:white; padding:6px 6px 4px 6px;}
+.tags li a:hover{text-decoration:none;}
+.nohover:hover{background-color:#2D79B3;cursor:default}
 
 /* INDEX
 */
@@ -49,7 +78,29 @@ p { margin: 0 0 6px 0; }
     HEADER
 */
 #header { height: 70px; width:981px;}
-#header h1 { float:left; width:600px;height:70px; z-index: 2; text-indent: -9999px; overflow: hidden; }
+#header h1 { float:left; width:300px;height:70px; z-index: 2; text-indent: -9999px; overflow: hidden;background-color:#D1E4F3; }
+.gradientShadows {
+
+/*Inner Shadows */
+  -moz-box-shadow:    inset 0px -2px 8px -2px #82BADF;
+   -webkit-box-shadow: inset 0px -2px 8px -2px #82BADF;
+   box-shadow:         inset 0px -2px 8px -2px #82BADF;
+
+/* outer shadows  (note the rgba is red, green, blue, alpha) 
+-webkit-box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.6); 
+-moz-box-shadow: 0px 1px 6px rgba(23, 69, 88, .5);
+*/
+
+/* rounded corners 
+-webkit-border-radius: 7px;
+-moz-border-radius: 7px; 
+border-radius: 7px;
+
+/* gradients 
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), 
+ color-stop(65%, white), color-stop(100%, #f7f7f7)); 
+background: -moz-linear-gradient(top, white 0%, white 55%, #D5E4F3 130%); */
+}
 #header h1 a { display: block; text-indent: -9999px; width: 496px; height: 50px; border: none; background: url(images/logo.png) no-repeat; position:relative;top:10px;left:30px;}
 /*#header h1 a { display: block; text-indent: -9999px; width: 496px; height: 50px; border: none; background: url(images/indexlogo.png) no-repeat; position:relative;top:5px;left:30px; background-position:-180px 0px;}*/
 #container{padding-top:8px;}
@@ -93,7 +144,7 @@ input[name="gender"]{position:relative;top:1px;margin:0px 3px 0px 15px;}
 #addprogrambuttons {float:left; padding-left:10px}
 
 /*SIGN UP*/
-.errorsignup {position:relative;}
+.errorsignup {position:relative;color:#BA1616;}
 /*
     MESSAGING
 */
@@ -243,11 +294,15 @@ li {list-style:none;} //ALL LIST = no dots
 	padding:0;
 }
 #editbutton {
+	float:right;
+	margin-top:10px;
+	margin-right:25px;
 	font-size:12px;
 	font-weight:normal;
 	font-family: 'lucida grande',tahoma,verdana,arial,sans-serif;
 	padding-left:10px;
 }
+#editbutton:hover{text-decoration:none;}
 #profile h2 {
 	font-weight:normal;
 	background:#e1f0fd;
@@ -344,8 +399,8 @@ li {list-style:none;} //ALL LIST = no dots
 
 .search{position:relative;float:left;background-position: -32px -43px;  width:17.8px; height:17.8px; cursor:pointer;}
 .searchtracki {float:left;height:20px;font-size:16px}
-.headersearchi {position:absolute;float:left;width:200px;height:15px;right:460px;font-size:16px;top:28px;length:180px}
-.headersearch {position:absolute;right:467px;top:35px}
+.headersearchi {position:absolute;float:left;width:200px;height:15px;right:450px;font-size:16px;top:28px;length:180px}
+.headersearch {position:absolute;right:457px;top:35px}
 .searchsport{float:left;height:20px;font-size:16px}
 
 .h3 {font-weight:bold;font-weight:bold;font-family: "lucida grande",tahoma,verdana,arial,sans-serif;color: black; font-size:15px;}
@@ -394,13 +449,14 @@ li {list-style:none;} //ALL LIST = no dots
 #profileCon table{padding-left:5px;}
 #profileCon td{height:23px;}
 
-#overlay { position: absolute; left: 295px; top: 372px; width: 548px; height:34px; background: url("/images/transpBlue_overlay.png"); }
+#overlay { position: absolute; left: 295px; top: 363px; width: 548px; height:34px; background: url("/images/transpBlue_overlay.png"); }
 #overlay img { position:relative; left:274px; bottom:-10px; }
 
 .kudostext {padding: 5px 10px 10px;}
 .kudoscount {float:right}
 .commentbreak {position:relative;left:240px;background-position: -110px -123px; width:32px; height:24px; cursor:pointer}
 .pointer {cursor:pointer;}
+#addpostbuttons input{margin:5px 5px 0px 0px;}
 /*POST*/
 #add-post .miniphoto{float:right;}
 #posts{padding:0px 20px 0px; width:500px;}
@@ -451,6 +507,7 @@ li {list-style:none;} //ALL LIST = no dots
 
 .sameprev{float:left;margin:1px;background-position: -70px -2px; width:30px; height:30px; cursor:pointer}
 .samelast{float:left;margin:1px;background-position: -70px -31px; width:30px; height:30px; cursor:pointer}
+.prevnotes {float:left;margin:1px;background-position: -2px -165px; width:42px; height:30px; cursor:pointer}
 
 #selectandbutton {position:absolute; left:250px;}
 #viewbyExercise {position:relative; left:20px; top:5px;}

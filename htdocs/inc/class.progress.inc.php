@@ -67,16 +67,19 @@ class GSProgress
     }
     public function loadProgramsOptionByUser()
 	{
+		$osid = $this->getOtherProgram($_SESSION['UserID']);
 		$sql = "SELECT
 					lists.ProgramID, ProgramName, ListURL, MainProgramID
 				FROM lists
 				LEFT JOIN users
 				USING (UserID)
 				WHERE lists.UserID=:userid
+					AND ProgramID<>:osid
 				ORDER BY ProgramPosition";
 		if($stmt = $this->_db->prepare($sql))
 		{
-			$stmt->bindParam(':userid', $_SESSION['UserID'], PDO::PARAM_STR);
+			$stmt->bindParam(':userid', $_SESSION['UserID'], PDO::PARAM_INT);
+			$stmt->bindParam(':osid', $osid, PDO::PARAM_INT);
 			$stmt->execute();
 			echo "<select id='programoption' onchange=' fill_Splits ($(this).find(\":selected\").attr(\"value\"));loadInputBySplitID($(\"#splitoption\").find(\":selected\").attr(\"value\"));'>";
 			while($row = $stmt->fetch())
@@ -335,6 +338,23 @@ class GSProgress
 			echo "<tr><td>This Split is empty.</td></tr>";
 		}
 	}
+	public function getOtherProgram($UID){
+		//Retrieving OtherProgramID
+		$sql = "SELECT
+					OtherProgramID
+				FROM users
+					WHERE UserID=:uid
+				LIMIT 1";
+		if($stmt = $this->_db->prepare($sql))
+		{
+			$stmt->bindParam(':uid', $UID, PDO::PARAM_INT);
+			$stmt->execute();
+			$row = $stmt->fetch();
+			return $row['OtherProgramID'];
+		}else{
+			//HOW TO HANDLE ERROR!??!!!!!!!!!!!!!!!!!!!!!!
+		}
+	}
 	public function loadInputExercise(){
 		$SID = $_POST['SID'];
 		$date = $_POST['date'];
@@ -371,8 +391,71 @@ class GSProgress
 		}else{
 			echo "<tr><td>This Split is empty.</td></tr>";
 		}
-		echo "<tr id='somethingnewrow'><td colspan='2'><b>Trying something new today?</b></td></tr><tr><td colspan='2'><input id='newExercise' size='27'/></td><td><input id='newWeight' class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' /><select id='newlbkg'><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select></td><td><input id='newRep' class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)'/></td><td></td><td><input/></td><td class='zeropadding'><input id='addExerciseInputTable' type=button value='ne' /></td></tr>";//for if people want to add exercise on the go
-		echo "<tr id='somethingoldrow'><td colspan='5'><b>Trying something you have already done before?</b></td></tr><tr><td colspan='2'></td><td><input id='oldWeight' class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' /><select id='oldlbkg'><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select></td><td><input id='oldRep' class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)'/></td><td></td><td><input/></td><td class='zeropadding'><input id='addoldExerciseInputTable' type=button value='ne' /></td></tr>";//for if people want to add exercise on the go
+		//Retrieving OtherProgramID and OtherSplitID
+		$sql = "SELECT
+					OtherProgramID
+				FROM users
+					WHERE UserID=:uid
+				LIMIT 1";
+		if($stmt = $this->_db->prepare($sql))
+		{
+			$stmt->bindParam(':uid', $_SESSION['UserID'], PDO::PARAM_INT);
+			$stmt->execute();
+			$row = $stmt->fetch();
+			$opid = $row['OtherProgramID'];
+			$sql = "SELECT
+					SectionID
+				FROM sections
+					WHERE ProgramID=:opid
+				LIMIT 1";
+		if($stmt = $this->_db->prepare($sql))
+		{
+			$stmt->bindParam(':opid', $opid, PDO::PARAM_INT);
+			$stmt->execute();
+			$row = $stmt->fetch();
+			$opsid = $row['SectionID'];
+			}else{
+			echo "<tr><td>Something is wrong with your Default Split.</td></tr>";	//Better error handling?
+		}		
+		}else{
+			echo "<tr><td>Something is wrong with your Default program.</td></tr>";	//Better error handling?
+		}
+		//Doesn't save to programs yet. How to deal with this!? UNCOMMENT AFTERWARDS
+		//Join Database
+		$sql = "SELECT
+					DISTINCT list_items.ListItemID, EID 
+				FROM list_items
+				LEFT JOIN records
+				USING (ListItemID)
+				WHERE RecordDate=:rd
+				AND list_items.SectionID=:opsid
+					AND UserID=:uid
+				ORDER BY ListItemID, RecordPosition";
+		if($stmt = $this->_db->prepare($sql))
+		{
+			$stmt->bindParam(':rd', $stoday, PDO::PARAM_STR);
+			$stmt->bindParam(':opsid', $opsid, PDO::PARAM_INT);
+			$stmt->bindParam(':uid', $_SESSION['UserID'], PDO::PARAM_INT);
+			$stmt->execute();
+			while($row = $stmt->fetch())
+			{
+				echo $this->loadInputSet($row["ListItemID"],$stoday,$row['EID']);//OVERKILL. But works for now. Cannot edit name though!?
+			}
+
+		}
+		else
+		{
+			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
+		}
+		//Future implementation. Load the input boxes and data separately.
+		//1. Load input boxes from program
+		//2. Load data from records (jusing javascript to add in)
+		//3. If Record does not belong to program, add "other" input boxes (javascript).
+		//Putting Other program ID in the other textbox
+		echo "<tr id='somethingnewrow'><td colspan='2'><b>Trying something new today?</b></td></tr><tr sid='$opsid'><td colspan='2'><input id='newExercise' size='27'/></td><td><input id='newWeight' class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' /><select id='newlbkg'><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select></td><td><input id='newRep' class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)'/></td><td></td><td><input/></td><td class='zeropadding'><input id='addExerciseInputTable' type=button value='ne' /></td></tr>";//for if people want to add new exercises on the go
+		echo "<tr id='somethingoldrow'><td colspan='5'><b>Trying something you have already done before?</b></td></tr><tr sid='$opsid'><td colspan='2'>";
+		echo $this->loadExercise($_SESSION['UserID']);
+		echo"</td><td><input id='oldWeight' class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' /><select id='oldlbkg'><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select></td><td><input id='oldRep' class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)'/></td><td></td><td><input/></td><td class='zeropadding'><input id='addoldExerciseInputTable' type=button value='ne' /></td></tr>";//for if people want to add existing exercises on the go
 		echo "</table></tr>";
 			$stmt->closeCursor();
 
@@ -422,7 +505,7 @@ class GSProgress
 				echo "<tr list=\"".$LID."\" class='recordtable' rel='1'><td class='exerciseTable'>$eName</td>";
 			$row1=$this->getRecords($LID, $row['setsposition'],$date);
 			$row2=$this->getPrev($LID, $row['setsposition'],$date);
-			echo $this->formatInputTable($row,$row1,$row2);
+			echo $this->formatInputTable($row,$row1,$row2,1);	//1 indicates it is the first row of an exercise
 			$order = 2;
 				while ($order<=$row["Sett"]){
 					echo "</tr>";
@@ -430,7 +513,7 @@ class GSProgress
 						<td class='prevSetTable'></td>";
 					$row1=$this->getRecords($LID, $order ,$date);
 					$row2=$this->getPrev($LID, $order,$date);
-					echo $this->formatInputTable($row,$row1,$row2);
+					echo $this->formatInputTable($row,$row1,$row2, 0);
 					$order++;
 				}
 			while($row = $stmt->fetch())
@@ -441,7 +524,7 @@ class GSProgress
 					echo "<tr list=\"".$LID."\" class='recordtable' rel=\"".$order."\"><td class='prevSetTable'></td>";
 					$row1=$this->getRecords($LID, $order,$date);
 					$row2=$this->getPrev($LID, $order,$date);
-					echo $this->formatInputTable($row,$row1,$row2);
+					echo $this->formatInputTable($row,$row1,$row2,0);
 					$count--;
 					$order++;
 				}
@@ -452,7 +535,7 @@ class GSProgress
 				echo "<tr list=\"".$LID."\" class='recordtable' rel=\"".$order."\"><td class='prevSetTable'></td>";
 				$row1=$this->getRecords($LID, $order,$date);
 				$row2=$this->getPrev($LID, $order,$date);
-				echo $this->formatInputTable($row,$row1,$row2);
+				echo $this->formatInputTable($row,$row1,$row2,0);
 				$order++;
 			}
 			echo "<td class='zeropadding'><input class='addnewset' type=button value=ad /></td></tr>";
@@ -468,14 +551,19 @@ class GSProgress
 			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
 		}
 	}
-	function formatInputTable($row, $row1,$row2){
+	//row = row from program
+	//row1 = data recorded for today
+	//row2 = prev data from records
+	//Even though previous seems empty, the Prev button is still there. Remove it dynamically or not?
+	function formatInputTable($row, $row1,$row2, $first){
 		if ($row2!=NULL){
-			echo"<td class='prevInputTable' weight='$row2[Weight]' lbkg='$row2[lbkg]' rep='$row2[Rep]'>($row2[Weight]$row2[lbkg], $row2[Rep])</td>
-			<td><input class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' value='$row1[Weight]'/><select>";
+			echo"<td class='prevInputTable' weight='$row2[Weight]' lbkg='$row2[lbkg]' rep='$row2[Rep]'>($row2[Weight]$row2[lbkg], $row2[Rep])</td>";
+		}else if($row!=NULL){
+		echo"<td class='prevInputTable'weight='$row[Weight]' lbkg='$row[lbkg]' rep='$row[Rep]' >($row[Weight]$row[lbkg], $row[Rep])</td>";
 		}else{
-		echo"<td class='prevInputTable'weight='$row[Weight]' lbkg='$row[lbkg]' rep='$row[Rep]' >($row[Weight]$row[lbkg], $row[Rep])</td>
-			<td><input class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' value='$row1[Weight]'/><select>";
+			echo"<td class='prevInputTable'></td>";		//Change: removed the weight, lbkg and rep attributes. Might cause problems later?
 		}
+		echo "<td><input class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' value='$row1[Weight]'/><select>";
 			if($row1['lbkg']=='kg'){
 				echo "<option value='lbs'>lbs</option><option selected value='kg'>kg</option>";
 			}else if($row1['lbkg']=='lbs'){
@@ -485,7 +573,10 @@ class GSProgress
 			} else {
 				echo "<option selected value='lbs'>lbs</option><option value='kg'>kg</option>";
 		}
-		echo "</select></td><td><input class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)' value='$row1[Rep]'/></td><td><div class='samelast sp'></div><div class='sameprev sp'></div><td>$row[Comment]</td>";
+		echo "</select></td><td><input class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)' value='$row1[Rep]'/></td><td><div class='samelast sp'></div><div class='sameprev sp'></div>";
+		if($first)
+			echo "<td><div class='prevnotes sp'></div>$row[Comment]</td>";
+		else echo "<td></td>";
 	}
 	function getmaxRecords($LID, $date){
 		$sql = "SELECT
@@ -813,7 +904,7 @@ class GSProgress
 			$row = $stmt->fetch();
 			$start= (date_format(date_create($row["start"]), 'M j Y'));
 			$final= (date_format(date_create($row["final"]), 'M j Y'));
-			$diff = floor(abs(strtotime($row["start"]) - strtotime($row["final"])) / (60*60*24*6));
+			$diff = floor((strtotime($row["final"]) - strtotime($row["start"])) / (60*60*24*6));
 			$weightstart = (date_format(date_create($row["start"]), 'm/d/Y'));
 			$weightfinal = (date_format(date_create($row["final"]), 'm/d/Y'));
 			echo"['$start','$final','$diff"." day','$weightstart','$weightfinal']";
@@ -824,13 +915,15 @@ class GSProgress
 			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
 		}
 	}
+	//If owner changes weight option, updates it. Returns nothing.
+	//If user is not owner or if start>final, skips update.
 	function changeWeightOption(){
 		$UID = $_POST['UID'];
 		$start = $_POST['weightstart'];
 		$final = $_POST['weightfinal'];
 		$sstart=substr($start, 6,4)."-".substr($start, 0,2)."-".substr($start, 3,2);
 		$sfinal=substr($final, 6,4)."-".substr($final, 0,2)."-".substr($final, 3,2);
-		if ($UID == $_SESSION['UserID']){
+		if ($UID == $_SESSION['UserID'] && (strtotime($sfinal) - strtotime($sstart))>0){
 		$sql = "UPDATE weightsoption
  				SET start = '$sstart',
                 	final = '$sfinal'
@@ -849,7 +942,7 @@ class GSProgress
 	}
 	$start1= (date_format(date_create($sstart), 'M-j-Y'));
 	$final1= (date_format(date_create($sfinal), 'M-j-Y'));
-	$diff = floor(abs(strtotime($sstart) - strtotime($sfinal)) / (60*60*24*6));
+	$diff = floor((strtotime($sfinal) - strtotime($sstart)) / (60*60*24*6));
 	echo"['$start1','$final1','$diff"." day','$start','$final']";
 		
 	}
@@ -1195,7 +1288,264 @@ class GSProgress
 			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
 		}
     }
+    //Adding exercise on the go. Called when the user clicks 'add new exercise' on Record. New exercise is added to 'Others' database.
+    //Returns a div of textboxes that allows users to add more sets of this new exercise.
     function addnewset(){
-    	
+    	$UID = $_SESSION['UserID'];
+    	$exercise = $_POST['exercisename'];
+    	$rep = $_POST['rep'];
+    	$weight = $_POST['weight'];
+    	$lbkg = $_POST['lbkg'];
+    	$date = $_POST['date'];
+    	$stoday=substr($date, 6,4)."-".substr($date, 0,2)."-".substr($date, 3,2);
+    	$osid = $_POST['OSID'];
+    	//Add new exercise
+    	$sql = "INSERT INTO exercise
+					(UserID, ExerciseName) 
+    			VALUES (:uid, :ename)";
+		try
+		{
+			$stmt = $this->_db->prepare($sql);
+			$stmt->bindParam(':uid', $UID, PDO::PARAM_INT);
+			$stmt->bindParam(':ename', $exercise, PDO::PARAM_STR);
+			$stmt->execute();
+			$stmt->closeCursor();
+			$eid=$this->_db->lastInsertId();
+		}
+		catch(PDOException $e)
+		{
+			return $e->getMessage();
+		}
+		//Find next highest position
+		$sql = "SELECT
+					MAX(ListItemPosition) as pos
+				FROM list_items
+				WHERE SectionID=:sid";
+		if($stmt = $this->_db->prepare($sql))
+		{
+			$stmt->bindParam(':sid', $osid, PDO::PARAM_INT);
+			$stmt->execute();
+			$row = $stmt->fetch();
+			$pos = intval($row['pos']+1);
+			$stmt->closeCursor();
+		}
+		else
+		{
+			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
+		}
+		//Insert into listitem
+		$sql = "INSERT INTO list_items
+					(SectionID, EID, ListItemPosition) 
+    			VALUES (:sid, :eid, :pos)";
+		try
+		{
+			$stmt = $this->_db->prepare($sql);
+			$stmt->bindParam(':sid', $osid, PDO::PARAM_INT);
+			$stmt->bindParam(':eid', $eid, PDO::PARAM_INT);
+			$stmt->bindParam(':pos', $pos, PDO::PARAM_INT);
+			$stmt->execute();
+			$stmt->closeCursor();
+			$lid=$this->_db->lastInsertId();
+		}
+		catch(PDOException $e)
+		{
+			return $e->getMessage();
+		}
+		//Insert into sets
+		//Set = 1 because this is a new set, pos = 1
+		$sql = "INSERT INTO sets
+					(ListItemID, Sett, Weight, lbkg, Rep, Comment, setsposition) 
+    			VALUES (:lid, 1, :weight, :lbkg, :rep, :comment, 1)";
+		try
+		{
+			$stmt = $this->_db->prepare($sql);
+			$stmt->bindParam(':lid', $lid, PDO::PARAM_INT);
+			$stmt->bindParam(':weight', $weight, PDO::PARAM_INT);
+			$stmt->bindParam(':lbkg', $lbkg, PDO::PARAM_STR);
+			$stmt->bindParam(':rep', $rep, PDO::PARAM_INT);
+			$stmt->bindParam(':comment', $lbkg, PDO::PARAM_STR);
+			$stmt->execute();
+			$stmt->closeCursor();
+			$sid=$this->_db->lastInsertId();
+		}
+		catch(PDOException $e)
+		{
+			return $e->getMessage();
+		}
+		//Save the record!!!
+		$sql = "INSERT INTO records
+					(ListItemID, UserID, RecordDate, Weight, lbkg, Rep, RecordPosition) 
+    			VALUES (:lid, :uid, :wd, :weight, :lbkg, :rep, 1)";
+		try
+		{
+			$stmt = $this->_db->prepare($sql);
+			$stmt->bindParam(':lid', $lid, PDO::PARAM_INT);
+			$stmt->bindParam(':uid', $UID, PDO::PARAM_INT);
+			$stmt->bindParam(':wd', $stoday, PDO::PARAM_STR);
+			$stmt->bindParam(':weight', $weight, PDO::PARAM_INT);
+			$stmt->bindParam(':lbkg', $lbkg, PDO::PARAM_STR);
+			$stmt->bindParam(':rep', $rep, PDO::PARAM_INT);
+			$stmt->execute();
+			$stmt->closeCursor();
+		}
+		catch(PDOException $e)
+		{
+			return $e->getMessage();
+		}
+				
+		
+		if($lbkg=='lbs'){
+			$newselectoption = "<select ><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select>";
+		}else{
+			$newselectoption = "<select ><option value='lbs'>lbs</option><option selected value='kg'>kg</option></select>";
+		}
+    	echo "<tr class='recordtable newexercise' list=\"".$lid."\" rel=\"".$pos."\"><td colspan='2'><input size='27' value=\"".$exercise."\"/></td><td><input class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' value=\"".$weight."\"/>".$newselectoption."</td><td><input class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)' value=\"".$rep."\"/></td><td></td><td><input/></td><td class='zeropadding'><input class='addnewset' type=button value=ad /></td></tr>";
+    }
+    //Loads exercise into dropdown box
+    //kinda repeated functionality.
+    function loadExercise($UID){
+		$sql = "SELECT
+					ExerciseName, EID
+				FROM exercise
+				WHERE UserID=:uid
+				ORDER BY ExerciseName ASC	";
+		if($stmt = $this->_db->prepare($sql))
+		{
+			$stmt->bindParam(':uid', $UID, PDO::PARAM_INT);
+			$stmt->execute();
+			echo "<select id='OldExerciseSelect'>";
+			while ($row = $stmt->fetch()){
+				echo "<option value=\"".$row['EID']."\">".$row['ExerciseName']."</option>";
+			}
+			echo "</select>";
+			$stmt->closeCursor();
+		}
+		else
+		{
+			//echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
+		}
+	}
+	 function addOldExerciseSet(){
+    	$UID = $_SESSION['UserID'];
+    	$EID = $_POST['EID'];
+    	$rep = $_POST['rep'];
+    	$weight = $_POST['weight'];
+    	$lbkg = $_POST['lbkg'];
+    	$date = $_POST['date'];
+    	$stoday=substr($date, 6,4)."-".substr($date, 0,2)."-".substr($date, 3,2);
+    	$osid = $_POST['OSID'];
+
+		//See if already in Other Program
+		$sql = "SELECT
+					ListItemID
+				FROM list_items
+				WHERE SectionID=:sid
+				AND EID=:eid";
+		if($stmt = $this->_db->prepare($sql))
+		{
+			$stmt->bindParam(':sid', $osid, PDO::PARAM_INT);
+			$stmt->bindParam(':eid', $EID, PDO::PARAM_INT);
+			$stmt->execute();
+			if($row = $stmt->fetch()){
+				$LID = $row['ListItemID'];			//If already exist in other programs
+			}else{									//If not..
+				//Find next highest position
+		$sql = "SELECT
+					MAX(ListItemPosition) as pos
+				FROM list_items
+				WHERE SectionID=:sid";
+		if($stmt = $this->_db->prepare($sql))
+		{
+			$stmt->bindParam(':sid', $osid, PDO::PARAM_INT);
+			$stmt->execute();
+			$row = $stmt->fetch();
+			$pos = intval($row['pos']+1);
+			$stmt->closeCursor();
+		}
+		else
+		{
+			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
+		}
+		//Insert into listitem
+		$sql = "INSERT INTO list_items
+					(SectionID, EID, ListItemPosition) 
+    			VALUES (:sid, :eid, :pos)";
+		try
+		{
+			$stmt = $this->_db->prepare($sql);
+			$stmt->bindParam(':sid', $osid, PDO::PARAM_INT);
+			$stmt->bindParam(':eid', $EID, PDO::PARAM_INT);
+			$stmt->bindParam(':pos', $pos, PDO::PARAM_INT);
+			$stmt->execute();
+			$stmt->closeCursor();
+			$LID=$this->_db->lastInsertId();
+		}
+		catch(PDOException $e)
+		{
+			return $e->getMessage();
+		}
+		//Insert into sets
+		//Set = 1 because this is a new set, pos = 1
+		$sql = "INSERT INTO sets
+					(ListItemID, Sett, Weight, lbkg, Rep, Comment, setsposition) 
+    			VALUES (:lid, 1, :weight, :lbkg, :rep, :comment, 1)";
+		try
+		{
+			$stmt = $this->_db->prepare($sql);
+			$stmt->bindParam(':lid', $LID, PDO::PARAM_INT);
+			$stmt->bindParam(':weight', $weight, PDO::PARAM_INT);
+			$stmt->bindParam(':lbkg', $lbkg, PDO::PARAM_STR);
+			$stmt->bindParam(':rep', $rep, PDO::PARAM_INT);
+			$stmt->bindParam(':comment', $lbkg, PDO::PARAM_STR);
+			$stmt->execute();
+			$stmt->closeCursor();
+			$sid=$this->_db->lastInsertId();
+		}
+		catch(PDOException $e)
+		{
+			return $e->getMessage();
+		}
+			}
+			
+			$stmt->closeCursor();
+		}
+		else
+		{
+			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
+		}
+		
+		
+		
+		
+		//Save the record!!!
+		$sql = "INSERT INTO records
+					(ListItemID, UserID, RecordDate, Weight, lbkg, Rep, RecordPosition) 
+    			VALUES (:lid, :uid, :wd, :weight, :lbkg, :rep, 1)";
+		try
+		{
+			$stmt = $this->_db->prepare($sql);
+			$stmt->bindParam(':lid', $LID, PDO::PARAM_INT);
+			$stmt->bindParam(':uid', $UID, PDO::PARAM_INT);
+			$stmt->bindParam(':wd', $stoday, PDO::PARAM_STR);
+			$stmt->bindParam(':weight', $weight, PDO::PARAM_INT);
+			$stmt->bindParam(':lbkg', $lbkg, PDO::PARAM_STR);
+			$stmt->bindParam(':rep', $rep, PDO::PARAM_INT);
+			$stmt->execute();
+			$stmt->closeCursor();
+		}
+		catch(PDOException $e)
+		{
+			return $e->getMessage();
+		}
+			
+		$eName = $this->getExerciseName($EID);
+		
+		if($lbkg=='lbs'){
+			$newselectoption = "<select ><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select>";
+		}else{
+			$newselectoption = "<select ><option value='lbs'>lbs</option><option selected value='kg'>kg</option></select>";
+		}
+		//change to oldexercise?
+    	echo "<tr class='recordtable oldexercise' list=\"".$LID."\" rel='1'><td colspan='2'>".$eName."</td><td><input class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' value=\"".$weight."\"/>".$newselectoption."</td><td><input class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)' value=\"".$rep."\"/></td><td></td><td><input/></td><td class='zeropadding'><input class='addnewset' type=button value=ad /></td></tr>";
     }
 }

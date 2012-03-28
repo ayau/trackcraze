@@ -1,29 +1,68 @@
 function profileEdit(mofb,yofb,ddofb,sex,wunit,privacy,trackO,previousLocation,previousEmail,previousPhone,previousHeight,userweight,mUnit,settings,search)
 {
-	$("#weightdate").mask("99/99/9999");
-  today = new Date();
-     $("#weightdate").val(eval(today.getMonth()+1)+"/"+today.getDate()+"/"+today.getFullYear());
-     if (today.getMonth()+1<10){
-      month = "0"+eval(today.getMonth()+1);
-     } else {
-      month = today.getMonth()+1;
-     } 
-     if (today.getDate()<10){
-      day = "0"+today.getDate();
-      }else{
-       day = today.getDate()
-      }
-     datePickerController.createDatePicker({
-    formElements:{"weightdate":"m-sl-d-sl-Y"},
-    rangeLow:eval(today.getFullYear()-2)+""+month+day,   
-    rangeHigh:today.getFullYear()+""+month+day,
-    statusFormat:"l-cc-sp-d-sp-F-sp-Y",
-       finalOpacity:100, 
-       noFadeEffect:true, 
-       noDrag:true, 
-       fillGrid:true, 
-       constrainSelection:false 
-  });
+//!!!!BEGIN CREATING DATE PICKER!!!
+	d = new Date;
+	thisyear = d.getFullYear();
+	function dropBoxCreateDays(days){
+	var daydropbox = " <select id='DDOfB' class='"+days+"days'>";
+	for (var i=1; i<days+1; i++){
+		var append = "<option value="+i+">"+i+"</option>";
+		daydropbox = daydropbox+append;
+		}
+	daydropbox = daydropbox+"</select>"
+	return daydropbox;//Creates a string for the drop down menu
+	};
+	var daydropbox31 = dropBoxCreateDays(31);//For the number of days in the month to prevent stuff like 30th of Feb
+	var daydropbox30 = dropBoxCreateDays(30);
+	var daydropbox28 = dropBoxCreateDays(28);
+	var daydropbox29 = dropBoxCreateDays(29);
+	var yeardropbox = " <select id='YOfB'>"; //Creates the dropbox for the years
+	for (var i=0; i<100; i++){
+		year = thisyear-i;
+		var append = "<option value="+year+">"+year+"</option>";
+		yeardropbox = yeardropbox+append;
+	}
+	yeardropbox = yeardropbox+"</select>";
+	$("#MOfB").val(mofb);
+	if ($('#MOfB').val()==1||3||5||7||8||10||12){
+		$("#datepicker").append(daydropbox31);//Puts in day drop box for months with 31 days
+	}
+	else if($('#MOfB').val()==4||6||9||11){
+		$("#datepicker").append(daydropbox30);//Puts in day drop box for months with 31 days
+	}
+	else if($('#MOfB').val()==2&&yofb%4==0){
+		$("#datepicker").append(daydropbox29);//Puts in day drop box for a leap year in feb
+	}
+	else{
+		$("#datepicker").append(daydropbox28);//Puts in day drop box for february
+	}
+	$("#DDOfB").val(ddofb);
+	$("#datepicker").append(yeardropbox);
+	$("#YOfB").val(yofb);
+	$("#MOfB").change(function(){//If user changes the month, ensures that the day drop box matches with the number of days in the given month
+		if ($('#MOfB').val()==1||3||5||7||8||10||12){
+		$("#DDOfB").replaceWith(daydropbox31);//Puts in day drop box for months with 31 days
+	}
+		if($('#MOfB').val()==4||6||9||11){
+
+		$("#DDOfB").replaceWith(daydropbox30);//Puts in day drop box for months with 31 days
+	}
+		if($('#MOfB').val()==2&&$("#YOfB").val()%4==0){
+		$("#DDOfB").replaceWith(daydropbox29);//Puts in day drop box for a leap year in feb
+	}
+	else{
+		$("#DDOfB").replaceWith(daydropbox28);//Puts in day drop box for february
+	}
+	});
+	$("#YOfB").change(function(){//If user changes year, ensure that day dropbox matches with number of days in given month (only applies to feb for leap years)
+		if($('#MOfB').val()==2&&$("#YOfB").val()%4==0){
+		$("#DDOfB").replaceWith(daydropbox29);//Puts in day drop box for a leap year in feb
+	}
+	if($('#MOfB').val()==2&&$("#YOfB").val()%4!=0){//Only applies if user is changing from a leap year to a non leap year and the month currently selected is feb
+		$("#DDOfB").replaceWith(daydropbox28);
+	}
+	});
+//!!!FINISH DATEPICKER!!!!
 	$("#topbar").hide();//hide it in the sidebar?	
 	var priarray = new Array
 	priarray = baseTenConvert(privacy,15);
@@ -562,9 +601,6 @@ $(".sportremove").live("click", function(){
 		});
 });
 //END SPORTS!!!!!!!!!!!!!111
-	$("#MOfB").val(mofb);
-    $("#YOfB").val(yofb);
-    $("#DDOfB").val(ddofb);
     $("#gender").val(sex);
     $("#plbkg").val(wunit);
 	var $whitelist = '<b><i><strong><em><a>';
@@ -600,7 +636,25 @@ function sendToNewsDB (content,newstype)
        }
       });
 }
- $('#editpsave').live("click",function(){	
+ $('#editpsave').live("click",function(){
+ 	if ($("#YOfB").val()==thisyear&&($("#MOfB").val()-1)==d.getMonth()&&$("#DDOfB").val()>d.getDate()){
+ 		$("#funnyerror").text("You are not terminator (P.S. your birthday is in the future)").show();
+		t = setTimeout(function(){$("#funnyerror").fadeOut(1000)},3000);
+		return false;
+ 	}
+ 	else if($("#YOfB").val()==thisyear&&($("#MOfB").val()-1)>d.getMonth()){
+ 		$("#funnyerror").text("You are not terminator (P.S. your birthday is in the future)").show();
+		t = setTimeout(function(){$("#funnyerror").fadeOut(1000)},3000);
+		return false;
+ 	}
+ 	//Test for phone number
+ 	text = strip_tags(cleanHREF($("#phone").val()), $whitelist);
+ 	if(text!=""){
+ 	if (parseInt(text)!=parseFloat(text)||isNaN(text)||parseInt(text)<=0){
+				alert("Invalid phone number");
+				return false;
+		}
+	}
  var genderVal = $("#gender").val(),
     birthMonth = $("#MOfB").val(),
     birthDay = $("#DDOfB").val(),
@@ -618,8 +672,6 @@ function sendToNewsDB (content,newstype)
  {
   fheighti = 0;
  }
- else
- {}
   var    
     heighti = escape(parseInt(fheightf)*12 + parseInt(fheighti)),
     weight = escape(fweight),
@@ -1033,7 +1085,7 @@ function strip_tags(str, allowed_tags) {
 function profile(chest, forearm, waist, thigh, hip, calve, bicep, neck, shoulder, unit, fheighti, fprimaryWeight, lbkg, height, gender, birthday)
 {	var splitDOB = birthday.split("-")
     	today = new Date();
-	if (birthday==""||(today.getFullYear()==splitDOB[0]&&(today.getMonth()+1)==parseInt(splitDOB[1])&&today.getDate()==parseInt(splitDOB[2]))){
+	if (birthday==""){
 		$("#DOfB").replaceWith("<a href='editprofile.php' class='toEditProfile'>Edit your profile to enter a birthday</a>");
 		$("#privacya").remove();
 		$("#age").text("");

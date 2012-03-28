@@ -20,6 +20,7 @@ numcheck = /\d|\./
 }
 return numcheck.test(keychar)
 }
+	//What is the use of this function? Test it out.
 	function loadInputBySplitID(sid){
 		$("#InputTable").children().remove();
 		$("#container").append("<p id='loading'>loading...please wait (or get faster internet)</p>");
@@ -175,7 +176,7 @@ return numcheck.test(keychar)
 		$("#weightstart").mask("99/99/9999");
 		$("#weightfinal").mask("99/99/9999");
 		$('#newWeightInput').keypress(function(event) {
-        		return /\d/.test(String.fromCharCode(event.keyCode));
+        		return onlyNumbers(event,1);
     	});
 
 		datePickerController.createDatePicker({
@@ -196,10 +197,11 @@ return numcheck.test(keychar)
  						fillGrid:true, 
  						constrainSelection:false  
 					});
-					refreshoption(get);
+					refreshdata(get);
 	}
 	var weightdata;
 	var weightoption;
+	//Loads all weight associated with a user
 	function refreshdata(get){
 		$.ajax({
     			type: "POST",
@@ -213,7 +215,7 @@ return numcheck.test(keychar)
     			success: function(r){
     				weightdata=r;
     				refreshtable(r); 
-    				getmaxminweight(get);   				
+    				refreshoption(get);   				
     			},
     			error: function(){
     			    // should be some error functionality here
@@ -221,6 +223,7 @@ return numcheck.test(keychar)
     		});  
 	}
 	var weightmaxmin;
+	//Gets maximum and minimum weight within a range
 	function getmaxminweight(get){
 		$.ajax({
     			type: "POST",
@@ -234,7 +237,9 @@ return numcheck.test(keychar)
 				},
     				
     			success: function(r){
-    				weightmaxmin=r; 				
+    				if (r[0]!=null){	//If max is not null, min is not null.
+    					weightmaxmin=r;		//If there are points within the range, change maxmin
+    				}	
     				plotGraph();
     			},
     			error: function(){
@@ -277,6 +282,7 @@ return numcheck.test(keychar)
 			};
 		});
 	}
+	//Retrieves the weight option of a user
 	function refreshoption(get){
 		$.ajax({
     			type: "POST",
@@ -287,13 +293,17 @@ return numcheck.test(keychar)
     				"UID":get//LATER CHANGE THIS TO GET
 				},
     				
-    			success: function(r){
-    				weightoption=r;
-    				refreshdata(get);
-    				$("#weightstart").val(weightoption[3]);
-    				$("#weightfinal").val(weightoption[4]);
-    				datePickerController.setDateFromInput("weightstart");
-    				datePickerController.setDateFromInput("weightfinal");
+    			success: function(r){	//(Start, final, diff, vertical tick marks (in days), start(option), final(option))
+    				if(parseInt(r[2])>0){	//If this fails, something is internally wrong with the database!!!
+    					weightoption=r;
+    					$("#weightstart").val(weightoption[3]);
+    					$("#weightfinal").val(weightoption[4]);
+    					datePickerController.setDateFromInput("weightstart");
+    					datePickerController.setDateFromInput("weightfinal");
+					}else{
+						alert("start date cannot be greater than end date!");
+					}
+					getmaxminweight(get);
     			},
     			error: function(){
     			    // should be some error functionality here
@@ -317,7 +327,10 @@ return numcheck.test(keychar)
   						tickInterval:weightoption[2],
           					tickOptions:{
             					formatString:'%e&nbsp;%b&nbsp;%y'}},
-  					yaxis:{label: "lbs", min:weightmaxmin[1]-1, max:weightmaxmin[0]+1}},
+  					yaxis:{label: "lbs", min:parseInt(weightmaxmin[1]-1), max:parseInt(weightmaxmin[0]+1),
+  							tickOptions:{
+  								formatString:'%.1f' }
+  								}},
   					highlighter: {
         				show: true,
         				sizeAdjust: 7.5
@@ -381,7 +394,7 @@ return numcheck.test(keychar)
     				"action":"recordsubmit",
     				"date":$("#weightdate").val(),
     				"lid":$(this).attr('list'),
-    				"weight":$(this).find(".weightInputTable").val(),
+    				"weight":$(this).find(".weightInputTable").val(),    //weight instead of $(this).find ?
     				"lbkg":$(this).find("select").val(),
     				"rep":$(this).find(".repInputTable").val(),
     				"pos":$(this).attr('rel')
@@ -396,28 +409,22 @@ return numcheck.test(keychar)
 		}
 	}
 		});
-		alert("Record saved.");//unsafe. Some records might not have been saved yet.
-	}
-	});
-	$(".addnewset").live("click",function(){
-		$(this).parent().parent().after("<tr class='recordtable' list=\""+$(this).parent().parent().attr('list')+"\" class=recordtable rel=\""+(parseInt($(this).parent().parent().attr('rel'))+1)+"\"><td colspan='2'></td><td><input class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' /><select ><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select></td><td><input class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)' /></td><td></td><td><input/></td><td class='zeropadding'><input class='addnewset' type=button value=ad /></td></tr>");
-		$(this).remove();
-	});
-	$("#addExerciseInputTable").live("click",function(){
-		//check to make sure it's not empty
-		if($("#newlbkg").find(":selected").attr("value")=='lbs'){
-			newselectoption = "<select ><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select>";
-		}else{
-			newselectoption = "<select ><option value='lbs'>lbs</option><option selected value='kg'>kg</option></select>";
-		}
-		$.ajax({
+		$(".newexercise").each(function(){
+			var $whitelist = '<b><i><strong><em><a>',
+    		weight = strip_tags(cleanHREF($(this).find(".weightInputTable").val()), $whitelist);
+    		rep = strip_tags(cleanHREF($(this).find(".repInputTable").val()), $whitelist);
+    		//URLtext = escape(text);
+    		if (weight.length>0 || rep.length>0){
+    			if (testFloat(weight)==true && testInt(rep)==true){
+    				//rel >2? or just check if exist, if so, update?
+    			$.ajax({
     			type: "POST",
     			url: "/db-interaction/gsprogress.php",
     			data: {
-    				"action":"addnewset",
+    				"action":"addSetToOthers",
     				"date":$("#weightdate").val(),
     				"lid":$(this).attr('list'),
-    				"weight":$(this).find(".weightInputTable").val(),
+    				"weight":$(this).find(".weightInputTable").val(),    //weight instead of $(this).find ?
     				"lbkg":$(this).find("select").val(),
     				"rep":$(this).find(".repInputTable").val(),
     				"pos":$(this).attr('rel')
@@ -429,10 +436,103 @@ return numcheck.test(keychar)
     			    // should be some error functionality here
     			}
     		});
-		$("#somethingnewrow").before("<tr class='recordtable' rel='1'><td colspan='2'><input size='27' value=\""+$('#newExercise').val()+"\"/></td><td><input class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' value=\""+$('#newWeight').val()+"\"/>"+newselectoption+"</td><td><input class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)' value=\""+$('#newRep').val()+"\"/></td><td></td><td><input/></td><td class='zeropadding'><input class='addnewset' type=button value=ad /></td></tr>");
-		$('#newExercise').val('');
-		$('#newWeight').val('');
-		$('#newRep').val('');
+		}
+	}	
+		});
+		alert("Record saved.");//unsafe. Some records might not have been saved yet.
+	}
+	});
+	$(".addnewset").live("click",function(){
+		$(this).parent().parent().after("<tr class=\""+$(this).parent().parent().attr('class')+"\" list=\""+$(this).parent().parent().attr('list')+"\" class=recordtable rel=\""+(parseInt($(this).parent().parent().attr('rel'))+1)+"\"><td colspan='2'></td><td><input class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' /><select ><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select></td><td><input class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)' /></td><td></td><td><input/></td><td class='zeropadding'><input class='addnewset' type=button value=ad /></td></tr>");
+		$(this).remove();
+	});
+	$("#addoldExerciseInputTable").live("click",function(){
+		//check to make sure it's not empty
+		if(testdate($("#weightdate").val())==true){
+			var $whitelist = '<b><i><strong><em><a>',
+    		weight = strip_tags(cleanHREF($(this).parent().parent().find("#oldWeight").val()), $whitelist);
+    		rep = strip_tags(cleanHREF($(this).parent().parent().find("#oldRep").val()), $whitelist);
+    		osid = $(this).parent().parent().attr("sid");
+    		//URLtext = escape(text);
+    		if (weight.length>0 && rep.length>0){
+    			if (testFloat(weight)==true && testInt(rep)==true){
+					$.ajax({
+    					type: "POST",
+    					url: "/db-interaction/gsprogress.php",
+    					data: {
+    						"action":"addOldExerciseSet",
+    						"date":$("#weightdate").val(),
+    						"EID":$(this).parent().parent().find("#OldExerciseSelect").val(),
+    						"weight":weight,
+    						"lbkg":$(this).parent().parent().find("#oldlbkg").val(),
+    						"rep":rep,
+    						"OSID":osid
+						},
+    				
+    					success: function(r){
+    						$("#somethingnewrow").before(r);
+							$('#oldWeight').val('');
+							$('#oldRep').val('');
+							//need to label the comment box and clear it.!!!!
+    					},
+    					error: function(){
+    			    		// should be some error functionality here
+    					}
+    				});
+				}else{
+					alert("Weight and Rep must be a number");	//might be unnecessary because the testint, testfloat and testdate already have errors
+				}
+			}else{
+				alert("Weight and rep cannot be empty.");
+			}
+		}else{
+			alert("Date is invalid.");
+		}
+	})
+	$("#addExerciseInputTable").live("click",function(){
+		//check to make sure it's not empty
+		if(testdate($("#weightdate").val())==true){
+			var $whitelist = '<b><i><strong><em><a>',
+			exercise = strip_tags(cleanHREF($(this).parent().parent().find("#newExercise").val()), $whitelist);
+    		weight = strip_tags(cleanHREF($(this).parent().parent().find("#newWeight").val()), $whitelist);
+    		rep = strip_tags(cleanHREF($(this).parent().parent().find("#newRep").val()), $whitelist);
+    		osid = $(this).parent().parent().attr("sid");
+    		//URLtext = escape(text);
+    		if (weight.length>0 && rep.length>0 && exercise.length>0){
+    			if (testFloat(weight)==true && testInt(rep)==true){
+					$.ajax({
+    					type: "POST",
+    					url: "/db-interaction/gsprogress.php",
+    					data: {
+    						"action":"addnewset",
+    						"date":$("#weightdate").val(),
+    						"exercisename":exercise,
+    						"weight":weight,
+    						"lbkg":$(this).parent().parent().find("select").val(),
+    						"rep":rep,
+    						"OSID":osid
+						},
+    				
+    					success: function(r){
+    						$("#somethingnewrow").before(r);
+							$('#newExercise').val('');
+							$('#newWeight').val('');
+							$('#newRep').val('');
+							//need to label the comment box and clear it.!!!!
+    					},
+    					error: function(){
+    			    		// should be some error functionality here
+    					}
+    				});
+				}else{
+					alert("Weight and Rep must be a number");	//might be unnecessary because the testint, testfloat and testdate already have errors
+				}
+			}else{
+				alert("Exercise, weight and rep cannot be empty.");
+			}
+		}else{
+			alert("Date is invalid.");
+		}
 	})
 		$(".weightdelete").live("click",function(){
 			$.ajax({
@@ -452,7 +552,13 @@ return numcheck.test(keychar)
     		});
 		});
 		$(".weightedit").live("click",function(){
-			alert($(this).parent().parent().attr('date'));
+			date = $(this).parent().parent().attr("date");
+			target = $(this).parent().parent().parent().prev().find('td[date='+date+']');
+			prevWeight = target.text();
+			target.text("");
+			target.append("<input type='text' class='weightEditBox' size='6' placeholder='"+prevWeight+"'/>");
+			$(this).css('visibility','hidden');
+			
 		});
 		$("#printbyExercise").live("click",function(){
 			$.ajax({
@@ -681,7 +787,7 @@ return numcheck.test(keychar)
 			}
 		}
 		$("#weightsubmit").live("click",function(){
-			if (testInt($("#newWeightInput").val()) ==true && testdate($("#weightdate").val())==true){
+			if (testFloat($("#newWeightInput").val()) ==true && testdate($("#weightdate").val())==true){
 			
 			$.ajax({
     			type: "POST",
@@ -716,6 +822,8 @@ return numcheck.test(keychar)
     		});
     		}	
 		});
+		//Changes weight option if owner changes dates.
+		//Updates weightoption if nonowner changes dates.
 		$("#weightoptionsubmit").live("click",function(){
 			$.ajax({
     			type: "POST",
@@ -729,12 +837,16 @@ return numcheck.test(keychar)
 				},
     				
     			success: function(r){
-					weightoption=r;
-    				plotGraph();
-    				$("#weightstart").val(weightoption[3]);
-    				$("#weightfinal").val(weightoption[4]);
-    				datePickerController.setDateFromInput("weightstart");
-    				datePickerController.setDateFromInput("weightfinal");
+    				if(parseInt(r[2])>0){
+    					weightoption=r;
+    					$("#weightstart").val(weightoption[3]);
+    					$("#weightfinal").val(weightoption[4]);
+    					datePickerController.setDateFromInput("weightstart");
+    					datePickerController.setDateFromInput("weightfinal");
+					}else{
+						alert("start date cannot be greater than end date!");
+					}
+					getmaxminweight(get);
     			},
     			error: function(){
     			    // should be some error functionality here

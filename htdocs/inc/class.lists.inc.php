@@ -1030,6 +1030,25 @@ public function updateExerciseItem()
 
 		$rows = $this->_db->exec($sql);
 	}
+	
+	public function getDefaultProgram($UID){
+		//Retrieving OtherProgramID and OtherSplitID
+		$sql = "SELECT
+					OtherProgramID
+				FROM users
+					WHERE UserID=:uid
+				LIMIT 1";
+		if($stmt = $this->_db->prepare($sql))
+		{
+			$stmt->bindParam(':uid', $_SESSION['UserID'], PDO::PARAM_INT);
+			$stmt->execute();
+			$row = $stmt->fetch();
+			return $row['OtherProgramID'];
+		}else{
+			//error!! WHAT TO DO HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		}
+	}
+	
  /**
 	 * Loads all list items associated with a user ID
 	 * 
@@ -1040,6 +1059,7 @@ public function updateExerciseItem()
 	 */
 	public function loadProgramsByUser($UID)
 	{
+		$OSPID = $this->getDefaultProgram($UID);
 		$sql = "SELECT
 					lists.ProgramID, ProgramName, ListURL
 				FROM lists
@@ -1054,7 +1074,11 @@ public function updateExerciseItem()
 			$order = 0;
 			while($row = $stmt->fetch())
 			{
-				echo $this->formatPrograms($row, ++$order);
+				if($OSPID == $row['ProgramID']){
+					echo $this->formatPrograms($row, ++$order, true);	//true indicates formatting with OSPID
+				}else{
+					echo $this->formatPrograms($row, ++$order, false);
+				}
 			}
 			$stmt->closeCursor();
 
@@ -1086,7 +1110,7 @@ public function updateExerciseItem()
 
 		return array($order);
 	}
-	private function formatPrograms($row, $order)
+	private function formatPrograms($row, $order, $osbool)
 	{
 
 		$sql = "SELECT
@@ -1112,6 +1136,17 @@ public function updateExerciseItem()
 			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
 		}
 		
+		if($osbool){
+			return "<tr id=\"$row[ProgramID]\" rel=\"$order\""
+			."class=\"exerciseEdit\" name=\"exerciseList\">"
+		//	."<td><Input type = 'Radio' class='programprivacy' name='mainprogram' value= '$row[ProgramID]'>"
+			."<td></td><td class=program>$row[ProgramName]</td><td></td>"//."<td class=program>$row[ProgramName]</td><td class='toggle'>(Splits)</td>"
+			."<td><select class='programprivacy programprivacyselect'><option value='0'>Public</option><option value='1'>Trackers only</option><option value='2'>Private</option></select></td>" 
+			. "<td><a class=programview href='/program.php?program=$row[ProgramID]'>View</a></td>"
+			//."<td><a class =\"programedit programprivacy\" href='/programedit.php?program=$row[ProgramID]'>Edit</a></td><td><div class='deletered sp programprivacy deleteprogram'></div></td><td class='tablesure'></td></tr>"
+			."<td></td>";
+			//."<tr><td colspan='7'><div class='hidden' hidden>".$splits."</div></td></tr>";
+		}else{
 
 		return "<tr id=\"$row[ProgramID]\" rel=\"$order\""
 			."class=\"exerciseEdit\" name=\"exerciseList\">"
@@ -1121,6 +1156,81 @@ public function updateExerciseItem()
 			. "<td><a class=programview href='/program.php?program=$row[ProgramID]'>View</a></td>"
 			."<td><a class =\"programedit programprivacy\" href='/programedit.php?program=$row[ProgramID]'>Edit</a></td><td><div class='deletered sp programprivacy deleteprogram'></div></td><td class='tablesure'></td></tr>"
 			."<tr><td colspan='7'><div class='hidden' hidden>".$splits."</div></td></tr>";
+		}
+	}
+		public function loadProgramListForBoard($UID)
+	{
+		//Displaying Main Program
+		$sql = "SELECT
+					MainProgramID
+				FROM users
+				WHERE UserID=:userid
+				LIMIT 1";
+		if($stmt = $this->_db->prepare($sql))
+		{
+			$stmt->bindParam(':userid', $UID, PDO::PARAM_INT);
+			$stmt->execute();
+			if($row = $stmt->fetch()){
+			$MainID = $row['MainProgramID'];
+			$stmt->closeCursor();
+					//Display main program
+		$sql = "SELECT
+					ProgramID, ProgramName, ListURL
+				FROM lists
+					WHERE ProgramID =:MID
+				LIMIT 1";
+		if($stmt = $this->_db->prepare($sql))
+		{
+			$stmt->bindParam(':MID', $MainID, PDO::PARAM_INT);
+			$stmt->execute();
+			$row = $stmt->fetch();
+				echo "<tr id=\"$row[ProgramID]\""
+			."class=\"exerciseEdit\" name=\"exerciseList\">"
+			."<td class=program>$row[ProgramName]</td>"
+				. "<td><a class=programview href='/program.php?program=$row[ProgramID]'>View</a></td></tr>";
+			$stmt->closeCursor();
+		}
+		else
+		{
+			//echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
+		}
+	}
+		}
+		else
+		{
+			//echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
+		}
+
+		//Display the rest
+		$OSPID = $this->getDefaultProgram($UID);		//Do we need this?
+		$sql = "SELECT
+					lists.ProgramID, ProgramName, ListURL
+				FROM lists
+				LEFT JOIN users
+				USING (UserID)
+				WHERE lists.UserID=:userid
+					AND ProgramID<>:MID
+				ORDER BY RAND() LIMIT 2";
+		if($stmt = $this->_db->prepare($sql))
+		{
+			$stmt->bindParam(':userid', $UID, PDO::PARAM_STR);
+			$stmt->bindParam(':MID', $MainID, PDO::PARAM_INT);
+			$stmt->execute();
+			while($row = $stmt->fetch())
+			{
+				echo "<tr id=\"$row[ProgramID]\""
+			."class=\"exerciseEdit\" name=\"exerciseList\">"
+			."<td class=program>$row[ProgramName]</td>"
+				. "<td><a class=programview href='/program.php?program=$row[ProgramID]'>View</a></td></tr>";
+			//."<td><a class =\"programedit programprivacy\" href='/programedit.php?program=$row[ProgramID]'>Edit</a></td><td><div class='deletered sp programprivacy deleteprogram'></div></td><td class='tablesure'></td></tr>"
+			//."<tr><td colspan='7'><div class='hidden' hidden>".$splits."</div></td></tr>";
+			}
+			$stmt->closeCursor();
+		}
+		else
+		{
+			//echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
+		}
 	}
 	 public function addProgram(){
     	$list = $_POST['list'];

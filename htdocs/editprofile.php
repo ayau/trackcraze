@@ -40,7 +40,7 @@ Choose a file to upload: <input name="file" type="file" />Maximum size-700kB<br 
     </tr>
     <tr>
      <td class='tar tat'>I Am</td>
-     <td>
+     <td class='tat'>
       <select id="gender">
        <option value="0">Male</option>
        <option value="1">Female</option>
@@ -50,12 +50,25 @@ Choose a file to upload: <input name="file" type="file" />Maximum size-700kB<br 
     </tr>
     <tr>
      <td class='tar tat'>Your Birthday</td>
-     <td>
-     <input id='weightdate' maxlength='10' size='7'/>
+     <td class='tat' id="datepicker">
+     	<select id="MOfB">
+     		<option value=1>Jan</option>
+     		<option value=2>Feb</option>
+     		<option value=3>Mar</option>
+     		<option value=4>Apr</option>
+     		<option value=5>May</option>
+     		<option value=6>Jun</option>
+     		<option value=7>Jul</option>
+     		<option value=8>Aug</option>
+     		<option value=9>Sep</option>
+     		<option value=10>Oct</option>
+     		<option value=11>Nov</option>
+     		<option value=12>Dec</option>
+     	</select>
 	</td>
  	<tr>
      <td class='tar tat'>Your Weight</td>
-     <td id="weightrow">
+     <td class='tat' id="weightrow">
       <input class="inputnumber" type='text' id='pweight' onkeypress="return func_obj.numbersOneDecimalPointWeight(event)" value="<?php echo($Weight) ?>">
       <select id="plbkg">
        <option value="0">lbs</option>
@@ -65,34 +78,34 @@ Choose a file to upload: <input name="file" type="file" />Maximum size-700kB<br 
 </tr>
     <tr>
      <td class='tar tat'>Your Height</td>
-     <td>
+     <td class='tat'>
       <input class="inputnumber" type="text" id="heightf" onkeypress="return func_obj.numbersOnly(event)" onchange="func_obj.convertFtIToM()" value="<?php echo (($Heighti-fmod($Heighti,12))/12)?>"> ft <input class="inputnumber" type="text" id="heighti" onkeypress="return func_obj.numbersOnly(event)" onchange="func_obj.convertFtIToM()" value="<?php echo (fmod($Heighti,12))?>"> in </br> or </br><input class="inputnumber" type="text" id="height" value="<?php echo($Height) ?>" onkeypress="return func_obj.numbersOnly(event)" onchange="func_obj.convertMetersToFI()"> cm
      </td>
     </tr>
     <tr>
      <td class='tar tat'>Hobbies</td>
-     <td><textarea id='sports' placeholder='What Hobbies do you enjoy?'></textarea></td><!-- limit character number-->
+     <td class='tat'><textarea id='sports' placeholder='What Hobbies do you enjoy?'></textarea></td><!-- limit character number-->
     </tr>
     <tr>
      <td class='tar tat'>Sports You Play</td>
-     <td>
+     <td class='tat'>
      	<span id="existingsports"><?php $users->loadSports($_SESSION['UserID'],0) ?></span>
      	<li><input type='text' id='sportsinput' value="" autocomplete='off' placeholder='What Sports do you play?'/><button type="button" id='addsportsbutton'>Add</button></li>
      </td><!-- limit character number-->
     </tr>
      <td class='tar tat'>Phone</td>
-     <td><input type='text' id='phone' value="<?php echo($Phone) ?>" onkeypress="return func_obj.numbersOnly(event)">
+     <td class='tat'><input type='text' id='phone' value="<?php echo($Phone) ?>" onkeypress="return func_obj.numbersOnly(event)">
 	</td>
     </tr>
     <tr>
      <td class='tar tat'>Email</td>
-     <td><input type='text' id='email' value="<?php echo($Email) ?>">
+     <td class='tat'><input type='text' id='email' value="<?php echo($Email) ?>">
      	   <br /><br />
      </td>
     </tr>
     <tr>
      <td class='tar tat'>Location</td>
-     <td><input type='text' id='location' value="<?php echo($Location) ?>">
+     <td class='tat'><input type='text' id='location' value="<?php echo($Location) ?>">
      </td>
     </tr>
    </table>
@@ -308,14 +321,12 @@ Choose a file to upload: <input name="file" type="file" />Maximum size-700kB<br 
 		</tr>
 	</table>
 	</span>
-   	<button type="button" id='editpsave'>Save Changes</button>
+   	<button type="button" id='editpsave'>Save Changes</button><span id="funnyerror"></span>
    </div>
    <script type="text/javascript" src="js/jquery-ui-1.7.2.custom.min.js"></script>
    <script type="text/javascript" src="js/users.js"></script>
    <script type="text/javascript" src="js/autocomplete/jquery.autocomplete.js"></script>
    <script type="text/javascript" src="js/thickbox/thickbox.min.js"></script>
-   <script language="javascript" src="js/datepicker/js/datepicker.js" type="text/javascript"></script>
-   <script language="javascript" type="text/javascript" src="js/jquery.maskedinput.min.js"></script>
    <script type="text/javascript">
             var func_obj = new profileEdit(<?php echo $MOfB?>,<?php echo $YOfB?>,<?php echo $DDOfB?>,<?php echo($Gender)?>,<?php echo($lbkg)?>,<?php echo $Privacy ?>,<?php echo $TrackerO ?>,"<?php echo $Location ?>","<?php echo $Email ?>","<?php echo $Phone ?>","<?php echo $Height ?>","<?php echo $Weight ?>",<?php echo $Unit ?>, <?php echo $Setting ?>, <?php echo json_encode($sportlist)?>);
     </script>	   

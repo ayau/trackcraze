@@ -24,7 +24,7 @@
 <div id="main">
 	<noscript>This site just doesn't work, without JavaScript, period. (not so period: and also cause we're shitty developers and javascript is easier to use)</noscript>
 	<div id="profile">
-		<div><h1><?php echo ($Forename." ".$Surname) ?><a href="editprofile.php" id="editbutton">Edit your Profile</a></h1></div>
+		<div><h1><?php echo ($Forename." ".$Surname) ?><a href="editprofile.php" class="fitwidth box" id="editbutton">Edit your Profile</a></h1></div>
 				<h2><span class="hoverheading hovered">User Information</span>|<span class="hoverheading">Goals and Body Measurements</span></h2>
 			<span id="userinformation"><table border="0">	
 				<tr>
@@ -50,7 +50,12 @@
 			</table>
 			<br /><br />
 		<span><h2>Sports</h2>
-		<?php $users->loadSports($cuser,1) ?><br /><br /></span>
+			<br />
+			<ul class="tags">
+			
+		<?php $users->loadSports($cuser,1) ?>
+		</ul> 
+		<br /><br /><br /></span>
 		<h2>Contact Information</h2>
 			<table border="0">
 				<tr id="privacy3">
@@ -147,13 +152,13 @@
 		$("#privacy5").children("[class!=tal]").html("<a href='editprofile.php' class='toEditProfile'>Edit your profile to add your location</a>");
 	};
 		profile("<?php echo $Measurements[0] ?>","<?php echo $Measurements[1] ?>","<?php echo $Measurements[2] ?>","<?php echo $Measurements[3] ?>","<?php echo $Measurements[4] ?>","<?php echo $Measurements[5] ?>","<?php echo $Measurements[6] ?>","<?php echo $Measurements[7] ?>","<?php echo $Measurements[8] ?>","<?php echo $Unit ?>","<?php echo $Heighti ?>","<?php echo $Weight ?>","<?php echo $lbkg ?>","<?php echo $Height ?>","<?php echo $Gender ?>","<?php echo $DOB ?>");
-		privacy = baseTenConvert(<?php echo $Privacy ?>,15); 
 		$("#topbar").hide();//do it in the bar
 	</script>
 <?php
     		if ($cuser!=$_SESSION['UserID']):
     	?>
     	<script type="text/javascript">
+    	privacy = baseTenConvert(<?php echo $Privacy ?>,15);
     	var splitDOB = "<?php echo $DOB ?>".split("-")
     	today = new Date();
     	$(".toEditProfile").each(function(){
@@ -167,9 +172,6 @@
 		};
 		if("<?php echo $Location ?>"==""){
 			$("#privacy5").remove();
-		};
-		if("<?php echo $DOfB ?>"==""||(today.getFullYear()==splitDOB[0]&&(today.getMonth()+1)==parseInt(splitDOB[1])&&today.getDate()==parseInt(splitDOB[2]))){
-		$("#privacyb").remove();
 		};
 		if("<?php echo $Weight ?>"==""||"<?php echo $Weight ?>"==0){
 			$("#privacy1").remove();
@@ -216,7 +218,7 @@
     	}
     	else if (privacy[0]==1)
     	{
-    		$("#privacya").hide();
+    		$("#privacya").remove();
     		var DOfB = "<?php echo $DOfB ?>";
     		splitDOfB = DOfB.split(" ");
     		$("#DOfB").replaceWith(splitDOfB[0]+" "+splitDOfB[1]);
@@ -227,7 +229,8 @@
     	//	endif;
     	?>
 <?php
+endif;
 	include_once "common/footer.php"; 
 
-endif;?>
+?>
 

@@ -55,6 +55,7 @@ if ((($_FILES["file"]["type"] == "image/gif")
 
 		imagedestroy($src);
 		imagedestroy($tmp);
+		echo '<META HTTP-EQUIV="Refresh" Content="0; URL=/editprofile.php">';  
 	}
  	
 

@@ -58,6 +58,9 @@ if (!empty($_POST['action'])
         case 'maxminweight':
         	echo $listObj->maxminWeight();
         	break;
+        case 'addOldExerciseSet':
+        	echo $listObj->addOldExerciseSet();
+        	break;
     }
 }
 else

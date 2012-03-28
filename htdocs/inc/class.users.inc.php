@@ -44,6 +44,8 @@
      *
      * @return string    a message indicating the action status
      */
+     //returns 1 if email in use
+     //returns 0 if no error
     public function accountCreate(){
     	//echo "sex";
     	$v = sha1(time());
@@ -56,9 +58,7 @@
             $stmt->execute();
             $row = $stmt->fetch();
             if($row['theCount']!=0) {
-                return "<h2> Error </h2>"
-                    . "<p> Sorry, that email is already in use. "
-                    . "Please try again. </p>";
+                return 1; //Email in use;
             }
             $this->sendVerificationEmail($u, $v);
             /*if(!$this->sendVerificationEmail($u, $v)) {
@@ -87,7 +87,8 @@
 		{
 			return $e->getMessage();
 		}
-        $sql = "INSERT INTO profile(UserID, Surname, Forename, Gender)
+		 //Create profile
+ 			 $sql = "INSERT INTO profile(UserID, Surname, Forename, Gender)
         		VALUES(:uid, :sn, :fn, :sex)";
         	try{
         	$stmt = $this->_db->prepare($sql);
@@ -97,6 +98,7 @@
             $stmt->bindParam(":sex",$_POST['sex'], PDO::PARAM_INT);
             $stmt->execute();
             $stmt->closeCursor();
+            return  0;
         }
         catch(PDOException $e)
 		{
@@ -120,7 +122,7 @@
         $subject = "[Gym Schedule] Please Verify Your Account";
  
         $headers = <<<MESSAGE
-From: Gym Schedule <newuser@localhost>
+From: Gym Schedule <noreply@trackcraze.com>
 Content-Type: text/plain;
 MESSAGE;
  
@@ -132,7 +134,7 @@ password by following the link below.
  
 Your Username: $email
  
-Activate your account: localhost/accountverify.php?v=$ver&e=$e
+Activate your account: www.trackcraze.com/accountverify.php?v=$ver&e=$e
  
 If you have any questions, please contact help@coloredlists.com.
  
@@ -143,8 +145,8 @@ Alex and Tim
 www.gymschedule.com
 EMAIL;
  
-        //return mail($to, $subject, $msg, $headers);
-        echo $msg;
+        return mail($to, $subject, $msg, $headers);
+        //echo $msg;
     }
     public function verifyAccount()//ADD USER ID TO HERE, SO AFTER THEY VERIFY ACCOUNT THE USERID THING DOESN"T CRASH"
     {
@@ -181,12 +183,71 @@ EMAIL;
 		}
                 $_SESSION['Username'] = $row['Username'];
                 $_SESSION['LoggedIn'] = 1;
-                $_SESSION['UserID'] = $row['UserID'];            
+                $_SESSION['UserID'] = $row['UserID'];     
+                $userid = $row['UserID'];       
             }else{
             	return 0;
             }
             $stmt->closeCursor();
- 
+            
+		$sql = "INSERT INTO weightsoption(UserID, start, final, color)
+        		VALUES(:uid, :sd, :fd, 0)";
+        	try{
+        	$stmt = $this->_db->prepare($sql);
+            $stmt->bindParam(":uid", $userid, PDO::PARAM_INT);
+            $stmt->bindParam(":sd", date("Y-m-d"), PDO::PARAM_STR);
+            $stmt->bindParam(":fd",date("Y-m-d", mktime(0, 0, 0, date("m")  , date("d")+1, date("Y"))), PDO::PARAM_STR);
+            $stmt->execute();
+            $stmt->closeCursor();
+        }
+        catch(PDOException $e)
+		{
+			return $e->getMessage();
+		}
+		//Add Other program in list
+		$sql = "INSERT INTO lists(UserID, ProgramName, ProgramPosition, ListURL, public)
+        		VALUES(:uid, 'Default Program', 1, 0, 0)";
+        	try{
+        	$stmt = $this->_db->prepare($sql);
+            $stmt->bindParam(":uid", $userid, PDO::PARAM_INT);
+            $stmt->execute();
+            $stmt->closeCursor();
+            $opid=$this->_db->lastInsertId();
+        }
+        catch(PDOException $e)
+		{
+			return $e->getMessage();
+		}
+		//Add OtherprogramID in users
+		$sql = "UPDATE users
+            SET OtherProgramID =:opid
+                WHERE UserID=:uid
+                    LIMIT 1";
+            try{
+            	$stmt = $this->_db->prepare($sql);
+                $stmt->bindParam(':uid', $userid, PDO::PARAM_INT);
+                $stmt->bindParam(':opid', $opid, PDO::PARAM_INT);
+                $stmt->execute();
+                $stmt->closeCursor();
+                }
+                catch(PDOException $t)
+		{
+			return $t->getMessage();
+		}
+		//Add SectionID
+		$sql = "INSERT INTO sections(ProgramID, SectionName, SectionPosition)
+        		VALUES(:pid, 'Other Exercises', 1)";
+        	try{
+        	$stmt = $this->_db->prepare($sql);
+            $stmt->bindParam(":pid", $opid, PDO::PARAM_INT);
+            $stmt->execute();
+            $stmt->closeCursor();
+            $opid=$this->_db->lastInsertId();
+        }
+        catch(PDOException $e)
+		{
+			return $e->getMessage();
+		}
             // No error message is required if verification is successful
             return 1;
         }
@@ -399,6 +460,7 @@ public function verificationCheck($UID){
 	
 	public function getAge($DOfB)
 		{
+			if(isset($DOfB)){
 			date_default_timezone_set('UTC');//FIGUREOUT HOW TO DO THEIR TIMEZONE
 			$today = getdate();
 			list($YOfB,$MOfB,$DDOfB) = explode("-",$DOfB);
@@ -412,7 +474,7 @@ public function verificationCheck($UID){
 				{
 					return $fage;
 					
-				}
+				}}
 		}
 	public function formatDate($sdate)
 		{
@@ -579,6 +641,28 @@ public function verificationCheck($UID){
     return "2";
    }
   
+ }
+ public function getTopTracks($UID){
+ 	 $sql = "SELECT 
+  			Trackee
+  FROM relationship
+  WHERE Tracker=:uid AND Verified=1 AND Toptrack=1
+  ORDER BY Trackee";
+  if($stmt = $this->_db->prepare($sql))
+   {
+    $stmt->bindParam(':uid', $UID, PDO::PARAM_INT);
+    $stmt->execute();
+    $news = new GSNews();
+    $search = array();
+    while($row = $stmt->fetch()){
+    	echo "<table>";
+    	$name = $news->getName($row['Trackee']);
+    	echo "<tr><td>".$name."</td></tr>";
+		}
+		echo "</table>";
+	}else{
+	echo "Top tracks cannot be retrieved as of now.";
+	}
  }
  public function getTracking($UID){
  $sql = "SELECT 
@@ -921,7 +1005,7 @@ public function verificationCheck($UID){
 						$goaltext = "Squat ".$row['goalweight']." ".$lbkg.", ".$row['goalreps']." reps ";
 					}
 					else{
-						$goaltext = "I will Squat ".$row['goalheight']." ".$lbkg." for ".$row['goalreps']." reps ";
+						$goaltext = "I will Squat ".$row['goalweight']." ".$lbkg." for ".$row['goalreps']." reps ";
 						$targettext="<td></td>";
 					}
 				}
@@ -1117,33 +1201,23 @@ public function verificationCheck($UID){
 				}
 				echo "<li sports='".$attr."'>".$row['SportName']."	".$removebutton."</li>";
 			}
-			}else{
-			if($row = $stmt->fetch()){
-				if ($row['SportID']==0){
-					$linkbegin ="";
-					$linkend ="";				
+			}else if($page ==1){	//Profile page
+				while($row = $stmt->fetch()){
+					if ($row['SportID']==0)
+						echo "<li class='box nohover'>".$row['SportName']."</li>";
+					else echo "<li class='box'><a href='sport.php?sport=".$row['SportID']."'>".$row['SportName']."</a></li>";
 				}
-				else{
-					$linkbegin = "<a href='sport.php?sport=".$row['SportID']."'>";
-					$linkend = "</a>";
+			}else{	//Board. Limit the size
+				while($row = $stmt->fetch()){
+					if ($row['SportID']==0)
+						echo $row['SportName']." ";
+					else echo "<a href='sport.php?sport=".$row['SportID']."'>".$row['SportName']."</a>"." ";
 				}
-				echo $linkbegin.$row['SportName'].$linkend;
-			while($row = $stmt->fetch()){
-			if ($row['SportID']==0){
-					$linkbegin ="";
-					$linkend ="";				
-				}
-				else{
-					$linkbegin = "<a href='sport.php?sport=".$row['SportID']."'>";
-					$linkend = "</a>";
-				}
-				echo ", ".$linkbegin.$row['SportName'].$linkend;
 			}
-		}
-		else{
-			echo "<a href='editprofile.php' class='toEditProfile'>Add sports that you play</a>";
-		}
-	}
+		//else{
+		//	echo "<a href='editprofile.php' class='toEditProfile'>Add sports that you play</a>";
+		//}
+	
 			$stmt->closeCursor();
 		}
   else

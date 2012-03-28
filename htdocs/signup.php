@@ -2,12 +2,19 @@
     include_once "common/base.php";
     $pageTitle = "Register";
     include_once "common/header.php";
-    if(!empty($_POST['username'])&& false):
+    if(!empty($_POST['username'])&& false):	//Check if logged in. Remove false.
         include_once "inc/class.users.inc.php";
         $users = new GymScheduleUsers($db);
         echo $users->createAccount();
         
-    else://action="signup.php"
+    elseif(isset($_GET['status']) && $_GET['status']=="completed"):
+    ?>
+    <br/><br/><br/><br/>
+    <h3>Thank you for signing up. You will receive an email from us shortly.</h3>
+    
+    
+    <?php
+    else:
 ?>
  
         <div id="loginheading"><h2>Sign up</h2></div>
@@ -33,9 +40,9 @@
                 <div id ='errorgender' class='errorsignup' hidden></div>
                 <br /><br />
                  <label for="surname">Alpha testing verification code</label>
-                <input type="text" id="alpha" class='inputfields' placeholder='Enter Code here'/>
+                <input type="password" id="alpha" class='inputfields' placeholder='Enter Code here'/>
                 <div id ='errorcode' class='errorsignup' hidden></div><br />
-                <input type="button" name="register" id="register" value="Sign up" />
+                <input type="button" name="register" id="register" class="wide box lightgreen" value="Sign up" />
                 <br />
                 <br />
             </div>
@@ -120,7 +127,12 @@
        "&firstname="+$("#firstname").val()+
        "&surname="+$("#surname").val()+
        "&sex="+$("input[name='gender']:checked").val(),
-       success: function(r){$("#registerform").append(r);
+       success: function(r){
+       	if(r==1)
+       		 $("#errormail").text("Sorry, that email is already in use.").show();
+       	else if(r==0)
+       		window.location = "/signup.php?status=completed"; 
+       	
    },
      error:function(){}  
   });

@@ -60,7 +60,7 @@
 			echo "<a id='pendingtrack'>Track request pending</a>";
 		endif; 
 	echo "<p id='status' class=\"statustop".$statushover."\">".$status."</p>"?>
-	<div class='progressbar'></div>
+	<!--<div class='progressbar'></div>-->
 	
 </div>
 	<script type="text/javascript" src="/js/users.js"></script>

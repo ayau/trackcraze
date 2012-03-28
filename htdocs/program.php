@@ -21,14 +21,16 @@
 	else:
 	include_once "common/sidebar.php";
 	include_once "common/rsidebar.php";
-	endif;?>
+	endif;
+	$OSID = $program->getDefaultProgram($UID);
+	?>
 <div id="main">
             <noscript>This site just doesn't work, period, without JavaScript</noscript>
             <script type="text/javascript" src="js/lists.js"></script>
 <?php 
 if(isset($_SESSION['LoggedIn']) && isset($_SESSION['Username'])&&($UID!=NULL)&& isset($PID))://PROBLEM HERE IS THAT USERID COULD BE NULL(VISITOR)AND ABLE TO VIEW PAGES THAT DON"T EXIST" MAYBE CHECK ISSET PROGRAM?
 	if ($PID==0):
-		if($_SESSION['UserID']==$UID):
+		if($_SESSION['UserID']==$UID ):
 			echo "Create your first program!";
 			?>
 			<form action="db-interaction/lists.php" id="add-program" method="post"> 
@@ -99,7 +101,7 @@ if(isset($_SESSION['LoggedIn']) && isset($_SESSION['Username'])&&($UID!=NULL)&& 
 	$privacy = $program->getprogramprivacy($PID);
 	echo "<a id='moreprograms' href=\"programlists.php?user=".$UID."\">View More Programs</a>";
 	$bool=false;
-	if ($_SESSION['UserID']==$UID):
+	if ($_SESSION['UserID']==$UID && ($OSID!=$PID)):	//Prevent editing Default program
 		echo "<a id='editview' href=\"programedit.php?program=".$PID."\">Edit Program</a>";
 		$bool=true;
 	endif;

@@ -30,7 +30,7 @@
 	echo "<div class='photo'>".$news->getProfilePic($cuser)."</div>";
     echo "<div id='profileinfo'>";
     if (isset($DOB1)){
-	$birthday = "<tr><td class='tal'>Birthday:</td><td>".date_format(date_create($DOB1),'jS M Y')."</td></tr>";//SOLUTION TO MAKING STUFF NOT GO OUTSIDE THE BOX IF THE USER IS NOT TRACKING
+	$birthday = "<tr id='privacyb'><td class='tal'>Birthday:</td><td><span id='DOfB'>".date_format(date_create($DOB1),'jS M Y')."</span></td></tr>";//SOLUTION TO MAKING STUFF NOT GO OUTSIDE THE BOX IF THE USER IS NOT TRACKING
 }
 	else{
 		$birthday = "";
@@ -50,9 +50,9 @@
 		//if($_SESSION['UserID']!=$cuser && $users->trackingCheck($cuser,$_SESSION['UserID'])==2):
 		//	echo "<a id='blocktracker'>Block Tracker</a>";
 		//endif;
-	echo "<p id='status' class='statusboard".$statushover."'>".$status."</p>";
+	echo "<p id='status' class='statusboard".$statushover."'>".$status."</p>"; 
 	echo $users->loadSports($cuser,2)."</div>";
-	echo "<table><tr><td class='tal'>Gender:</td><td style='min-width:70px'>".$users->getGender($Gender1)."</td><td class='tal'>Weight:</td><td id='weightylol'>".$Weight1." </td></tr><tr><td class='tal'>Age:</td><td>".$users->getAge($DOB1)."</td><td class='tal'>Height:</td><td id='boardheight'>".$Height1." cm</td></tr>".$birthday."</table>";
+	echo "<table><tr><td class='tal'>Gender:</td><td style='min-width:70px'>".$users->getGender($Gender1)."</td><td class='tal privacy1'>Weight:</td><td id='weightylol' class='privacy1'>".$Weight1."</td></tr><tr><td class='tal privacya'>Age:</td><td class='privacya'>".$users->getAge($DOB1)."</td><td class='tal privacy2'>Height:</td><td id='boardheight' class='privacy2'>".$Height1." cm</td></tr>".$birthday."</table>";
 	if ($_SESSION['UserID']==$cuser):
 	echo "<a href='editprofile.php'><div class='editprofile sp'></div></a>";
 	endif;
@@ -61,14 +61,14 @@
 	echo "\t\t\t<table id=\"list\">\n";
         include_once 'inc/class.lists.inc.php';
    		$lists = new GymScheduleItems($db);
-   		list($order) = $lists->loadProgramsByUser($cuser);
+   		echo $lists->loadProgramListForBoard($cuser);
    		echo "\t\t\t</table></div>";
-   	?><script>$(".programprivacy").remove();
-   	if(<?php echo $Height1 ?>==0){
+   	?><script>
+   	if("<?php echo $Height1 ?>"==0||""){
    		$("#boardheight").prev().remove();
    		$("#boardheight").remove();   		
    	}
-   	if(<?php echo $Weight1 ?>=="0.0"){
+   	if("<?php echo $Weight1 ?>"==""||"0.0"){
    		$("#weightylol").prev().remove();
    		$("#weightylol").remove();
    	}
@@ -93,8 +93,8 @@
 				<textarea id='addposttextbox' placeholder="Remember, be nice!" cols='80' rows="1" autocomplete='off' ></textarea>
 				
 				<div id='addpostbuttons' >
-					<input type='submit' id='addpostsubmit' value='Post it!' />
-					<input type='button' id='addpostcancel' value='Cancel' />
+					<input type='submit' id='addpostsubmit' class="mid box" value='Post it!' />
+					<input type='button' id='addpostcancel' class="mid grey box" value='Cancel' />
 				</div>
 			</form>
 						
@@ -121,9 +121,7 @@
     	</div>
 <br /><br />
             <div class="clear"></div>
-
- 
-  <span></span>
+            
             <script type="text/javascript" src="js/jquery-ui-1.7.2.custom.min.js"></script>
             <script type="text/javascript" src="js/jquery.jeditable.mini.js"></script>
             <script type="text/javascript" src="js/autogrow.js"></script>
@@ -131,6 +129,10 @@
             <script type="text/javascript" src="js/users.js"></script>
             <script type="text/javascript" src="js/news.js"></script>
             <script type="text/javascript">
+            if ("<?php echo $birthday?>"==""){
+            	$(".tal:contains('Age:')").next().remove();
+            	$(".tal:contains('Age:')").remove();
+            }
             initializeNews("<?php echo $cuser?>");//INSPECT ELEMENT HACK?
             $("#trackthisperson").bind("click",function(){
 			$(this).unbind();
@@ -179,7 +181,46 @@
             <script src="js/grid.locale-en.js" type="text/javascript"></script>
 			<script src="js/jquery.jqGrid.min.js" type="text/javascript"></script>
 <?php
-	
+    		if ($cuser!=$_SESSION['UserID']):
+?>
+<script>
+var relationship = <?php echo $users->trackingCheck($_SESSION['UserID'],$_GET['user']) ?>;
+var privacy = baseTenConvert(<?php echo $Privacy1 ?>,15);
+for (var i=1; i<3; i++)
+    	{
+    		if (privacy[i]==2)
+    		{
+    			$(".privacy"+i).each(function(){
+    				$(this).remove();
+    			});
+    			
+    		}
+    		else if (privacy[i]==1 && (relationship==0||relationship==1))
+    		{
+    			$("#privacy"+i).each(function(){
+    				$(this).remove()
+    			});
+    		}
+    	}
+if (privacy[0]==2)
+    	{
+    		$(".privacya").each(function(){
+    			$(this).remove();
+    		});
+    		$("#privacyb").remove();
+    	}
+    	else if (privacy[0]==1)
+    	{
+    		$(".privacya").each(function(){
+    			$(this).remove();
+    		});
+	  		var DOfB = $("#DOfB").text();
+    		splitDOfB = DOfB.split(" ");
+    		$("#DOfB").replaceWith(splitDOfB[0]+" "+splitDOfB[1]);
+    	}
+</script>
+<?php
+endif;
 	
 /*elseif(isset($_GET['list'])):                 
     echo "ttt<ul id='list'>n";

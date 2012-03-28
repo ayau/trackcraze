@@ -164,7 +164,8 @@ function initializeNews(get){
 
 	$(window).scroll(function(){
         if  ($(window).scrollTop() == $(document).height() - $(window).height()&&donescrolling==false&&doneloading==true){
-        	document.getElementById('overlay').style.top = eval($(document).height()-45)+'px'; 
+        	//document.getElementById('overlay').style.top = eval($(document).height()-45)+'px'; 
+        	document.getElementById('overlay').style.height= eval($('#boardCon').height())+'px';
         	$("#overlay").fadeIn();
            loadPosts();
         }
