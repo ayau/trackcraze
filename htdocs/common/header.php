@@ -31,6 +31,8 @@
 
             <h1 class="headerhover gradientShadows"><a href="/board.php" class="">trackCraze</a></h1>
 
+			<h2 id="BTW" class="gradientShadows"><a href="http://behindtheworkout.com">BehindTheWorkout</a></h2>
+
             <div id="control">
 
 <?php

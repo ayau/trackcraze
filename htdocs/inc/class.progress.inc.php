@@ -254,28 +254,36 @@ class GSProgress
 			echo "<table class=\"".$stoday."\"border='0'>";
 			echo "<tr><td colspan='3'>"."<h2>".date_format($date, 'D, d F Y')."</h2></td></tr>";
 			if($row=$stmt->fetch()){
+				
+					$Comment = $this->getComments($row['ListItemID'], $stoday);
+					$count = $this->getRecordCommentsCount($row['ListItemID'], $stoday);
+									
 					$Name = $this->getProgramSectionName($row['SectionID'],0);
 					echo "<tr><td colspan=3><h3>".$Name."</h3></td></tr>";
-					echo "<tr><td class='InputTitle' width=110>Exercise</td><td class='InputTitle' width=110>Weight</td><td class='InputTitle'>Rep</td></tr>";
+					echo "<tr><td class='InputTitle' width=110>Exercise</td><td class='InputTitle' width=110>Weight</td><td class='InputTitle' width='60'>Rep</td><td class='InputTitle' width='250'>Comment</td></tr>";
 					$eName = $this->getExerciseName($row['EID']);
 					echo "<tr><td>".$eName."</td>";
-				echo "<td>$row[Weight] $row[lbkg]</td><td>$row[Rep]</td></tr>";
+				echo "<td>$row[Weight] $row[lbkg]</td><td>$row[Rep]</td><td class='ta' rowspan='$count'>$Comment</td></tr>";
 				$tempExercise = $row['EID'];
 				$tempSection = $row['SectionID'];
 			while($row = $stmt->fetch())
 			{
+				
 				if ($tempSection !=$row['SectionID']){
 					$Name = $this->getProgramSectionName($row['SectionID'],0);
 					echo "<tr><td colspan=3><h3>".$Name."</h3></td></tr>";
-					echo "<tr><td class='InputTitle' width=110>Exercise</td><td class='InputTitle' width=110>Weight</td><td class='InputTitle'>Rep</td></tr>";
+					echo "<tr><td class='InputTitle' width=110>Exercise</td><td class='InputTitle' width=110>Weight</td><td class='InputTitle'>Rep</td><td class='InputTitle'>Comment</td></tr>";
 				}
 				if ($tempExercise !=$row['EID']){
+					$Comment = $this->getComments($row['ListItemID'], $stoday);
+					$count = $this->getRecordCommentsCount($row['ListItemID'], $stoday);
 					$eName = $this->getExerciseName($row['EID']);
 					echo "<tr><td>".$eName."</td>";
+					echo "<td>$row[Weight] $row[lbkg]</td><td>$row[Rep]</td><td rowspan='$count'>$Comment</td></tr>";
 				}else{
 					echo "<tr><td></td>";
+					echo "<td>$row[Weight] $row[lbkg]</td><td>$row[Rep]</td></tr>";
 				}
-				echo "<td>$row[Weight] $row[lbkg]</td><td>$row[Rep]</td></tr>";
 				$tempExercise = $row['EID'];
 				$tempSection = $row['SectionID'];
 			}
@@ -285,6 +293,28 @@ class GSProgress
 			echo "<tr><td>This Split is empty.</td></tr>";
 		}
 	}
+	
+	public function getRecordCommentsCount($LID, $date){
+		//Get non null or empty comment for exercise
+		$sql = "SELECT
+					COUNT(*) as count
+				FROM records
+				WHERE ListItemID=:lid
+					AND RecordDate=:wd";
+		if($stmt = $this->_db->prepare($sql))
+		{
+			$stmt->bindParam(':lid', $LID, PDO::PARAM_INT);
+			$stmt->bindParam(':wd', $date, PDO::PARAM_STR);
+			$stmt->execute();
+			$row = $stmt->fetch();
+			return $row['count'];
+			}
+		else
+		{
+			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
+		}
+	}
+	
 	public function fillCalendar(){
 		$UID = $_POST['UID'];
 		$wd = $_POST['date'];
@@ -382,7 +412,7 @@ class GSProgress
 			$stmt->execute();
 			echo "<table border='0'>";
 			if($row = $stmt->fetch()){//A LOT OF SQL THINGSY ARE LIKE THIS. THE FIRST ROW IS UNIQUE THEN REST ARE THE SAME. FIX???
-			echo "<tr><td class='InputTitle' width=110>Exercise</td><td class='InputTitle' width=80>Previous</td><td class='InputTitle' width=110>Weight</td><td class='InputTitle' width=50>Rep</td><td width=68></td><td class='InputTitle' width=185>Comments</td><td width=10></td></tr>";
+			echo "<tr><td class='InputTitle' width=110>Exercise</td><td class='InputTitle' width=80>Previous</td><td class='InputTitle' width=110>Weight</td><td class='InputTitle' width=50>Rep</td><td width=68></td><td class='InputTitle' width=190>Comments</td><td width=10></td></tr>";
 				echo $this->loadInputSet($row["ListItemID"],$stoday,$row['EID']);
 			while($row = $stmt->fetch())
 			{
@@ -490,9 +520,58 @@ class GSProgress
 			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
 		}
 	}
-	public function loadInputSet($LID,$date,$EID){
+	
+	public function getComments($LID, $date){
+		//Get non null or empty comment for exercise
 		$sql = "SELECT
-					sets.SetsID, Sett, Weight, lbkg, Rep, Comment, setsposition
+				Comment
+				FROM records
+				WHERE ListItemID=:lid
+					AND RecordDate=:wd
+				AND Comment IS NOT NULL AND Comment <> ''";
+		if($stmt = $this->_db->prepare($sql))
+		{
+			$stmt->bindParam(':lid', $LID, PDO::PARAM_INT);
+			$stmt->bindParam(':wd', $date, PDO::PARAM_STR);
+			$stmt->execute();
+			$row = $stmt->fetch();
+			return $row['Comment'];
+			}
+		else
+		{
+			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
+		}
+	}
+	
+	/*Populates Progress -> Record page
+		 Inputs: 	LID - list ID to load.
+			 		date - date to load records (can be refactored out later)
+				 	EID - ID of the exercise
+		*/
+	public function loadInputSet($LID,$date,$EID){
+		
+		//Count the number of records for rowspan
+		$sql = "SELECT
+				SUM(Sett) as sum
+				FROM sets
+				WHERE sets.ListItemID=:lid";
+		if($stmt = $this->_db->prepare($sql))
+		{
+			$stmt->bindParam(':lid', $LID, PDO::PARAM_INT);
+			$stmt->execute();
+			$row = $stmt->fetch();
+			$Sum = $row['sum'];
+			}
+		else
+		{
+			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
+		}
+		//$Sum = $this->getCommentsCount($LID)
+		
+		$Comment = $this->getComments($LID, $date);
+		
+		$sql = "SELECT
+				sets.SetsID, Sett, Weight, lbkg, Rep, Comment, setsposition
 				FROM sets
 				WHERE sets.ListItemID=:lid
 				ORDER BY setsposition";
@@ -500,42 +579,54 @@ class GSProgress
 		{
 			$stmt->bindParam(':lid', $LID, PDO::PARAM_INT);
 			$stmt->execute();
-			$eName = $this->getExerciseName($EID);
+			
+			$eName = $this->getExerciseName($EID);	//get the name from EID
+			
 			if ($row = $stmt->fetch()){
-				echo "<tr list=\"".$LID."\" class='recordtable' rel='1'><td class='exerciseTable'>$eName</td>";
-			$row1=$this->getRecords($LID, $row['setsposition'],$date);
-			$row2=$this->getPrev($LID, $row['setsposition'],$date);
-			echo $this->formatInputTable($row,$row1,$row2,1);	//1 indicates it is the first row of an exercise
-			$order = 2;
+				if($Sum>1) $ta = "tap";
+				else $ta = "";
+				echo "<tr list=\"".$LID."\" class='recordtable' rel='1'><td rowspan='$Sum' class='exerciseTable ".$ta."'>$eName</td>";
+				$rowRecords=$this->getRecords($LID, $row['setsposition'],$date);
+				$rowPrev=$this->getPrev($LID, $row['setsposition'],$date);
+				echo $this->formatInputTable($row,$rowRecords,$rowPrev);	//row = program
+				echo "<td class='ta prevInputTable' rowspan='$Sum'><div>$rowPrev[Comment]</div>"
+					."<div style='display:none' class='prevnotes sp'></div>"
+					."<div class='mid orange box font14 recordsCommentBtn'>New Notes</div>"
+					."<textarea hidden class='recordsComment' spellcheck='false' placeholder='New Notes'>$Comment</textarea>"
+					."<input hidden type='button' value='Cancel' class='recordsCommentCncl'/</td>";
+				$order = 2;
+				//Same set of sets
 				while ($order<=$row["Sett"]){
 					echo "</tr>";
 					echo "<tr list=\"".$LID."\" class='recordtable' rel=\"".$order."\">
 						<td class='prevSetTable'></td>";
-					$row1=$this->getRecords($LID, $order ,$date);
-					$row2=$this->getPrev($LID, $order,$date);
-					echo $this->formatInputTable($row,$row1,$row2, 0);
+					$rowRecords=$this->getRecords($LID, $order ,$date);
+					$rowPrev=$this->getPrev($LID, $order,$date);
+					echo $this->formatInputTable($row,$rowRecords,$rowPrev);
 					$order++;
 				}
+				//Different sets
 			while($row = $stmt->fetch())
 			{
 				$count=$row["Sett"];
 				while ($count>0){
 					echo "</tr>";
-					echo "<tr list=\"".$LID."\" class='recordtable' rel=\"".$order."\"><td class='prevSetTable'></td>";
-					$row1=$this->getRecords($LID, $order,$date);
-					$row2=$this->getPrev($LID, $order,$date);
-					echo $this->formatInputTable($row,$row1,$row2,0);
+					echo "<tr list=\"".$LID."\" class='recordtable' rel=\"".$order."\">";
+					$rowRecords=$this->getRecords($LID, $order,$date);
+					$rowPrev=$this->getPrev($LID, $order,$date);
+					echo $this->formatInputTable($row,$rowRecords,$rowPrev);
 					$count--;
 					$order++;
 				}
 			}
+			//Loading from records
 			$max = $this->getmaxRecords($LID,$date);
 			while($max>=$order){
 				echo "</tr>";
 				echo "<tr list=\"".$LID."\" class='recordtable' rel=\"".$order."\"><td class='prevSetTable'></td>";
-				$row1=$this->getRecords($LID, $order,$date);
-				$row2=$this->getPrev($LID, $order,$date);
-				echo $this->formatInputTable($row,$row1,$row2,0);
+				$rowRecords=$this->getRecords($LID, $order,$date);
+				$rowPrev=$this->getPrev($LID, $order,$date);
+				echo $this->formatInputTable($row,$rowRecords,$rowPrev);
 				$order++;
 			}
 			echo "<td class='zeropadding'><input class='addnewset' type=button value=ad /></td></tr>";
@@ -555,11 +646,11 @@ class GSProgress
 	//row1 = data recorded for today
 	//row2 = prev data from records
 	//Even though previous seems empty, the Prev button is still there. Remove it dynamically or not?
-	function formatInputTable($row, $row1,$row2, $first){
+	function formatInputTable($row, $row1,$row2){
 		if ($row2!=NULL){
-			echo"<td class='prevInputTable' weight='$row2[Weight]' lbkg='$row2[lbkg]' rep='$row2[Rep]'>($row2[Weight]$row2[lbkg], $row2[Rep])</td>";
+			echo"<td class='prevInputTable' weight='$row2[Weight]' lbkg='$row2[lbkg]' rep='$row2[Rep]'>$row2[Weight]$row2[lbkg] x $row2[Rep]</td>";
 		}else if($row!=NULL){
-		echo"<td class='prevInputTable'weight='$row[Weight]' lbkg='$row[lbkg]' rep='$row[Rep]' >($row[Weight]$row[lbkg], $row[Rep])</td>";
+		echo"<td class='prevInputTable'weight='$row[Weight]' lbkg='$row[lbkg]' rep='$row[Rep]' >$row[Weight]$row[lbkg] x $row[Rep]</td>";
 		}else{
 			echo"<td class='prevInputTable'></td>";		//Change: removed the weight, lbkg and rep attributes. Might cause problems later?
 		}
@@ -574,9 +665,7 @@ class GSProgress
 				echo "<option selected value='lbs'>lbs</option><option value='kg'>kg</option>";
 		}
 		echo "</select></td><td><input class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)' value='$row1[Rep]'/></td><td><div class='samelast sp'></div><div class='sameprev sp'></div>";
-		if($first)
-			echo "<td><div class='prevnotes sp'></div>$row[Comment]</td>";
-		else echo "<td></td>";
+		
 	}
 	function getmaxRecords($LID, $date){
 		$sql = "SELECT
@@ -601,7 +690,7 @@ class GSProgress
 	}
 	function getRecords($LID, $rp, $date){
 		$sql = "SELECT
-					Weight, lbkg, Rep
+					Weight, lbkg, Rep, Comment
 				FROM records
 					WHERE ListItemID=:lid
 						AND RecordDate=:wd
@@ -624,7 +713,7 @@ class GSProgress
 	}
 	function getPrev($LID, $rp, $date){
 		$sql = "SELECT
-					Weight, lbkg, Rep
+					Weight, lbkg, Rep, Comment
 				FROM records
 					WHERE ListItemID=:lid
 							AND RecordPosition=:rp
@@ -974,6 +1063,7 @@ class GSProgress
     	$rep = strip_tags(urldecode(trim($rep)), WHITELIST);
     	$pos=$_POST['pos'];
     	$LID=$_POST['lid'];
+    	$comment = $_POST['comment'];
 		$date = $_POST['date'];
 		$stoday=substr($date, 6,4)."-".substr($date, 0,2)."-".substr($date, 3,2); //USE COUNT TO SEE IF THERE IS RECORD?
 		$sql = "SELECT
@@ -993,8 +1083,8 @@ class GSProgress
 			if ($row['RecordDate']== NULL){
 				echo $LID.$stoday.$weight.$lbkg.$rep.$pos;
 				$sql = "INSERT INTO records
-					(ListItemID, UserID, RecordDate, Weight, lbkg, Rep, RecordPosition) 
-    			VALUES (:lid, :uid, :wd, :weight, :lbkg, :rep, :pos)";
+					(ListItemID, UserID, RecordDate, Weight, lbkg, Rep, RecordPosition, Comment) 
+    			VALUES (:lid, :uid, :wd, :weight, :lbkg, :rep, :pos, :comment)";
 		try
 		{
 			$stmt = $this->_db->prepare($sql);
@@ -1005,6 +1095,7 @@ class GSProgress
 			$stmt->bindParam(':lbkg', $lbkg, PDO::PARAM_STR);
 			$stmt->bindParam(':rep', $rep, PDO::PARAM_INT);
 			$stmt->bindParam(':pos', $pos, PDO::PARAM_INT);
+			$stmt->bindParam(':comment', $comment, PDO::PARAM_STR);
 			$stmt->execute();
 			$stmt->closeCursor();
 
@@ -1018,7 +1109,8 @@ class GSProgress
 				$sql = "UPDATE records
 					SET Weight =:weight,
                 	lbkg =:lbkg,
-               		Rep =:rep
+               		Rep =:rep,
+	               		Comment =:comment
 				WHERE RecordDate=:wd
 				AND ListItemID=:lid
 				AND RecordPosition=:pos
@@ -1031,6 +1123,7 @@ class GSProgress
 			$stmt->bindParam(':lbkg', $lbkg, PDO::PARAM_STR);
 			$stmt->bindParam(':rep', $rep, PDO::PARAM_INT);
 			$stmt->bindParam(':pos', $pos, PDO::PARAM_INT);
+			$stmt->bindParam(':comment', $comment, PDO::PARAM_STR);
 			$stmt->execute();
 			$stmt->closeCursor();
 		}
@@ -1399,7 +1492,7 @@ class GSProgress
 		}else{
 			$newselectoption = "<select ><option value='lbs'>lbs</option><option selected value='kg'>kg</option></select>";
 		}
-    	echo "<tr class='recordtable newexercise' list=\"".$lid."\" rel=\"".$pos."\"><td colspan='2'><input size='27' value=\"".$exercise."\"/></td><td><input class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' value=\"".$weight."\"/>".$newselectoption."</td><td><input class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)' value=\"".$rep."\"/></td><td></td><td><input/></td><td class='zeropadding'><input class='addnewset' type=button value=ad /></td></tr>";
+    	echo "<tr class='recordtable newexercise' list=\"".$lid."\" rel='1'><td colspan='2'><input size='27' value=\"".$exercise."\"/></td><td><input class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' value=\"".$weight."\"/>".$newselectoption."</td><td><input class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)' value=\"".$rep."\"/></td><td></td><td><input/></td><td class='zeropadding'><input class='addnewset' type=button value=ad /></td></tr>";
     }
     //Loads exercise into dropdown box
     //kinda repeated functionality.

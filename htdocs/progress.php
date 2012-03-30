@@ -21,7 +21,7 @@
    		echo "<div id='inputLine'><div id='recordLine'>";
    		list($order) = $progress->loadProgramsOptionByUser();
    		echo "<div id='selectandbutton' hidden><input id='viewbyExercise' type=button value='Filter'/></div>";
-   		echo"</div><div display:'none' id='weightLine' hidden><p>New Weight</p><input id='newWeightInput' maxlength = '6' size='4' /><select class='lbkgselect'><option value='lbs'>lbs</option><option value='kg'>kg</option></select></div><input id='weightdate' maxlength='10' size='7'/><input id='recordsubmit' type=button value='Record'/><input hidden id='weightsubmit' type=button value='Enter'/><div id='errordate'></div></div>";
+   		echo"</div><div display:'none' id='weightLine' hidden><p>New Weight</p><input id='newWeightInput' maxlength = '6' size='4' /><select class='lbkgselect'><option value='lbs'>lbs</option><option value='kg'>kg</option></select></div><input id='weightdate' maxlength='10' size='7'/><input id='recordsubmit' class='red mid box' type=button value='Record'/><input hidden id='weightsubmit' type=button value='Enter'/><div id='errordate'></div></div>";
    		echo "<div id='trackbyExercise' hidden><h3 hidden id='sortby'>Sort by: <select id='sortbyCol'><option value='RecordDate'>Date</option><option value='Weight'>Weight</option></select> <select id='sortbyDESCASC'><option value='desc'>Decreasing</option><option value='asc'>Increasing</option></select><input id='sortbyExercise' type=button value='Sort'/><input id='printbyExercise' type=button value='Export to Excel'/></h3><table id='byExerciseTable'></table><div id='pager'></div><div id='tablebyExercise' hidden><h3>General Information</h3></div></div>";//here!!!
    		echo "<div id='InputTable'>";
    		echo "</div>";	

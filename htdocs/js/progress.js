@@ -363,6 +363,27 @@ return numcheck.test(keychar)
 			plotGraph();
 		}
 	});
+	
+	//Empties the recordsComment box
+	$(".recordsCommentCncl").live("click",function(){
+		$(this).prev().val("");
+	})
+	$(".recordsCommentBtn").live("click",function(){
+		$(this).prev().slideDown();
+		$(this).prev().prev().slideUp();
+		$(this).fadeOut();
+		$(this).next().next().fadeIn();
+		height = $(this).parent().height()-57;
+		if(height<50) height=50;
+		$(this).next().css("height", height).slideDown();
+	});
+	$(".prevnotes").live("click",function(){
+		$(this).prev().slideDown();
+		$(this).next().fadeIn();
+		$(this).slideUp();
+		$(this).next().next().next().fadeOut();
+		$(this).next().next().slideUp();
+	})
 	$(".sameprev").live("click",function(){
 		thisparent = $(this).parent().parent();
 		thisprev = thisparent.find(".prevInputTable");
@@ -387,6 +408,7 @@ return numcheck.test(keychar)
     		//URLtext = escape(text);
     		if (weight.length>0 || rep.length>0){
     			if (testFloat(weight)==true && testInt(rep)==true){
+    				comment = $(this).parent().find("tr[list="+$(this).attr('list')+"]").find(".recordsComment").val();
 			$.ajax({
     			type: "POST",
     			url: "/db-interaction/gsprogress.php",
@@ -397,7 +419,8 @@ return numcheck.test(keychar)
     				"weight":$(this).find(".weightInputTable").val(),    //weight instead of $(this).find ?
     				"lbkg":$(this).find("select").val(),
     				"rep":$(this).find(".repInputTable").val(),
-    				"pos":$(this).attr('rel')
+    				"pos":$(this).attr('rel'),
+    				"comment":comment
 				},
     				
     			success: function(){
