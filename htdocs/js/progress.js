@@ -466,7 +466,10 @@ return numcheck.test(keychar)
 	}
 	});
 	$(".addnewset").live("click",function(){
-		$(this).parent().parent().after("<tr class=\""+$(this).parent().parent().attr('class')+"\" list=\""+$(this).parent().parent().attr('list')+"\" class=recordtable rel=\""+(parseInt($(this).parent().parent().attr('rel'))+1)+"\"><td colspan='2'></td><td><input class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' /><select ><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select></td><td><input class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)' /></td><td></td><td><input/></td><td class='zeropadding'><input class='addnewset' type=button value=ad /></td></tr>");
+		$(this).parent().parent().after("<tr class=\""+$(this).parent().parent().attr('class')+"\" list=\""+$(this).parent().parent().attr('list')+"\" class=recordtable rel=\""+(parseInt($(this).parent().parent().attr('rel'))+1)+"\"><td colspan='2'></td><td><input class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' /><select ><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select></td><td><input class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)' /></td><td></td><td class='zeropadding'><input class='addnewset' type=button value=ad /></td></tr>");
+		commentRow = $(this).parent().parent().parent().find('tr[list='+$(this).parent().parent().attr("list")+'][rel=1]').find(".commentSpan");
+		
+		commentRow.attr('rowspan',commentRow.attr('rowspan')+1);
 		$(this).remove();
 	});
 	$("#addoldExerciseInputTable").live("click",function(){
@@ -489,13 +492,15 @@ return numcheck.test(keychar)
     						"weight":weight,
     						"lbkg":$(this).parent().parent().find("#oldlbkg").val(),
     						"rep":rep,
-    						"OSID":osid
+    						"OSID":osid,
+    						"comment":$('#oldComment').val()
 						},
     				
     					success: function(r){
     						$("#somethingnewrow").before(r);
 							$('#oldWeight').val('');
 							$('#oldRep').val('');
+							$("#oldComment").val('');
 							//need to label the comment box and clear it.!!!!
     					},
     					error: function(){
@@ -533,7 +538,8 @@ return numcheck.test(keychar)
     						"weight":weight,
     						"lbkg":$(this).parent().parent().find("select").val(),
     						"rep":rep,
-    						"OSID":osid
+    						"OSID":osid,
+    						"comment":$('#newComment').val()
 						},
     				
     					success: function(r){
@@ -541,6 +547,7 @@ return numcheck.test(keychar)
 							$('#newExercise').val('');
 							$('#newWeight').val('');
 							$('#newRep').val('');
+							$('#newComment').val('');
 							//need to label the comment box and clear it.!!!!
     					},
     					error: function(){

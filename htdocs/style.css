@@ -520,8 +520,10 @@ li {list-style:none;} //ALL LIST = no dots
 .weightInputTable {float:left;margin: 5px 0px 5px 0px;}
 #TrackTable td {padding:5px;}
 
-.recordsComment {width:162px; resize: none; height:30px; }
+.recordsComment {width:162px; resize: none; height:50px; }
 .recordsCommentBtn {margin-top:5px;}
+
+.commentInputTable {width:220px; resize: none; height:50px; }
 
 #InputTable .tap{vertical-align:top; padding-top:12px;}
 

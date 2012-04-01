@@ -272,14 +272,14 @@ class GSProgress
 				if ($tempSection !=$row['SectionID']){
 					$Name = $this->getProgramSectionName($row['SectionID'],0);
 					echo "<tr><td colspan=3><h3>".$Name."</h3></td></tr>";
-					echo "<tr><td class='InputTitle' width=110>Exercise</td><td class='InputTitle' width=110>Weight</td><td class='InputTitle'>Rep</td><td class='InputTitle'>Comment</td></tr>";
+					echo "<tr><td class='InputTitle' width=110>Exercise</td><td class='InputTitle' width=110>Weight</td><td class='InputTitle' width='60'>Rep</td><td class='InputTitle' width='250'>Comment</td></tr>";
 				}
 				if ($tempExercise !=$row['EID']){
 					$Comment = $this->getComments($row['ListItemID'], $stoday);
 					$count = $this->getRecordCommentsCount($row['ListItemID'], $stoday);
 					$eName = $this->getExerciseName($row['EID']);
 					echo "<tr><td>".$eName."</td>";
-					echo "<td>$row[Weight] $row[lbkg]</td><td>$row[Rep]</td><td rowspan='$count'>$Comment</td></tr>";
+					echo "<td>$row[Weight] $row[lbkg]</td><td>$row[Rep]</td><td class='ta' rowspan='$count'>$Comment</td></tr>";
 				}else{
 					echo "<tr><td></td>";
 					echo "<td>$row[Weight] $row[lbkg]</td><td>$row[Rep]</td></tr>";
@@ -467,6 +467,10 @@ class GSProgress
 			$stmt->bindParam(':opsid', $opsid, PDO::PARAM_INT);
 			$stmt->bindParam(':uid', $_SESSION['UserID'], PDO::PARAM_INT);
 			$stmt->execute();
+			if($row= $stmt->fetch()){
+				echo "<tr><td class='InputTitle' width=110>New Exercises</td><td class='InputTitle' width=80>Previous</td><td class='InputTitle' width=110>Weight</td><td class='InputTitle' width=50>Rep</td><td width=68></td><td class='InputTitle' width=190>Comments</td><td width=10></td></tr>";
+				echo $this->loadInputSet($row["ListItemID"],$stoday,$row['EID']);//OVERKILL. But works for now. Cannot edit name though!?
+			}
 			while($row = $stmt->fetch())
 			{
 				echo $this->loadInputSet($row["ListItemID"],$stoday,$row['EID']);//OVERKILL. But works for now. Cannot edit name though!?
@@ -482,10 +486,10 @@ class GSProgress
 		//2. Load data from records (jusing javascript to add in)
 		//3. If Record does not belong to program, add "other" input boxes (javascript).
 		//Putting Other program ID in the other textbox
-		echo "<tr id='somethingnewrow'><td colspan='2'><b>Trying something new today?</b></td></tr><tr sid='$opsid'><td colspan='2'><input id='newExercise' size='27'/></td><td><input id='newWeight' class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' /><select id='newlbkg'><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select></td><td><input id='newRep' class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)'/></td><td></td><td><input/></td><td class='zeropadding'><input id='addExerciseInputTable' type=button value='ne' /></td></tr>";//for if people want to add new exercises on the go
+		echo "<tr id='somethingnewrow'><td colspan='2'><b>Trying something new today?</b></td></tr><tr sid='$opsid'><td colspan='2'><input id='newExercise' size='27'/></td><td><input id='newWeight' class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' /><select id='newlbkg'><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select></td><td><input id='newRep' class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)'/></td><td colspan='2'><textarea id='newComment' class='commentInputTable'/></td><td class='zeropadding'><input id='addExerciseInputTable' type=button value='ne' /></td></tr>";//for if people want to add new exercises on the go
 		echo "<tr id='somethingoldrow'><td colspan='5'><b>Trying something you have already done before?</b></td></tr><tr sid='$opsid'><td colspan='2'>";
 		echo $this->loadExercise($_SESSION['UserID']);
-		echo"</td><td><input id='oldWeight' class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' /><select id='oldlbkg'><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select></td><td><input id='oldRep' class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)'/></td><td></td><td><input/></td><td class='zeropadding'><input id='addoldExerciseInputTable' type=button value='ne' /></td></tr>";//for if people want to add existing exercises on the go
+		echo"</td><td><input id='oldWeight' class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' /><select id='oldlbkg'><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select></td><td><input id='oldRep' class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)'/></td><td colspan='2'><textarea id='oldComment' class='commentInputTable'/></td><td class='zeropadding'><input id='addoldExerciseInputTable' type=button value='ne' /></td></tr>";//for if people want to add existing exercises on the go
 		echo "</table></tr>";
 			$stmt->closeCursor();
 
@@ -567,8 +571,12 @@ class GSProgress
 			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
 		}
 		//$Sum = $this->getCommentsCount($LID)
+		//Getting max from records
+		$max = $this->getmaxRecords($LID,$date);
+		if($Sum<$max) $Sum = $max;
 		
 		$Comment = $this->getComments($LID, $date);
+		
 		
 		$sql = "SELECT
 				sets.SetsID, Sett, Weight, lbkg, Rep, Comment, setsposition
@@ -589,11 +597,21 @@ class GSProgress
 				$rowRecords=$this->getRecords($LID, $row['setsposition'],$date);
 				$rowPrev=$this->getPrev($LID, $row['setsposition'],$date);
 				echo $this->formatInputTable($row,$rowRecords,$rowPrev);	//row = program
-				echo "<td class='ta prevInputTable' rowspan='$Sum'><div>$rowPrev[Comment]</div>"
+				if($rowPrev['Comment']!="") $oldnotes = "Old notes: ";
+				else $oldnotes = "";
+				if($Comment==""){
+				echo "<td class='ta prevInputTable commentSpan' rowspan='$Sum'><div>$oldnotes$rowPrev[Comment]</div>"
 					."<div style='display:none' class='prevnotes sp'></div>"
 					."<div class='mid orange box font14 recordsCommentBtn'>New Notes</div>"
 					."<textarea hidden class='recordsComment' spellcheck='false' placeholder='New Notes'>$Comment</textarea>"
-					."<input hidden type='button' value='Cancel' class='recordsCommentCncl'/</td>";
+					."<input hidden type='button' value='Clear' class='recordsCommentCncl'/</td>";
+				}else{
+					echo "<td class='ta prevInputTable commentSpan' rowspan='$Sum'><div style='display:none'>$oldnotes$rowPrev[Comment]</div>"
+					."<div  class='prevnotes sp'></div>"
+					."<div style='display:none' class='mid orange box font14 recordsCommentBtn'>New Notes</div>"
+					."<textarea class='recordsComment' spellcheck='false' placeholder='New Notes'>$Comment</textarea>"
+					."<input type='button' value='Clear' class='recordsCommentCncl'/</td>";
+				}
 				$order = 2;
 				//Same set of sets
 				while ($order<=$row["Sett"]){
@@ -620,10 +638,10 @@ class GSProgress
 				}
 			}
 			//Loading from records
-			$max = $this->getmaxRecords($LID,$date);
+			//$max = $this->getmaxRecords($LID,$date); Moved to up top
 			while($max>=$order){
 				echo "</tr>";
-				echo "<tr list=\"".$LID."\" class='recordtable' rel=\"".$order."\"><td class='prevSetTable'></td>";
+				echo "<tr list=\"".$LID."\" class='recordtable' rel=\"".$order."\">";
 				$rowRecords=$this->getRecords($LID, $order,$date);
 				$rowPrev=$this->getPrev($LID, $order,$date);
 				echo $this->formatInputTable($row,$rowRecords,$rowPrev);
@@ -1392,6 +1410,7 @@ class GSProgress
     	$date = $_POST['date'];
     	$stoday=substr($date, 6,4)."-".substr($date, 0,2)."-".substr($date, 3,2);
     	$osid = $_POST['OSID'];
+    	$comment = $_POST['comment'];
     	//Add new exercise
     	$sql = "INSERT INTO exercise
 					(UserID, ExerciseName) 
@@ -1456,7 +1475,7 @@ class GSProgress
 			$stmt->bindParam(':weight', $weight, PDO::PARAM_INT);
 			$stmt->bindParam(':lbkg', $lbkg, PDO::PARAM_STR);
 			$stmt->bindParam(':rep', $rep, PDO::PARAM_INT);
-			$stmt->bindParam(':comment', $lbkg, PDO::PARAM_STR);
+			$stmt->bindParam(':comment', $comment, PDO::PARAM_STR);
 			$stmt->execute();
 			$stmt->closeCursor();
 			$sid=$this->_db->lastInsertId();
@@ -1467,8 +1486,8 @@ class GSProgress
 		}
 		//Save the record!!!
 		$sql = "INSERT INTO records
-					(ListItemID, UserID, RecordDate, Weight, lbkg, Rep, RecordPosition) 
-    			VALUES (:lid, :uid, :wd, :weight, :lbkg, :rep, 1)";
+					(ListItemID, UserID, RecordDate, Weight, lbkg, Rep, Comment, RecordPosition) 
+    			VALUES (:lid, :uid, :wd, :weight, :lbkg, :rep, :comment, 1)";
 		try
 		{
 			$stmt = $this->_db->prepare($sql);
@@ -1477,6 +1496,7 @@ class GSProgress
 			$stmt->bindParam(':wd', $stoday, PDO::PARAM_STR);
 			$stmt->bindParam(':weight', $weight, PDO::PARAM_INT);
 			$stmt->bindParam(':lbkg', $lbkg, PDO::PARAM_STR);
+			$stmt->bindParam(':comment', $comment, PDO::PARAM_STR);
 			$stmt->bindParam(':rep', $rep, PDO::PARAM_INT);
 			$stmt->execute();
 			$stmt->closeCursor();
@@ -1492,7 +1512,15 @@ class GSProgress
 		}else{
 			$newselectoption = "<select ><option value='lbs'>lbs</option><option selected value='kg'>kg</option></select>";
 		}
-    	echo "<tr class='recordtable newexercise' list=\"".$lid."\" rel='1'><td colspan='2'><input size='27' value=\"".$exercise."\"/></td><td><input class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' value=\"".$weight."\"/>".$newselectoption."</td><td><input class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)' value=\"".$rep."\"/></td><td></td><td><input/></td><td class='zeropadding'><input class='addnewset' type=button value=ad /></td></tr>";
+    	echo "<tr class='recordtable newexercise' list=\"".$lid."\" rel='1'><td colspan='2'><input size='27' value=\"".$exercise."\"/></td><td><input class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' value=\"".$weight."\"/>".$newselectoption."</td><td><input class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)' value=\"".$rep."\"/></td><td></td>";
+    	
+    	echo "<td class='ta prevInputTable commentSpan' rowspan='1'><div style='display:none'></div>"
+					."<div class='prevnotes sp'></div>"
+					."<div style='display:none' class='mid orange box font14 recordsCommentBtn'>New Notes</div>"
+					."<textarea class='recordsComment' spellcheck='false' placeholder='New Notes'>$comment</textarea>"
+					."<input type='button' value='Clear' class='recordsCommentCncl'/</td>";
+					
+    	echo "<td class='zeropadding'><input class='addnewset' type=button value=ad /></td></tr>";
     }
     //Loads exercise into dropdown box
     //kinda repeated functionality.
@@ -1527,6 +1555,7 @@ class GSProgress
     	$date = $_POST['date'];
     	$stoday=substr($date, 6,4)."-".substr($date, 0,2)."-".substr($date, 3,2);
     	$osid = $_POST['OSID'];
+    	$comment = $_POST['comment'];
 
 		//See if already in Other Program
 		$sql = "SELECT
@@ -1589,7 +1618,7 @@ class GSProgress
 			$stmt->bindParam(':weight', $weight, PDO::PARAM_INT);
 			$stmt->bindParam(':lbkg', $lbkg, PDO::PARAM_STR);
 			$stmt->bindParam(':rep', $rep, PDO::PARAM_INT);
-			$stmt->bindParam(':comment', $lbkg, PDO::PARAM_STR);
+			$stmt->bindParam(':comment', $comment, PDO::PARAM_STR);
 			$stmt->execute();
 			$stmt->closeCursor();
 			$sid=$this->_db->lastInsertId();
@@ -1612,8 +1641,8 @@ class GSProgress
 		
 		//Save the record!!!
 		$sql = "INSERT INTO records
-					(ListItemID, UserID, RecordDate, Weight, lbkg, Rep, RecordPosition) 
-    			VALUES (:lid, :uid, :wd, :weight, :lbkg, :rep, 1)";
+					(ListItemID, UserID, RecordDate, Weight, lbkg, Rep, Comment, RecordPosition) 
+    			VALUES (:lid, :uid, :wd, :weight, :lbkg, :rep, :comment, 1)";
 		try
 		{
 			$stmt = $this->_db->prepare($sql);
@@ -1622,6 +1651,7 @@ class GSProgress
 			$stmt->bindParam(':wd', $stoday, PDO::PARAM_STR);
 			$stmt->bindParam(':weight', $weight, PDO::PARAM_INT);
 			$stmt->bindParam(':lbkg', $lbkg, PDO::PARAM_STR);
+			$stmt->bindParam(':comment',$comment, PDO::PARAM_STR);
 			$stmt->bindParam(':rep', $rep, PDO::PARAM_INT);
 			$stmt->execute();
 			$stmt->closeCursor();
@@ -1639,6 +1669,14 @@ class GSProgress
 			$newselectoption = "<select ><option value='lbs'>lbs</option><option selected value='kg'>kg</option></select>";
 		}
 		//change to oldexercise?
-    	echo "<tr class='recordtable oldexercise' list=\"".$LID."\" rel='1'><td colspan='2'>".$eName."</td><td><input class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' value=\"".$weight."\"/>".$newselectoption."</td><td><input class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)' value=\"".$rep."\"/></td><td></td><td><input/></td><td class='zeropadding'><input class='addnewset' type=button value=ad /></td></tr>";
+    	echo "<tr class='recordtable oldexercise' list=\"".$LID."\" rel='1'><td colspan='2'>".$eName."</td><td><input class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' value=\"".$weight."\"/>".$newselectoption."</td><td><input class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)' value=\"".$rep."\"/></td><td></td>";
+    	
+    	echo "<td class='ta prevInputTable commentSpan' rowspan='1'><div style='display:none'></div>"
+					."<div class='prevnotes sp'></div>"
+					."<div style='display:none' class='mid orange box font14 recordsCommentBtn'>New Notes</div>"
+					."<textarea class='recordsComment' spellcheck='false' placeholder='New Notes'>$comment</textarea>"
+					."<input type='button' value='Clear' class='recordsCommentCncl'/</td>";
+					
+    	echo "<td class='zeropadding'><input class='addnewset' type=button value=ad /></td></tr>";
     }
 }
