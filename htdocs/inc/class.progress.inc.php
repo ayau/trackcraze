@@ -616,8 +616,7 @@ class GSProgress
 				//Same set of sets
 				while ($order<=$row["Sett"]){
 					echo "</tr>";
-					echo "<tr list=\"".$LID."\" class='recordtable' rel=\"".$order."\">
-						<td class='prevSetTable'></td>";
+					echo "<tr list=\"".$LID."\" class='recordtable' rel=\"".$order."\">";
 					$rowRecords=$this->getRecords($LID, $order ,$date);
 					$rowPrev=$this->getPrev($LID, $order,$date);
 					echo $this->formatInputTable($row,$rowRecords,$rowPrev);
