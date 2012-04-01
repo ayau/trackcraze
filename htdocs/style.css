@@ -44,11 +44,20 @@ p { margin: 0 0 6px 0; }
 .wide {width:350px;height:50px; font-size:20px; border-radius: 5px;}
 .fitwidth {padding:6px 12px 6px 12px;}
 .mid{width:80px;height:25px; font-size:18px;}
+
+.font14 {padding-top:5px;font-size:14px;}
+
 .box {background-color:#2D79B3; border:none; font-family:Roboto; color:#FFFFFF;text-align: center;cursor:pointer;border-radius: 3px;}
 .box:hover {background-color:#276B9E;}
 
 .lightgreen{background-color:#3EBD58;}
 .lightgreen:hover{background-color:#3AB152}
+
+.red{background-color:#DE1818;}
+.red:hover{background-color:#DE1818;}
+
+.orange{background-color:#FF9900;}
+.orange:hover{background-color:#FF9900}
 
 .grey {background-color:#B5B5B5;}
 .grey:hover {background-color:#A1A1A1;}
@@ -101,6 +110,9 @@ background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white
  color-stop(65%, white), color-stop(100%, #f7f7f7)); 
 background: -moz-linear-gradient(top, white 0%, white 55%, #D5E4F3 130%); */
 }
+#BTW {height:70px; width:100px; position:absolute; left:570px; top:0px;background-color:#D1E4F3;}
+#BTW a{display:block; text-indent:-9999px; width:100px; height:50px; background: url(images/btw.png) no-repeat; position:relative;top:22px; left:5px;}
+
 #header h1 a { display: block; text-indent: -9999px; width: 496px; height: 50px; border: none; background: url(images/logo.png) no-repeat; position:relative;top:10px;left:30px;}
 /*#header h1 a { display: block; text-indent: -9999px; width: 496px; height: 50px; border: none; background: url(images/indexlogo.png) no-repeat; position:relative;top:5px;left:30px; background-position:-180px 0px;}*/
 #container{padding-top:8px;}
@@ -350,6 +362,9 @@ li {list-style:none;} //ALL LIST = no dots
 	vertical-align:top;
 	font-weight:bold;
 }
+.ta {vertical-align:top;
+}
+
 .tarp {
 	text-align:right;
 	font-size:18px;
@@ -505,9 +520,16 @@ li {list-style:none;} //ALL LIST = no dots
 .weightInputTable {float:left;margin: 5px 0px 5px 0px;}
 #TrackTable td {padding:5px;}
 
+.recordsComment {width:162px; resize: none; height:50px; }
+.recordsCommentBtn {margin-top:5px;}
+
+.commentInputTable {width:220px; resize: none; height:50px; }
+
+#InputTable .tap{vertical-align:top; padding-top:12px;}
+
 .sameprev{float:left;margin:1px;background-position: -70px -2px; width:30px; height:30px; cursor:pointer}
 .samelast{float:left;margin:1px;background-position: -70px -31px; width:30px; height:30px; cursor:pointer}
-.prevnotes {float:left;margin:1px;background-position: -2px -165px; width:42px; height:30px; cursor:pointer}
+.prevnotes {float:left;margin:1px;background-position: -2px -165px; width:42px; height:33px; cursor:pointer}
 
 #selectandbutton {position:absolute; left:250px;}
 #viewbyExercise {position:relative; left:20px; top:5px;}
