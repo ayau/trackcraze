@@ -30,7 +30,7 @@
 	echo "<div class='photo'>".$news->getProfilePic($cuser)."</div>";
     echo "<div id='profileinfo'>";
     if (isset($DOB1)){
-	$birthday = "<tr id='privacyb'><td class='tal'>Birthday:</td><td><span id='DOfB'>".date_format(date_create($DOB1),'jS M Y')."</span></td></tr>";//SOLUTION TO MAKING STUFF NOT GO OUTSIDE THE BOX IF THE USER IS NOT TRACKING
+	$birthday = "<tr><td class='tal'>Birthday:</td><td id='privacyb'>".date_format(date_create($DOB1),'jS M Y')."</td></tr>";//SOLUTION TO MAKING STUFF NOT GO OUTSIDE THE BOX IF THE USER IS NOT TRACKING
 }
 	else{
 		$birthday = "";
@@ -52,7 +52,7 @@
 		//endif;
 	echo "<p id='status' class='statusboard".$statushover."'>".$status."</p>"; 
 	echo $users->loadSports($cuser,2)."</div>";
-	echo "<table><tr><td class='tal'>Gender:</td><td style='min-width:70px'>".$users->getGender($Gender1)."</td><td class='tal privacy1'>Weight:</td><td id='weightylol' class='privacy1'>".$Weight1."</td></tr><tr><td class='tal privacya'>Age:</td><td class='privacya'>".$users->getAge($DOB1)."</td><td class='tal privacy2'>Height:</td><td id='boardheight' class='privacy2'>".$Height1." cm</td></tr>".$birthday."</table>";
+	echo "<table><tr><td class='tal'>Gender:</td><td style='min-width:70px'>".$users->getGender($Gender1)."</td><td class='tal'>Weight:</td><td id='privacy1'>".$Weight1."</td></tr><tr><td class='tal'>Age:</td><td id='privacya'>".$users->getAge($DOB1)."</td><td class='tal'>Height:</td><td id='privacy2'>".$Height1." cm</td></tr>".$birthday."</table>";
 	if ($_SESSION['UserID']==$cuser):
 	echo "<a href='editprofile.php'><div class='editprofile sp'></div></a>";
 	endif;
@@ -65,17 +65,17 @@
    		echo "\t\t\t</table></div>";
    	?><script>
    	if("<?php echo $Height1 ?>"==0||""){
-   		$("#boardheight").prev().remove();
-   		$("#boardheight").remove();   		
+   		$("#privacy2").prev().remove();
+   		$("#privacy2").remove();   		
    	}
-   	if("<?php echo $Weight1 ?>"==""||"0.0"){
-   		$("#weightylol").prev().remove();
-   		$("#weightylol").remove();
+   	if("<?php echo $Weight1 ?>"=="0.0"||""){
+   		$("#privacy1").prev().remove();
+   		$("#privacy1").remove();
    	}
    	else if (<?php echo $lbkg1 ?>==0){
-   		$("#weightylol").append("lbs");}
+   		$("#privacy1").append("lbs");}
    	else{
-   		$("#weightylol").append("kg");}</script><?php
+   		$("#privacy1").append("kg");}</script><?php
 	echo "<div id='progressCon' class='container'><a class='TitleConlink' href='progress.php".$getuser."'><div class='TitleCon  h3 hover'>Progress</div></a><table>";
 	echo $users->loadGoalsByUserID($cuser,2)."</table></div>";
 	if ($_SESSION['UserID']==$cuser):
@@ -190,30 +190,22 @@ for (var i=1; i<3; i++)
     	{
     		if (privacy[i]==2)
     		{
-    			$(".privacy"+i).each(function(){
-    				$(this).remove();
-    			});
+    			$("#privacy"+i).text("Private");
     			
     		}
     		else if (privacy[i]==1 && (relationship==0||relationship==1))
     		{
-    			$("#privacy"+i).each(function(){
-    				$(this).remove()
-    			});
+    			$("#privacy"+i).text("Private");
     		}
     	}
 if (privacy[0]==2)
     	{
-    		$(".privacya").each(function(){
-    			$(this).remove();
-    		});
-    		$("#privacyb").remove();
+    		$("#privacya").text("Private")
+    		$("#privacyb").text("Private");
     	}
     	else if (privacy[0]==1)
     	{
-    		$(".privacya").each(function(){
-    			$(this).remove();
-    		});
+    		$("#privacya").text("Private")
 	  		var DOfB = $("#DOfB").text();
     		splitDOfB = DOfB.split(" ");
     		$("#DOfB").replaceWith(splitDOfB[0]+" "+splitDOfB[1]);

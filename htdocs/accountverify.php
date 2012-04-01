@@ -20,7 +20,6 @@ $("#verify").live("click",function(){
        data: "action=verifyaccount&email="+"<?php echo $_GET['e']?>"+
        "&vercode="+"<?php echo $_GET['v']?>",
        success:function(){
-       	alert("Lol");
     	window.location.replace("profile.php");       	
    },
      error:function(){

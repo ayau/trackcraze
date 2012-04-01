@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<?php
-	if (!isset($_SESSION['LoggedIn'])&&substr($_SERVER['REQUEST_URI'],0,10)!="/login.php"&&substr($_SERVER['REQUEST_URI'],0,11)!="/signup.php"&&substr($_SERVER['REQUEST_URI'],0,18)!="/accountverify.php"):
+	if (!isset($_SESSION['LoggedIn'])&&substr($_SERVER['REQUEST_URI'],0,10)!="/login.php"&&substr($_SERVER['REQUEST_URI'],0,11)!="/signup.php"&&substr($_SERVER['REQUEST_URI'],0,18)!="/accountverify.php"&&substr($_SERVER['REQUEST_URI'],0,13)!="/password.php"&&substr($_SERVER['REQUEST_URI'],0,21)!="/passwordretrieve.php"&&substr($_SERVER['REQUEST_URI'],0,21)!="/retrievepassword.php"):
 	echo '<meta http-equiv="REFRESH" content="0;url=/index.php">';	
 	die();
 	endif;?>

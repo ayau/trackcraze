@@ -97,6 +97,9 @@ else{
 		case "addfailemail":
 			echo $userObj->addfailemail();
 		break;
+		case "retrievepassword":
+			echo $userObj->retrievePassword();
+		break;
 	}
 }
 }

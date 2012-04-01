@@ -60,7 +60,7 @@
             if($row['theCount']!=0) {
                 return 1; //Email in use;
             }
-            $this->sendVerificationEmail($u, $v);
+            $this->sendVerificationEmail($u, $v, $_POST['firstname']);
             /*if(!$this->sendVerificationEmail($u, $v)) {
                 return "<h2> Error </h2>"
                     . "<p> There was an error sending your"
@@ -114,35 +114,29 @@
      * @return boolean        TRUE on successful send and FALSE on failure
      */
    
-    private function sendVerificationEmail($email, $ver)
+    private function sendVerificationEmail($email, $ver, $firstname)
     {
         $e = sha1($email); // For verification purposes
         $to = trim($email);
      
-        $subject = "[Gym Schedule] Please Verify Your Account";
+        $subject = "[trackCraze] Please Verify Your Account";
  
         $headers = <<<MESSAGE
-From: Gym Schedule <noreply@trackcraze.com>
+From: trackCraze <noreply@trackcraze.com>
 Content-Type: text/plain;
 MESSAGE;
  
         $msg = <<<EMAIL
-You have a new account at Gym Schedule!
+Congratulations $firstname! You are on your way to creating a TrackCraze account! 
+
+Simply click on www.trackcraze.com/accountverify.php?v=$ver&e=$e to verify your account.
  
-To get started, please activate your account and choose a
-password by following the link below.
+
+
+Enjoy!
  
-Your Username: $email
- 
-Activate your account: www.trackcraze.com/accountverify.php?v=$ver&e=$e
- 
-If you have any questions, please contact help@coloredlists.com.
- 
---
-Thanks!
- 
-Alex and Tim
-www.gymschedule.com
+Team TrackCraze
+www.trackcraze.com
 EMAIL;
  
         return mail($to, $subject, $msg, $headers);
@@ -151,7 +145,7 @@ EMAIL;
     public function verifyAccount()//ADD USER ID TO HERE, SO AFTER THEY VERIFY ACCOUNT THE USERID THING DOESN"T CRASH"
     {
     	$v = $_POST['vercode'];
-    	$e = $_POST['email'];
+    	$e = $_POST['email']; //Not the actual email, this is the string we get after applying SHA1 to the email
         $sql = "SELECT Username, UserID
                 FROM users
                 WHERE ver_code=:ver
@@ -1518,5 +1512,99 @@ EMAIL;
    				 echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
    				} 	
 	}
+	public function retrievePassword(){
+		$v = sha1(time()); //SETS UNIQUE VERIFICATION CODE
+		$u = trim($_POST['email']);
+	// CHECK IF EMAIL ACTUALLY EXISTS
+		$sql = "SELECT COUNT(Username) AS theCount
+                FROM users
+                WHERE Username=:email";
+        if($stmt = $this->_db->prepare($sql)) {
+            $stmt->bindParam(":email", $u, PDO::PARAM_STR);
+            $stmt->execute();
+            $row = $stmt->fetch();
+            if($row['theCount']==0) {
+                return 1; //Email NOT in use;
+            }
+            $stmt->closeCursor();
+        }
+        // IF EMAIL EXISTS THEN GET USERID FROM users TO GET FORENAME FROM PROFILE (to be used in email)
+		$sql = "SELECT UserID
+				FROM users
+				WHERE Username=:user
+				LIMIT 1";
+		if($stmt = $this->_db->prepare($sql)){
+			$stmt->bindParam(':user', $u, PDO::PARAM_INT);
+			$stmt->execute();
+			$row = $stmt->fetch();
+			$UID = $row['UserID'];
+			$stmt->closeCursor();
+		}
+		else{
+			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
+		}
+        $sql = "SELECT Forename
+				FROM profile
+				WHERE UserID=:uid
+				LIMIT 1";
+		if($stmt = $this->_db->prepare($sql)){
+			$stmt->bindParam(':uid', $UID, PDO::PARAM_INT);
+			$stmt->execute();
+			$row = $stmt->fetch();
+			$FN = $row['Forename'];
+			$stmt->closeCursor();
+		}
+		else{
+			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
+		}
+		// NOW THAT FORENAME IS SELECTED, UPDATE THE ForgetPassword FIELD WITH SHA1(time())
+		$sql = "UPDATE users
+            	SET ForgetPassword=:code
+                WHERE Username=:useruid
+	                AND UserID=:
+                LIMIT 1";
+        try{
+        	$stmt = $this->_db->prepare($sql);
+            $stmt->bindParam(':user', $u, PDO::PARAM_STR);
+            $stmt->bindParam(':code', $v, PDO::PARAM_STR);
+            $stmt->bindParam(':uid', $UID, PDO::PARAM_INT);//AN EXTRA CHECK, TO BE SAFE
+            $stmt->execute();
+            $this->sendPasswordEmail($u, $v, $FN);
+        	$stmt->closeCursor();
+        	return 0;
+        }
+            catch(PDOException $t)
+		{
+			return $t->getMessage();
+		}
+	}
+	private function sendPasswordEmail($email, $ver, $firstname){
+        $e = sha1($email); // For verification purposes
+        $to = trim($email);
+     
+        $subject = "[trackCraze] Forgotten Password";
+ 
+        $headers = <<<MESSAGE
+From: trackCraze <noreply@trackcraze.com>
+Content-Type: text/plain;
+MESSAGE;
+        $msg = <<<EMAIL
+Hi $firstname! 
+
+Simply click on www.trackcraze.com/retrievepassword.php?v=$ver&e=$e to retrieve your password.
+
+If you believe that you have recieved this email in error, please do not hesitate to contact us at support@trackcraze.com.
+ 
+
+
+Thank you!
+ 
+Team TrackCraze
+www.trackcraze.com
+EMAIL;
+ 
+        return mail($to, $subject, $msg, $headers);
+        //echo $msg;
+    }
 }
 ?>
