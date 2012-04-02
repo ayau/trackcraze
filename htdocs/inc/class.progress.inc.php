@@ -251,7 +251,7 @@ class GSProgress
 			$stmt->bindParam(':wd', $stoday, PDO::PARAM_STR);
 			$stmt->execute();
 			$date =  new DateTime($stoday);
-			echo "<table class=\"".$stoday."\"border='0'>";
+			echo "<table width='600px' class=\"".$stoday."\"border='0'>";
 			echo "<tr><td colspan='3'>"."<h2>".date_format($date, 'D, d F Y')."</h2></td></tr>";
 			if($row=$stmt->fetch()){
 				
@@ -411,8 +411,8 @@ class GSProgress
 			$stmt->bindParam(':sid', $SID, PDO::PARAM_INT);
 			$stmt->execute();
 			echo "<table border='0'>";
-			if($row = $stmt->fetch()){//A LOT OF SQL THINGSY ARE LIKE THIS. THE FIRST ROW IS UNIQUE THEN REST ARE THE SAME. FIX???
-			echo "<tr><td class='InputTitle' width=110>Exercise</td><td class='InputTitle' width=80>Previous</td><td class='InputTitle' width=110>Weight</td><td class='InputTitle' width=50>Rep</td><td width=68></td><td class='InputTitle' width=190>Comments</td><td width=10></td></tr>";
+			if($row = $stmt->fetch()){ //A LOT OF SQL THINGSY ARE LIKE THIS. THE FIRST ROW IS UNIQUE THEN REST ARE THE SAME. FIX???
+			echo "<tr><td class='InputTitle' width=110>Exercise</td><td class='InputTitle' width=80>Previous</td><td class='InputTitle' width=110>Weight</td><td class='InputTitle' width=50>Rep</td><td width=68></td><td class='InputTitle' width=190>Comments</td><td width=30></td></tr>";
 				echo $this->loadInputSet($row["ListItemID"],$stoday,$row['EID']);
 			while($row = $stmt->fetch())
 			{
@@ -468,7 +468,7 @@ class GSProgress
 			$stmt->bindParam(':uid', $_SESSION['UserID'], PDO::PARAM_INT);
 			$stmt->execute();
 			if($row= $stmt->fetch()){
-				echo "<tr><td class='InputTitle' width=110>New Exercises</td><td class='InputTitle' width=80>Previous</td><td class='InputTitle' width=110>Weight</td><td class='InputTitle' width=50>Rep</td><td width=68></td><td class='InputTitle' width=190>Comments</td><td width=10></td></tr>";
+				echo "<tr><td class='InputTitle' width=110>New Exercises</td><td class='InputTitle' width=80>Previous</td><td class='InputTitle' width=110>Weight</td><td class='InputTitle' width=50>Rep</td><td width=68></td><td class='InputTitle' width=190>Comments</td><td width=30></td></tr>";
 				echo $this->loadInputSet($row["ListItemID"],$stoday,$row['EID']);//OVERKILL. But works for now. Cannot edit name though!?
 			}
 			while($row = $stmt->fetch())
@@ -486,10 +486,10 @@ class GSProgress
 		//2. Load data from records (jusing javascript to add in)
 		//3. If Record does not belong to program, add "other" input boxes (javascript).
 		//Putting Other program ID in the other textbox
-		echo "<tr id='somethingnewrow'><td colspan='2'><b>Trying something new today?</b></td></tr><tr sid='$opsid'><td colspan='2'><input id='newExercise' size='27'/></td><td><input id='newWeight' class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' /><select id='newlbkg'><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select></td><td><input id='newRep' class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)'/></td><td colspan='2'><textarea id='newComment' class='commentInputTable'/></td><td class='zeropadding'><input id='addExerciseInputTable' type=button value='ne' /></td></tr>";//for if people want to add new exercises on the go
+		echo "<tr id='somethingnewrow'><td colspan='2'><b>Trying something new today?</b></td></tr><tr sid='$opsid'><td colspan='2'><input id='newExercise' size='27'/></td><td><input id='newWeight' class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' /><select id='newlbkg'><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select></td><td><input id='newRep' class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)'/></td><td colspan='2'><textarea id='newComment' class='commentInputTable'/></td><td width='30' class='zeropadding'><input id='addExerciseInputTable' type=button value='ne' /></td></tr>";//for if people want to add new exercises on the go
 		echo "<tr id='somethingoldrow'><td colspan='5'><b>Trying something you have already done before?</b></td></tr><tr sid='$opsid'><td colspan='2'>";
 		echo $this->loadExercise($_SESSION['UserID']);
-		echo"</td><td><input id='oldWeight' class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' /><select id='oldlbkg'><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select></td><td><input id='oldRep' class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)'/></td><td colspan='2'><textarea id='oldComment' class='commentInputTable'/></td><td class='zeropadding'><input id='addoldExerciseInputTable' type=button value='ne' /></td></tr>";//for if people want to add existing exercises on the go
+		echo"</td><td><input id='oldWeight' class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' /><select id='oldlbkg'><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select></td><td><input id='oldRep' class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)'/></td><td colspan='2'><textarea id='oldComment' class='commentInputTable'/></td><td width= '30' class='zeropadding'><input id='addoldExerciseInputTable' type=button value='ne' /></td></tr>";//for if people want to add existing exercises on the go
 		echo "</table></tr>";
 			$stmt->closeCursor();
 

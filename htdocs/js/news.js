@@ -174,7 +174,7 @@ function initializeNews(get){
 	$(".postcomment").live("click",function(){
 		$(this).parent().parent().parent().find('.commentbox').prev().show();
 		$(this).parent().parent().parent().find('.commentbox').remove();
-		$(this).parent().append("<div class='commentbox'>Comment<textarea class='addpostcomment' placeholder='Remember, be nice!' cols='80' rows='1' autocomplete='off' ></textarea><input id='commentsubmit' type='button' value='Post it!'/><input id='commentcancel' type='button' value='Cancel'/></div>");
+		$(this).parent().append("<div class='commentbox'>Comment<textarea class='addpostcomment' placeholder='Remember, be nice!' cols='80' rows='1' autocomplete='off' ></textarea><input id='commentsubmit' style='margin-top:2px' class='small box' type='button' value='Post it!'/><input id='commentcancel' style='margin-left:5px; margin-top:2px' class='small grey box' type='button' value='Cancel'/></div>");
 		$(".addpostcomment").autogrow(); 
         $(".addpostcomment").charCounter(150);
         $(".addpostcomment").select();

@@ -44,6 +44,7 @@ p { margin: 0 0 6px 0; }
 .wide {width:350px;height:50px; font-size:20px; border-radius: 5px;}
 .fitwidth {padding:6px 12px 6px 12px;}
 .mid{width:80px;height:25px; font-size:18px;}
+.small{width:60px; height:20px;font-size:14px}
 
 .font14 {padding-top:5px;font-size:14px;}
 
@@ -522,19 +523,20 @@ li {list-style:none;} //ALL LIST = no dots
 #trackoptions a:hover{background:#CCC;text-decoration:none;}/*same as progressright*/
 #InputTable .zeropadding {padding:0px;}
 
+
 #recordsubmit {position:relative; left:20px; top:5px;}
 
 #progressSelector {width:400px; padding-top:15px; }
 #progressSelector p {width:200px; padding:0px 10px; font-weight:bold;font-size:15px;display:inline}
 #inputLine #programoption {margin:5px 10px;}
 #inputLine #splitoption {margin:5px 20px;}
-#InputTable td {padding:5px;}
+#InputTable td {padding:5px 0px}
 .InputTitle {font-size:20px;word-wrap:break-word;font-family: "lucida grande",tahoma,verdana,arial,sans-serif;}
 .prevInputTable {font-size:13px;color:#666;word-wrap:break-word;font-family: "lucida grande",tahoma,verdana,arial,sans-serif;}
 .weightInputTable {float:left;margin: 5px 0px 5px 0px;}
 #TrackTable td {padding:5px;}
 
-.recordsComment {width:162px; resize: none; height:50px; }
+.recordsComment {width:185px; resize: none; height:50px; }
 .recordsCommentBtn {margin-top:5px;}
 
 .commentInputTable {width:220px; resize: none; height:50px; }

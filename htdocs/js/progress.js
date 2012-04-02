@@ -49,6 +49,11 @@ return numcheck.test(keychar)
     			success: function(r){
                  	$("#InputTable").append(r);
 					$("#loading").remove();
+					$(".recordsComment").each(function(){
+						height = $(this).parent().height()-57;
+						if(height<50) height=50;
+							$(this).css("height", height);
+						})
     			},
     			error: function(){
     			    // should be some error functionality here
@@ -364,6 +369,7 @@ return numcheck.test(keychar)
 		}
 	});
 	
+	
 	//Empties the recordsComment box
 	$(".recordsCommentCncl").live("click",function(){
 		$(this).prev().val("");
@@ -377,6 +383,7 @@ return numcheck.test(keychar)
 		if(height<50) height=50;
 		$(this).next().css("height", height).slideDown();
 	});
+
 	$(".prevnotes").live("click",function(){
 		$(this).prev().slideDown();
 		$(this).next().fadeIn();
