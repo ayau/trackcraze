@@ -179,13 +179,14 @@
 			$name = $news->getName($row['Tracker']);
 			echo "<div id='TR'><div id='newsheader'>Look who is so popular!! (Track Request)</div>";
 			echo "<div class=\"".$row['Tracker']."tag\">".$name." wants to track your progress. <div class=".$row['Tracker']."><a class=\"acceptTR\">Accept</a> <a class=\"ignoreTR\">Ignore</a></div></div>";
-			}
+			
 			while($row = $stmt->fetch())
 			{
 				$name = $news->getName($row['Tracker']);
 				echo "<div class=\"".$row['Tracker']."tag\">".$name." wants to track your progress. <div class=".$row['Tracker']."><a class=\"acceptTR\">Accept</a> <a class=\"ignoreTR\">Ignore</a></div></div>";
 			}
 			echo "</div>";
+		}
 			$stmt->closeCursor();
 			// If there aren't any list items saved, no list ID is returned
 		}
@@ -224,7 +225,7 @@
 			$news = new GSNews();
 			While($row = $stmt->fetch()){
 				$name = $news->getName($row['UserID']);
-				$agotext = $news->getTimeDiff($row["newsTime"]);
+				$agotext = "<p class='agotext'>".$news->getTimeDiff($row["newsTime"])."</p>";
 				switch($row['newsType']){
         			case '0':
         			echo $news->getnewspost($row['newsContent'], $agotext);
@@ -338,7 +339,7 @@
 								if ($row['PostBy']==$_SESSION['UserID']){
 									$name = "You";
 								}//USELESS? SINCE YOU NEVER TRACK YOURSELF							
-								echo "<div>New Post bitches! ".$name." has put a note on ".$name1." board:<div class='posttext'>".$row['PostText']."</div>".$agotext."</div>";
+								echo "<div class='story'><h3>New Post bitches!</h3> <div class='postBox'>".$name." has put a note on ".$name1." board:<div class='posttext newsPostText'>".$row['PostText']."</div>".$agotext."</div></div>";
 							}
 							}
 							$stmt->closeCursor();
@@ -464,7 +465,7 @@
 				}else{
 					$deletetext="";
 				}
-				echo "<div id=".$row['PostID']." class='postcontent'>".$deletetext."<div class='miniphoto'>".$profilepic."</div><div class='postname'>".$name."</div><div class='posttext'>".$row['PostText']."<p class='agotext'>".$agotext."</p>";
+				echo "<div id=".$row['PostID']." class='postcontent'>".$deletetext."<div class='postHeader'><div class='miniphoto'>".$profilepic."</div><div class='postname'>".$name."</div><div class='posttext'>".$row['PostText']."<p class='agotext'>".$agotext."</p></div>";
 				$news->checkkudos($row['PostID'],0,$row['PostBy']);
 				echo " <a class='postcomment'>comment</a></div><div class='kudos'>";
 				$news->getkudos($row['PostID'],0);

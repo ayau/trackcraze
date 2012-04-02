@@ -62,11 +62,11 @@ function initializeNews(get){
 		$("#addposttextbox").val("");
 	})
 	$(".postcontent").live("mouseover", function(){
-		$(this).find(".miniphoto").prev().show();
+		$(this).find(".postHeader").prev().show();
 		$(this).css('background','#e1f0fd');
 	});
 	$(".postcontent").live("mouseout", function(){
-		$(this).find(".miniphoto").prev().hide();
+		$(this).find(".postHeader").prev().hide();
 		$(this).css('background','none');
 	});
 	$(".commentitem").live("mouseover", function(){

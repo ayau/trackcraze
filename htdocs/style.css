@@ -283,9 +283,9 @@ li {list-style:none;} //ALL LIST = no dots
 */
 #ribbon { float:right; width: 110px; padding-top:20px;} /*fix height problem later*/
 #ribbon ul {position:relative; list-style: none;background-color: #e1f0fd; width:149px;top:-20px;padding:0px 20px 20px; }
-#ribbon ul li {  color: black; width:150px; padding: 10px 0 10px 0; margin: 10px 0 10px 0; 	font-family: "lucida grande",tahoma,verdana,arial,sans-serif;	font-size:12px;	color:#333; border-top: 1px solid #c0cdd8; margin-bottom: 1em}
+#ribbon ul li {color: #555; width:150px; padding: 10px 0 10px 0; margin: 10px 0 10px 0; 	font-family: "lucida grande",tahoma,verdana,arial,sans-serif;font-size:14px;	border-top: 1px solid #c0cdd8; margin-bottom: 1em}
 #rsidetitle {position:relative; right: 0; background: #D6E4F0; width:189px; height:40px; top: -10px; border-top: 1px solid #c0cdd8;}
-#rsidetitle p {text-align:center; margin-top:10px; color: black; font: 18px Calibri;}
+#rsidetitle p {text-align:center; margin-top:10px; color: black; font: 20px Calibri;}
 .feedback {background-position: -2px -130px;  width:103px; height:32px;  cursor:pointer}
 .feedbacktext {position:relative; top:-33px; left:110px;width:75px;font-size:14px}
 /* Profile Page
@@ -474,27 +474,41 @@ li {list-style:none;} //ALL LIST = no dots
 #addpostbuttons input{margin:5px 5px 0px 0px;}
 /*POST*/
 #add-post .miniphoto{float:right;}
-#posts{padding:0px 20px 0px; width:500px;}
-.miniphoto{float:left;width:50px; height:50px;}
+#posts{width:520px; padding-left:15px}
+.miniphoto{float:left; width:50px; height:50px;}
 .postcontent .miniphoto {padding-right:10px}
 .miniphoto img{max-height:50px; max-width:50px;}
 .posttext{width:450px;padding-bottom:5px;font-size:13px;word-wrap:break-word;font-family: "lucida grande",tahoma,verdana,arial,sans-serif;}
 .posttext2{float:left; width:200px;font-size:13px;word-wrap:break-word;font-family: "lucida grande",tahoma,verdana,arial,sans-serif;}
 .postname{float:left;width:400px; padding-bottom:5px;}
 .pin{float:right;}
-.postcontent{min-height:50px;padding:15px 0px;width:500px}
+.postcontent{min-height:50px;padding:15px 0px 15px 0px;width:520px; border-radius: 10px; }
 .agotext{color:#888;}
 .postcontent .break {width:60%;margin-left:100px;padding-top:15px;}
 .commentbox {padding-bottom:10px;}
+.commentitem {border-radius:5px; padding: 5px 0px 5px 30px}
+
+.postHeader {padding-left:20px}
 
 #programcomment {padding:0px 40px;}
 
 .addpostcomment {width:450px; outline:none;font-size:13px;word-wrap:break-word;font-family: "lucida grande",tahoma,verdana,arial,sans-serif; padding: 7px; display: block; resize:none; overflow:hidden; }
 
-.postcomment{color:#0E63C4;padding-left:10px;}
+.postcomment{color:#0E63C4;}
 
-.kudos2u{color:#0E63C4;}
+.kudos2u{padding-left:20px; color:#0E63C4;}
 .commenttext{width:450px;padding-top:5px;margin:0px;font-size:13px;word-wrap:break-word;font-family: "lucida grande",tahoma,verdana,arial,sans-serif;}
+
+/*NEWS*/
+.story {padding:10px;}
+.postBox {border:none; font-family:Roboto; text-align:left; cursor:pointer;border-radius: 10px; width:450px; padding: 10px 20px}
+.postBox:hover{background-color:#DFEDF7;}
+
+.newsPostText{padding-top:10px;}
+
+
+
+
 /*PROGRESS*/
 #progressTitle {position:relative;height:35px;}
 #progressLeft {float:left; width:400px; font: bold 28px Calibri;}
