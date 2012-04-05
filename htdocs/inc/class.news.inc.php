@@ -215,17 +215,19 @@
 			return $agotext;
 	}
 	function getnewsContent($string){
+		//$string = Either about you or who you're tracking
+
 		$sql = "SELECT
 				UserID, newsTime, newsType, newsContent	
 				FROM news
-				WHERE UserID=".$string." ORDER BY newsTime DESC";
+					WHERE UserID=".$string." ORDER BY newsTime DESC LIMIT 50";
 		if($stmt = $this->_db->prepare($sql))
 		{
 			$stmt->execute();
 			$news = new GSNews();
 			While($row = $stmt->fetch()){
 				$name = $news->getName($row['UserID']);
-				$agotext = "<p class='agotext'>".$news->getTimeDiff($row["newsTime"])."</p>";
+				$agotext = "<p class='agotext inline'>".$news->getTimeDiff($row["newsTime"])."</p>";
 				switch($row['newsType']){
         			case '0':
         			echo $news->getnewspost($row['newsContent'], $agotext);
@@ -244,29 +246,29 @@
         			break;
         			case '5':
         			$program=$news->getprogramName($row['newsContent']);
-        			echo "<div>".$name." has changed his/her game plan. He/She is now working out with the program: ".$program." ".$agotext."</div>";//check if program is changed!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        			echo "<div class='shortStory'>".$name." has changed his/her game plan. He/She is now working out with the program: ".$program." ".$agotext."</div>";//check if program is changed!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         			break;
         			case '6':
         			$program=$news->getprogramName($row['newsContent']);
-        			echo "<div>".$name." is trying out something new. He/She has just created the program: ".$program." ".$agotext."</div>";//GET THEIR SEX?
+        			echo "<div class='shortStory'>".$name." is trying out something new. He/She has just created the program: ".$program." ".$agotext."</div>";//GET THEIR SEX?
         			break;
         			case '7':
-        			echo "<div>".$name." has just achieved his/her goal of <u>".$row['newsContent']."</u> Congratulate him/her!!".$agotext."</div>";
+        			echo "<div class='shortStory'>".$name." has just achieved his/her goal of <u>".$row['newsContent']."</u> Congratulate him/her!!".$agotext."</div>";
         			break;
         			case '8':
         			echo "<div>Goal Change</div>";
         			break;
         			case '9':
-        			echo "<div>".$name." changed their location to <u>".$row['newsContent']."</u>. ".$agotext."</div>";
+        			echo "<div class='shortStory'>".$name." changed their location to <u>".$row['newsContent']."</u>. ".$agotext."</div>";
         			break;
 					case '10':
-        			echo "<div>".$name." changed their email address to <u>".$row['newsContent']."</u>. ".$agotext."</div>";
+        			echo "<div class='shortStory'>".$name." changed their email address to <u>".$row['newsContent']."</u>. ".$agotext."</div>";
         			break;
         			case '11':
-        			echo "<div>".$name." changed their phone number to <u>".$row['newsContent']."</u>. ".$agotext."</div>";
+        			echo "<div class='shortStory'>".$name." changed their phone number to <u>".$row['newsContent']."</u>. ".$agotext."</div>";
         			break;
         			case '12':
-        			echo "<div>".$name." is now ".$row['newsContent']."cm tall!! Congratulations. ".$agotext."</div>";
+        			echo "<div class='shortStory'>".$name." is now ".$row['newsContent']."cm tall!! Congratulations. ".$agotext."</div>";
         			break;
         			case '13':
         			echo "<div>Sportsadd</div>";
@@ -282,7 +284,10 @@
         			}else{
         				$gendertext=' is now female.';
         			}
-        			echo "<div>".$name.$gendertext." ".$agotext."</div>";
+        			echo "<div class='shortStory'>".$name.$gendertext." ".$agotext."</div>";
+        			break;
+        			case '20':
+        				
         			break;
 			}
 		}
@@ -326,21 +331,41 @@
 							$stmt->bindParam(':pid', $nc, PDO::PARAM_INT);
 							$stmt->execute();
 							$news = new GSNews();
-							while($row = $stmt->fetch()){
+							if($row = $stmt->fetch()){
+								
 								$name = $news->getName($row['PostBy']);
-								if ($row['PostBy']==$row['UserID']){
-									echo "<div>New Post bitches! ".$name." has put up a new note: <div class='posttext'>".$row['PostText']."</div>".$agotext."</div>";
+								
+								//post on his own wall
+								if($row['UserID']==$row['PostBy']){
+									echo "<div class='story'>";
+									echo "<div class='postBox'>".$name." wants the whole world to know that:<div class='posttext newsPostText'>".$row['PostText']."</div>".$agotext."</div>";	
+									echo "</div>";
 								}else{
-								if ($row['UserID']==$_SESSION['UserID']){
-									$name1 = "<a class='link' href=\"/board.php?user=".$_SESSION['UserID']."\">your</a>";
-								}else{
-								$name1 = ($news->getName($row['UserID']))."'s";
+									if ($row['UserID']==$_SESSION['UserID']){
+										$name1 = "<a class='link' href=\"/board.php?user=".$_SESSION['UserID']."\">your</a>";
+									}else{
+										$name1 = ($news->getName($row['UserID']))."'s";
+									}
+									if ($row['PostBy']==$_SESSION['UserID']){
+										$name = "You";
+									}//USELESS? SINCE YOU NEVER TRACK YOURSELF							
+									echo "<div class='story'>";
+									if($row['UserID']==$_SESSION['UserID']){
+										$rand = rand (0,2);
+										switch($rand){
+											case 0:
+											echo "<h3>New Post for you bitches!</h3>";
+											break;
+											case 1:
+											echo "<h3>You so Popular!</h3>";
+											break;
+											case 2:
+											echo "<h3>Someone left a message for you</h3>";
+											break;
+										}
+									}
+									echo "<div class='postBox'>".$name." has put a note on ".$name1." board:<div class='posttext newsPostText'>".$row['PostText']."</div>".$agotext."</div></div>";
 								}
-								if ($row['PostBy']==$_SESSION['UserID']){
-									$name = "You";
-								}//USELESS? SINCE YOU NEVER TRACK YOURSELF							
-								echo "<div class='story'><h3>New Post bitches!</h3> <div class='postBox'>".$name." has put a note on ".$name1." board:<div class='posttext newsPostText'>".$row['PostText']."</div>".$agotext."</div></div>";
-							}
 							}
 							$stmt->closeCursor();
 

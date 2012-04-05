@@ -45,12 +45,12 @@
                     value="<?php echo $userID ?>" />
                 <input type="hidden" name="action"
                     value="changeemail" />
-                <input type="text" class='inputfields' name="username" id="username" />
+                <input type="text" class='inputfields' name="username" id="username" placeholder="New Email Address"/>
                 <label for="username">Change Email Address</label>
                 <br /><br />
                 <input type="submit" name="change-email-submit"
                     id="change-email-submit" value="Change Email"
-                    class="button" />
+                    class="lightgreen wide box" />
             </div>
         </form><br /><br />
  
@@ -64,16 +64,16 @@
                 <input type="hidden" name="action"
                     value="changepassword" />
                 <input type="password"
-                    name="p" class='inputfields' id="new-password" />
+                    name="p" class='inputfields' id="new-password" placeholder="New Password" />
                 <label for="password">New Password</label>
                 <br /><br />
                 <input type="password" name="r" class='inputfields' 
-                    id="repeat-new-password" />
+                    id="repeat-new-password" placeholder="Retype New Password"/>
                 <label for="password">Repeat New Password</label>
                 <br /><br />
                 <input type="submit" name="change-password-submit"
                     id="change-password-submit" value="Change Password"
-                    class="button" />
+                    class="lightgreen wide box" />
             </div>
         </form>
         <hr />
@@ -85,7 +85,7 @@
                     value="<?php echo $userID ?>" />
                 <input type="submit"
                     name="delete-account-submit" id="delete-account-submit"
-                    value="Delete Account?" class="button" />
+                    value="Delete Account?" class="red wide box" />
             </div>
         </form>
  

@@ -20,26 +20,26 @@
         <div id="loginheading"><h2>Sign up</h2></div>
         <form method="post"  id="registerform">
             <div>
-                <label for="username">Email:</label>
+                <label class="toplabel" for="username">Email:</label>
                 <input type="text" name="username" id="username" class='inputfields' placeholder='Email'/>
                 <div id ='errormail' class='errorsignup' hidden></div>
                 <br />
                 
-                <label for="password">Password:</label>
+                <label class="toplabel" for="password">Password:</label>
                 Passwords should be 6-18 characters long.
                 <input type="password" id="password" class='inputfields' placeholder='Password'/> <!-- PASSWORD SHOULD ONLY BE 6 TO 18 CHARACTERS -->
                 <div id ='errorpass' class='errorsignup' hidden></div><br />
-                <label for="password">Retype password:</label>
-                <input type="password" id="passwordre" class='inputfields' placeholder='Retype Password'/><br />
-                <label for="firstname">First Name:</label>
+                <label class="toplabel" for="password">Retype password:</label>
+                <input  type="password" id="passwordre" class='inputfields' placeholder='Retype Password'/><br />
+                <label class="toplabel" for="firstname">First Name:</label>
                 <input type="text" id="firstname" class='inputfields' placeholder='First Name'/>
                 <div id ='errorname' class='errorsignup' hidden></div><br />
-                <label for="surname">Last Name</label>
+                <label class="toplabel" for="surname">Last Name</label>
                 <input type="text" id="surname" class='inputfields' placeholder='Last Name'/><br />
                 I am <Input type='radio' name='gender' id='male' value='0'/><label for="male" class="normal">Male</label><Input type='radio' name='gender' id='female' value='1'/><label for="female" class="normal">Female</label><Input type='radio' name='gender' id='weird' value='2'/><label for="weird" class="normal">Undisclosed</label>
                 <div id ='errorgender' class='errorsignup' hidden></div>
                 <br /><br />
-                 <label for="surname">Alpha testing verification code</label>
+                 <label class="toplabel" for="surname">Alpha testing verification code</label>
                 <input type="password" id="alpha" class='inputfields' placeholder='Enter Code here'/>
                 <div id ='errorcode' class='errorsignup' hidden></div><br />
                 <input type="button" name="register" id="register" class="wide box lightgreen" value="Sign up" />

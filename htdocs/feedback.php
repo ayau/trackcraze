@@ -21,16 +21,17 @@
        echo '<div id="loginheading"><h2 >Tell us what you think</h2></div>';
        // <!--<form method="post" name="feedbackform" id="feedbackform">
       //      <div>-->
-            	echo '<label for="Name">Your Name</label>';
+            	echo '<label class="toplabel" for="Name">Your Name</label>';
             	echo "<input type='text' name='name' id='name' class='inputfields' placeholder='Name' value=\"".$Forename." ".$Surname."\"/>";
                 echo "<br /><br />";
-                echo '<label for="username">Your Email</label>';
+                echo '<label class="toplabel" for="username">Your Email</label>';
                 echo "<input type='text' name='username' id='username' class='inputfields' placeholder='Email' value=\"".$_SESSION['Username']."\"/>";
 ?>               
                  <br /><br />
-                <label for='comments'>Your comments:</label>
-				<textarea class='inputtextarea' id="comments" rows="3" cols="50"></textarea> 
-                <input type="submit" name="Submit" id="submitfeedback" value="Submit" class="button" />
+                <label class="toplabel" for='feedback'>Your comments:</label>
+				<textarea class='inputtextarea' id="feedback" rows="10" cols="60"></textarea>
+				<br />
+                <input type="submit" name="Submit" id="submitfeedback" value="Submit" class="lightgreen wide box" />
                  <p id='feedbackthanks'></p>
            <!-- </div>
     </form> -->
@@ -40,18 +41,16 @@
  
       <script>//FIX THIS WHEN LAUNCH!!!!!!!!!!!!!!!!!!!!!!!!!
       $('#submitfeedback').live("click",function(){
-      	if ($("#comments").val()){
+      	if ($("#feedback").val()){
       	$.ajax({
        						type: "POST",
        						url: "db-interaction/users.php",
-       						data: "action=sendfeedback&email="+$("#username").val()+"&name="+$("#name").val()+"&comment="+$("#comments").val(),
+       						data: "action=sendfeedback&email="+$("#username").val()+"&name="+$("#name").val()+"&comment="+$("#feedback").val(),
        						success: function(){
        							$("#feedbackthanks").text('Thank you for your feedback').show();
-    							t = setTimeout(function(){$("#emailerror").fadeOut(1000)},5000);
        						},
       						error: function(){
-      							$("#feedbackthanks").text('Thank you for your feedback').show();
-    							t = setTimeout(function(){$("#emailerror").fadeOut(1000)},5000);
+      							$("#feedbackthanks").text("There's an error sending your feedback").show();
        						}
       					});
   					}

@@ -14,7 +14,7 @@ function initializeNews(get){
     			success: function(r){
     				t=r.split(",");
     				newPostText = replaceURL(newPostText);
-    				$("#posts").prepend("<div id="+t[0]+" class='postcontent' style='display:none'><div class='delete sp' hidden></div><div class='miniphoto'>"+t[2]+"</div><div class='postname'>"+t[1]+"</div><div class='posttext'>"+newPostText+"<p class='agotext'>"+t[3]+"</p><a class='postcomment'>comment</a></div><div class='kudos'></div><div class='comments'></div><div class='break'></div></div>");//no kudos. You can't kudos your own post
+    				$("#posts").prepend("<div id="+t[0]+" class='postcontent' style='display:none'><div class='postHeader'><div class='delete sp' hidden></div><div class='miniphoto'>"+t[2]+"</div><div class='postname'>"+t[1]+"</div><div class='posttext'>"+newPostText+"<p class='agotext'>"+t[3]+"</p><a class='postcomment'>comment</a></div></div><div class='kudos'></div><div class='comments'></div><div class='break'></div></div>");//no kudos. You can't kudos your own post
     				$('.url').each( function(){
     					if ($(this).attr('href').substring(0,4)!='http'){
         				$(this).attr('href', 'http://' + $(this).attr('href'));
@@ -27,7 +27,7 @@ function initializeNews(get){
        						type: "POST",
        						url: "db-interaction/users.php",
        						data: "action=newsupdate&content="+t[0]+
-       						"&newstype=0",
+       						"&newstype=0"+"&postto="+get,
        						success: function(){
        							$("#addpostsubmit").removeAttr("disabled");
        						},
@@ -91,7 +91,6 @@ function initializeNews(get){
     				$("."+id+"tag").children().remove();
     				$("."+id+"tag").text('');
 					$("."+id+"tag").append(r+" is now tracking your progress.");
-					t = setTimeout(function(){$("."+id+"tag").fadeOut(1000)},5000);
     			},
     			error: function(){
     			    // should be some error functionality here
@@ -112,7 +111,6 @@ function initializeNews(get){
     				$("."+id+"tag").children().remove();
     				$("."+id+"tag").text('');
 					$("."+id+"tag").append("You have successfully ignored "+r+". We'll notify him/her that you don't like him/her. haha jkjk. No hard feelings.");
-					t = setTimeout(function(){$("."+id+"tag").fadeOut(1000)},3000);
     			},
     			error: function(){
     			    // should be some error functionality here

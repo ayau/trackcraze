@@ -808,7 +808,8 @@ public function verificationCheck($UID){
    } 	
  }
  public function newsUpdate($type, $content){
- 	$UID = $_SESSION['UserID'];
+ 	if($type==0) $UID = $_POST['postto'];
+ 	else $UID = $_SESSION['UserID'];
 	$time = date("Y-m-d H:i:S");
  	$sql = "INSERT INTO news
  		(UserID, newsTime, newsType, newsContent)
