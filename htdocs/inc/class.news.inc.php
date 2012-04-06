@@ -57,6 +57,88 @@
 		$news->getMiniGender($string);
 	}
 	}
+	
+	//Sex: 0 - Male, 1 - Female, 2 - Undisclosed
+	//Arguments - 0: his/her, 1: His/Her 2: he/she 3: He/She
+	function getSex($UID, $word){
+		
+		$sql = "SELECT
+					Gender
+				FROM profile
+				WHERE UserID=:uid";
+		if($stmt = $this->_db->prepare($sql))
+		{
+			$stmt->bindParam(':uid', $UID, PDO::PARAM_INT);
+			$stmt->execute();
+			if($row = $stmt->fetch()){
+				switch($row['Gender']){
+					case 0:
+						switch($word){
+							case 0:
+								return "his";
+							break;
+							case 1:
+								return "His";
+							break;
+							case 2:
+								return "he";
+							break;
+							case 3:
+								return "He";
+							break;
+							case 4:
+								return "him";
+							break;
+						}
+					break;
+					case 1:
+						switch($word){
+							case 0:
+								return "her";
+							break;
+							case 1:
+								return "Her";
+							break;
+							case 2:
+								return "she";
+							break;
+							case 3:
+								return "She";
+							break;
+							case 4:
+								return "her";
+							break;
+						}
+					break;
+					case 2:
+						switch($word){
+							case 0:
+								return "his/her";
+							break;
+							case 1:
+								return "His/Her";
+							break;
+							case 2:
+								return "he/she";
+							break;
+							case 3:
+								return "He/She";
+							break;
+							case 4:
+								return "him/her";
+							break;
+						}
+					break;
+				}	
+			}
+			$stmt->closeCursor();
+			return $string;
+		}
+		else
+		{
+			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
+		}
+	}
 	function getTracking(){
 		$sql = "SELECT
 					relationship.Trackee
@@ -227,6 +309,11 @@
 			$news = new GSNews();
 			While($row = $stmt->fetch()){
 				$name = $news->getName($row['UserID']);
+				$his = $news->getSex($row['UserID'],0);
+				$he = $news->getSex($row['UserID'],2);
+				$Uhis = $news->getSex($row['UserID'],1);
+				$Uhe = $news->getSex($row['UserID'],3);
+				$him = $news->getSex($row['UserID'],4);
 				$agotext = "<p class='agotext inline'>".$news->getTimeDiff($row["newsTime"])."</p>";
 				switch($row['newsType']){
         			case '0':
@@ -246,26 +333,26 @@
         			break;
         			case '5':
         			$program=$news->getprogramName($row['newsContent']);
-        			echo "<div class='shortStory'>".$name." has changed his/her game plan. He/She is now working out with the program: ".$program." ".$agotext."</div>";//check if program is changed!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        			echo "<div class='shortStory'>".$name." has changed ".$his." game plan. ".$Uhe." is now working out with the program: ".$program." ".$agotext."</div>";//check if program is changed!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         			break;
         			case '6':
         			$program=$news->getprogramName($row['newsContent']);
-        			echo "<div class='shortStory'>".$name." is trying out something new. He/She has just created the program: ".$program." ".$agotext."</div>";//GET THEIR SEX?
+        			echo "<div class='shortStory'>".$name." is trying out something new. ".$Uhe." has just created the program: ".$program." ".$agotext."</div>";//GET THEIR SEX?
         			break;
         			case '7':
-        			echo "<div class='shortStory'>".$name." has just achieved his/her goal of <u>".$row['newsContent']."</u> Congratulate him/her!!".$agotext."</div>";
+        			echo "<div class='shortStory'>".$name." has just achieved ".$his." goal of <u>".$row['newsContent']."</u> Congratulate ".$him."!!".$agotext."</div>";
         			break;
         			case '8':
         			echo "<div>Goal Change</div>";
         			break;
         			case '9':
-        			echo "<div class='shortStory'>".$name." changed their location to <u>".$row['newsContent']."</u>. ".$agotext."</div>";
+        			echo "<div class='shortStory'>".$name." changed ".$his." location to <u>".$row['newsContent']."</u>. ".$agotext."</div>";
         			break;
 					case '10':
-        			echo "<div class='shortStory'>".$name." changed their email address to <u>".$row['newsContent']."</u>. ".$agotext."</div>";
+        			echo "<div class='shortStory'>".$name." changed ".$his." email address to <u>".$row['newsContent']."</u>. ".$agotext."</div>";
         			break;
         			case '11':
-        			echo "<div class='shortStory'>".$name." changed their phone number to <u>".$row['newsContent']."</u>. ".$agotext."</div>";
+        			echo "<div class='shortStory'>".$name." changed ".$his." phone number to <u>".$row['newsContent']."</u>. ".$agotext."</div>";
         			break;
         			case '12':
         			echo "<div class='shortStory'>".$name." is now ".$row['newsContent']."cm tall!! Congratulations. ".$agotext."</div>";
