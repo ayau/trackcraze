@@ -66,6 +66,9 @@ if (isset($_SESSION['LoggedIn'])
         case 'sendfeedback':
         	$userObj->sendfeedback();
         break;
+        case 'newsForRecord':
+        	$userObj->newsForRecord($_POST['newstype'], $_POST['content']);
+        break;
         default:
             header("Location: ");
         break;

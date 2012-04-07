@@ -351,6 +351,13 @@ return numcheck.test(keychar)
 	}
 	
 	function initializeProgress(get){
+		  		var request = {};
+				var pairs = location.search.substring(1).split('&');
+				for (var i = 0; i < pairs.length; i++) {
+  						var pair = pairs[i].split('=');
+  						request[pair[0]] = pair[1];
+				}
+				
 		$("#recordleft").live("click",function(){//MAKE MORE EFFICIENT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			$("#recordsbydate table").remove();//animate({width:'toggle'},350);
 			prevnextRecords(get,0);
@@ -406,8 +413,11 @@ return numcheck.test(keychar)
 			thisparent.find(".repInputTable").val(thisparent.prev().find(".repInputTable").val());
 		}
 	});
+
 	$("#recordsubmit").live("click",function(){
-		if(testdate($("#weightdate").val())==true){
+		//flag = false;
+		weightdate = $("#weightdate").val()
+		if(testdate(weightdate)==true){
 		$(".recordtable").each(function(){
 			var $whitelist = '<b><i><strong><em><a>',
     		weight = strip_tags(cleanHREF($(this).find(".weightInputTable").val()), $whitelist);//doesn't work. take away parseInt
@@ -421,7 +431,7 @@ return numcheck.test(keychar)
     			url: "/db-interaction/gsprogress.php",
     			data: {
     				"action":"recordsubmit",
-    				"date":$("#weightdate").val(),
+    				"date":weightdate,
     				"lid":$(this).attr('list'),
     				"weight":$(this).find(".weightInputTable").val(),    //weight instead of $(this).find ?
     				"lbkg":$(this).find("select").val(),
@@ -431,6 +441,19 @@ return numcheck.test(keychar)
 				},
     				
     			success: function(){
+    					$.ajax({
+       						type: "POST",
+      			 			url: "/db-interaction/users.php",
+       						data: "action=newsForRecord&content="+weightdate+
+    			   			"&newstype=4",
+       						success: function(){
+       							
+       						},
+      						error: function(){
+       						}
+      					});
+    				//shouldn't have to update news everytime it gets here. set a flag?
+    			
     			},
     			error: function(){
     			    // should be some error functionality here
@@ -461,6 +484,17 @@ return numcheck.test(keychar)
 				},
     				
     			success: function(){
+    					$.ajax({
+       						type: "POST",
+      			 			url: "/db-interaction/users.php",
+       						data: "action=newsForRecord&content="+weightdate+
+    			   			"&newstype=4",
+       						success: function(){
+       							
+       						},
+      						error: function(){
+       						}
+      					});
     			},
     			error: function(){
     			    // should be some error functionality here
@@ -469,6 +503,7 @@ return numcheck.test(keychar)
 		}
 	}	
 		});
+
 		alert("Record saved.");//unsafe. Some records might not have been saved yet.
 	}
 	});
@@ -480,6 +515,7 @@ return numcheck.test(keychar)
 		$(this).remove();
 	});
 	$("#addoldExerciseInputTable").live("click",function(){
+		weightdate = $("#weightdate").val();
 		//check to make sure it's not empty
 		if(testdate($("#weightdate").val())==true){
 			var $whitelist = '<b><i><strong><em><a>',
@@ -508,6 +544,17 @@ return numcheck.test(keychar)
 							$('#oldWeight').val('');
 							$('#oldRep').val('');
 							$("#oldComment").val('');
+    					$.ajax({
+       						type: "POST",
+      			 			url: "/db-interaction/users.php",
+       						data: "action=newsForRecord&content="+weightdate+
+    			   			"&newstype=4",
+       						success: function(){
+       							
+       						},
+      						error: function(){
+       						}
+      					});							
 							//need to label the comment box and clear it.!!!!
     					},
     					error: function(){
@@ -526,6 +573,7 @@ return numcheck.test(keychar)
 	})
 	$("#addExerciseInputTable").live("click",function(){
 		//check to make sure it's not empty
+		weightdate = $('#weightdate').val();
 		if(testdate($("#weightdate").val())==true){
 			var $whitelist = '<b><i><strong><em><a>',
 			exercise = strip_tags(cleanHREF($(this).parent().parent().find("#newExercise").val()), $whitelist);
@@ -556,6 +604,18 @@ return numcheck.test(keychar)
 							$('#newRep').val('');
 							$('#newComment').val('');
 							//need to label the comment box and clear it.!!!!
+							
+    					$.ajax({
+       						type: "POST",
+      			 			url: "/db-interaction/users.php",
+       						data: "action=newsForRecord&content="+weightdate+
+    			   			"&newstype=4",
+       						success: function(){
+       							
+       						},
+      						error: function(){
+       						}
+      					});							
     					},
     					error: function(){
     			    		// should be some error functionality here
@@ -746,7 +806,10 @@ return numcheck.test(keychar)
   		startdateExercise = stoday;
   		$("#TrackTable").show();
   			if (!$("#TrackTable").children().length){
+
+				if(request.length==0)
 				loadRecordsByDate(get,stoday);
+				else loadRecordsByDate(get, request['date']);
 				calgen();
 				currentMonth=today.getMonth()+1;
     			currentYear=today.getFullYear();
@@ -922,6 +985,10 @@ return numcheck.test(keychar)
 		}
 		populateFields(currentMonth, currentYear, get);
 	});
+	
+	//Goes to the corresponding views
+	if(request['view']=="track") $("#TrackSelect").click();
+	else if(request['view']=="physique") $("#PhysiqueSelect").click();
 }
 function getFirstDay(theYear, theMonth){
     	var firstDate = new Date(theYear,theMonth,1);

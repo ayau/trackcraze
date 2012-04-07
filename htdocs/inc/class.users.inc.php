@@ -807,6 +807,53 @@ public function verificationCheck($UID){
     echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
    } 	
  }
+ 
+ public function newsForRecord($type, $content){
+ 	if($type==0) $UID = $_POST['postto'];
+ 	else $UID = $_SESSION['UserID'];
+	$time = date("Y-m-d H:i:S");
+	 $sql = "SELECT 
+  			newsContent, newsType, UserID
+  			FROM news
+  			WHERE UserID=:uid AND newsType=4 AND newsContent=:nc";
+  if($stmt = $this->_db->prepare($sql))
+   {
+    $stmt->bindParam(':uid', $UID, PDO::PARAM_INT);
+    $stmt->bindParam(':nc', $content, PDO::PARAM_STR);
+    $stmt->execute();
+    if($row = $stmt->fetch()){
+    	$sql = "UPDATE news
+				SET	newsTime =:time
+				WHERE UserID=:uid
+				AND newsType=4
+					AND newsContent=:nc";
+		 if($stmt = $this->_db->prepare($sql)){
+    		$stmt->bindParam(':uid', $UID, PDO::PARAM_INT);
+   	 		$stmt->bindParam(':nc', $content, PDO::PARAM_STR);
+   	 		$stmt->bindParam(':time', $time, PDO::PARAM_STR);
+    		$stmt->execute();
+    		
+    		$stmt->closeCursor();
+   		}
+  		else
+   		{
+    		echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
+   		} 	
+    	
+    }else{
+    	$this->newsUpdate($type, $content);
+    }
+    
+    $stmt->closeCursor();
+   }
+  else
+   {
+    echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
+   } 	
+	
+ 	
+ }
+ 
  public function newsUpdate($type, $content){
  	if($type==0) $UID = $_POST['postto'];
  	else $UID = $_SESSION['UserID'];

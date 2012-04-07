@@ -88,9 +88,19 @@ function initializeNews(get){
 				},
     				
     			success: function(r){
-    				$("."+id+"tag").children().remove();
-    				$("."+id+"tag").text('');
-					$("."+id+"tag").append(r+" is now tracking your progress.");
+					$.ajax({
+       						type: "POST",
+       						url: "/db-interaction/users.php",
+       						data: "action=newsupdate&content="+id+
+       						"&newstype=20",
+       						success: function(){
+       							$("."+id+"tag").children().remove();
+    							$("."+id+"tag").text('');
+								$("."+id+"tag").append(r+" is now tracking your progress.");
+       						},
+      						error: function(){
+       						}
+      					});
     			},
     			error: function(){
     			    // should be some error functionality here

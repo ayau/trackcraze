@@ -329,7 +329,7 @@
         			echo "<div>ProgramUpdate</div>";
         			break;
         			case '4':
-        			echo "<div>Record Input</div>";
+        			echo "<div class='shortStory'>".$name." has just worked out. <a class='link' href=\"/progress.php?user=".$row['UserID']."&view=track&date=".$row['newsContent']."\">Check out what he did!</a> ".$agotext."</div>";
         			break;
         			case '5':
         			$program=$news->getprogramName($row['newsContent']);
@@ -374,7 +374,8 @@
         			echo "<div class='shortStory'>".$name.$gendertext." ".$agotext."</div>";
         			break;
         			case '20':
-        				
+        				$trackee = $news->getName($row['newsContent']);
+        				echo "<div class='shortStory'>".$name." is now tracking ".$trackee."</div>";
         			break;
 			}
 		}
