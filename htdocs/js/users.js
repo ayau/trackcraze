@@ -28,7 +28,7 @@ function profileEdit(mofb,yofb,ddofb,sex,wunit,privacy,trackO,previousLocation,p
 		$("#datepicker").append(daydropbox31);//Puts in day drop box for months with 31 days
 	}
 	else if($('#MOfB').val()==4||6||9||11){
-		$("#datepicker").append(daydropbox30);//Puts in day drop box for months with 31 days
+		$("#datepicker").append(daydropbox30);//Puts in day drop box for months with 30 days
 	}
 	else if($('#MOfB').val()==2&&yofb%4==0){
 		$("#datepicker").append(daydropbox29);//Puts in day drop box for a leap year in feb
@@ -820,16 +820,16 @@ $.ajax({
            // should be some error functionality here
        }
       });
-if (flocation!=previousLocation){
+if (flocation!=previousLocation && flocation!=""){
 	sendToNewsDB (location,9);
 }
-if (femail!=previousEmail){
+if (femail!=previousEmail && femail!=""){
 	sendToNewsDB (email,10);
 }
-if (fphone!=previousPhone){
+if (fphone!=previousPhone && fphone!=""){
 	sendToNewsDB (phone,11);
 }
-if (fheight!=previousHeight){
+if (fheight!=previousHeight && fheight!=""){
 	sendToNewsDB (height,12)
 }
 if (sex!=genderVal){
