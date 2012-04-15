@@ -1608,8 +1608,7 @@ EMAIL;
 		// NOW THAT FORENAME IS SELECTED, UPDATE THE ForgetPassword FIELD WITH SHA1(time())
 		$sql = "UPDATE users
             	SET ForgetPassword=:code
-                WHERE Username=:useruid
-	                AND UserID=:
+                WHERE Username=:user AND UserID=:uid
                 LIMIT 1";
         try{
         	$stmt = $this->_db->prepare($sql);
@@ -1619,7 +1618,7 @@ EMAIL;
             $stmt->execute();
             $this->sendPasswordEmail($u, $v, $FN);
         	$stmt->closeCursor();
-        	return 0;
+        	//return 0;
         }
             catch(PDOException $t)
 		{
@@ -1639,7 +1638,7 @@ MESSAGE;
         $msg = <<<EMAIL
 Hi $firstname! 
 
-Simply click on www.trackcraze.com/retrievepassword.php?v=$ver&e=$e to retrieve your password.
+Simply visit on www.trackcraze.com/retrievepassword.php?v=$ver&e=$e to reset your password.
 
 If you believe that you have recieved this email in error, please do not hesitate to contact us at support@trackcraze.com.
  
@@ -1654,5 +1653,38 @@ EMAIL;
         return mail($to, $subject, $msg, $headers);
         //echo $msg;
     }
+public function resetPassword(){
+	$sql = "UPDATE users
+			SET Password=MD5(:password), ForgetPassword=NULL
+			WHERE SHA1(Username)=:email AND ForgetPassword=:vercode
+			LIMIT 1";
+	try{//WE RESET THE FORGETPASSWORD FIELD SO THE USER CANT VISIT THIS LINK AGAIN
+        	$stmt = $this->_db->prepare($sql);
+            $stmt->bindParam(':password', $_POST['password'], PDO::PARAM_STR); //USERS NEW PASSWORD
+            $stmt->bindParam(':email', $_POST['shamail'], PDO::PARAM_STR); //Their email that has been SHA1, gotten from the link
+            $stmt->bindParam(':vercode', $_POST['vercode'], PDO::PARAM_STR); //Their forgot password verification code
+            $stmt->execute();
+        	$stmt->closeCursor();
+        }
+            catch(PDOException $t)
+		{
+			return $t->getMessage();
+		}
+	}
+public function checkEmailExists($shamail,$vercode){
+	$sql = "SELECT COUNT(Username) AS theCount
+                FROM users
+                WHERE SHA1(Username)=:email AND ForgetPassword=:vercode";
+        if($stmt = $this->_db->prepare($sql)) {
+            $stmt->bindParam(":email", $shamail, PDO::PARAM_STR);
+            $stmt->bindParam(":vercode", $vercode, PDO::PARAM_STR);
+            $stmt->execute();
+            $row = $stmt->fetch();
+            if($row['theCount']==0) {
+                return 1; //Email NOT in use;
+            }
+            $stmt->closeCursor();
+        }
+}
 }
 ?>

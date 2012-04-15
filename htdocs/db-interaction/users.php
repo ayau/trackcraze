@@ -103,6 +103,9 @@ else{
 		case "retrievepassword":
 			echo $userObj->retrievePassword();
 		break;
+		case "resetpassword":
+			echo $userObj->resetPassword();
+		break;
 	}
 }
 }
