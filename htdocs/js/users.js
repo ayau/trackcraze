@@ -636,6 +636,46 @@ function sendToNewsDB (content,newstype)
        }
       });
 }
+$("#privacy1").change(function(){
+	if($(this).val()==2) {
+	$("#tprivacy1").val(1);
+	else{
+		$("#tprivacy1").val(0);
+	}
+}
+});
+$("#privacy2").change(function(){
+	if($(this).val()==2) {
+	$("#tprivacy2").val(1);
+	else{
+		$("#tprivacy2").val(0);
+	}
+}
+});
+$("#privacy3").change(function(){
+	if($(this).val()==2) {
+	$("#tprivacy5").val(1);
+	else{
+		$("#tprivacy5").val(0);
+	}
+}
+});
+$("#privacy4").change(function(){
+	if($(this).val()==2) {
+	$("#tprivacy5").val(1);
+	else{
+		$("#tprivacy5").val(0);
+	}
+}
+});
+$("#privacy5").change(function(){
+	if($(this).val()==2) {
+	$("#tprivacy5").val(1);
+	else{
+		$("#tprivacy5").val(0);
+	}
+}
+});
  $('#editpsave').live("click",function(){
  	if ($("#YOfB").val()==thisyear&&($("#MOfB").val()-1)==d.getMonth()&&$("#DDOfB").val()>d.getDate()){
  		$("#funnyerror").text("You are not terminator (P.S. your birthday is in the future)").show();

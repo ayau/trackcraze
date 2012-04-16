@@ -16,7 +16,7 @@ Clearly you're not working out hard enough if you've forgotten your password, yo
 Please enter the email address you used to sign up with trackCraze:
 <br />
 <br />
-<form method="post"  id="passwordforget">
+<form method="post"  id="forgetpassword">
 <input type="text" name="username" id="username" class='inputfields' placeholder='Email'/>
 <div id ='errormail' class='errorsignup' hidden></div> 
 <br />
@@ -30,9 +30,10 @@ $("#passwordforget").live("click",function(){
 		data: "action=retrievepassword&email="+$("#username").val(),
 	success: function(r){
 		if(r==1)
-			$("#errormail").text("Sorry, but we do not have a record of that email").show();
-		else if(r==0)
-	window.location = "/passwordretrieve.php"; 
+		$("#errormail").text("Sorry, but we do not have a record of that email").show();
+		else //if(r==1)
+		window.location = "/passwordretrieve.php";
+		
 	},
 	error:function(){}  
 	});
