@@ -43,18 +43,25 @@
 		$news = new GSNews();
 		$news->getTR();		
 		$string = $news->getTracking();
+		$time = $news->getLastNewsVisit();
+		$news->getPostOnBoard($time);
 		$news->getnewsContent($string);
 	}
 	function getMiniNews(){
 		$news = new GSNews();
 		$news->getMiniTR();
 		$string = $news->getTracking();
-		if ($string==NULL){
+		$time = $news->getLastNewsVisit();
+		if ($string=="UserID="){
 			echo "Seems like you have no friends.";
 		}else{
-		$news->getMiniPost($string);
-		$news->getMiniContact($string);
-		$news->getMiniGender($string);
+		$post = $news->getMiniPost($string, $time);
+		$record = $news->getMiniRecord($string, $time);
+		$contact = $news->getMiniContact($string, $time);
+		$gender = $news->getMiniGender($string, $time);
+		if(!$post && !$record && !$contact && !$gender){
+			echo "<br /><br />Nothing much has happened since you last logged in.<br/><br />Consider getting more friends";
+		}
 	}
 	}
 	
@@ -149,9 +156,9 @@
 		{
 			$stmt->bindParam(':uid', $_SESSION['UserID'], PDO::PARAM_INT);
 			$stmt->execute();
-			$string="";
+			$string="UserID=";
 			$row = $stmt->fetch();
-			$string=$string.$row['Trackee'];
+			$string = $string.$row['Trackee'];
 			while($row = $stmt->fetch())
 			{
 				$string = $string." OR UserID=".$row['Trackee'];	
@@ -164,18 +171,52 @@
 			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
 		}
 	}
-	function getMiniContact($string){
+	function getMiniRecord($string, $time){
+		$sql = "SELECT
+					COUNT(DISTINCT UserID) AS count
+				FROM news
+				WHERE newsType=4
+				AND newsTime>=:time AND ".$string;
+		if($stmt = $this->_db->prepare($sql))
+		{
+			$stmt->bindParam(':time', $time, PDO::PARAM_STR);
+			$stmt->execute();
+			$row = $stmt->fetch();
+			if($row['count']==1){
+				echo "<div class='mininews'>".$row['count']." person has worked out since you last visited.</div>";
+				return true;
+			}else if($row['count']>1){
+				echo "<div class='mininews'>".$row['count']." people have worked out since you last visited.</div>";
+				return true;
+			}else return false;
+			$stmt->closeCursor();
+		}
+		else
+		{
+			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
+		}
+	}
+	
+	function getMiniContact($string, $time){
 		$sql = "SELECT
 					COUNT(DISTINCT UserID) AS count
 				FROM news
 				WHERE (newsType=9
 				OR newsType =10
-				OR newsType =11) AND UserID=".$string;
+				OR newsType =11) 
+				AND newsTime>=:time AND ".$string;
 		if($stmt = $this->_db->prepare($sql))
 		{
+			$stmt->bindParam(':time', $time, PDO::PARAM_STR);
 			$stmt->execute();
 			$row = $stmt->fetch();
-			echo "<div class='mininews'>Looks like ".$row['count']." people have updated their contact information.</div>";
+			if($row['count']==1){
+				echo "<div class='mininews'>Looks like ".$row['count']." person has updated their contact information.</div>";
+				return true;
+			}else if($row['count']>1){
+				echo "<div class='mininews'>Looks like ".$row['count']." people have updated their contact information.</div>";
+				return true;
+			}else return false;
 			$stmt->closeCursor();
 		}
 		else
@@ -183,16 +224,24 @@
 			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
 		}
 	}
-	function getMiniGender($string){
+	function getMiniGender($string, $time){
 		$sql = "SELECT
 					COUNT(DISTINCT UserID) AS count
 				FROM news
-				WHERE newsType=15 AND UserID=".$string;
+				WHERE newsType=15 
+				AND newsTime>=:time AND ".$string;
 		if($stmt = $this->_db->prepare($sql))
 		{
+			$stmt->bindParam(':time', $time, PDO::PARAM_STR);
 			$stmt->execute();
 			$row = $stmt->fetch();
-			echo "<div class='mininews'>Looks like ".$row['count']." people have changed their sex.</div>";
+			if($row['count']==1){
+				echo "<div class='mininews'>Looks like ".$row['count']." person has changed their sex.</div>";
+				return true;
+			}else if($row['count']>1){
+				echo "<div class='mininews'>Looks like ".$row['count']." people have changed their sex.</div>";
+				return true;
+			}else return false;
 			$stmt->closeCursor();
 		}
 		else
@@ -200,31 +249,56 @@
 			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
 		}
 	}
-	function getMiniPost($string){
+	function getMiniPost($string, $time){
+		$count=0;
 		$sql = "SELECT
-					COUNT(*) AS count
-				FROM news
-				WHERE newsType=0 AND UserID=".$string;
+			newsTime, newsContent	
+			FROM news
+			WHERE UserID=:uid AND newsType=0 AND newsTime>=:time ORDER BY newsTime DESC";
 		if($stmt = $this->_db->prepare($sql))
 		{
+			$stmt->bindParam(':uid', $_SESSION['UserID'], PDO::PARAM_INT);
+			$stmt->bindParam(':time', $time, PDO::PARAM_STR);
 			$stmt->execute();
-			$row = $stmt->fetch();
-			if ($row['count']<=3){
+		
+			while($row = $stmt->fetch()){
+				$agotext = "<p class='agotext inline'>".$this->getTimeDiff($row["newsTime"])."</p>";
+				$sql = "SELECT
+					UserID, PostBy, PostText
+							FROM posts
+							WHERE PostID=:pid
+								AND PostBy<>:uid
+							LIMIT 1";
+						if($stmt = $this->_db->prepare($sql))
+						{
+							$stmt->bindParam(':uid', $_SESSION['UserID'], PDO::PARAM_INT);
+							$stmt->bindParam(':pid', $row['newsContent'], PDO::PARAM_INT);
+							$stmt->execute();
+							$news = new GSNews();
+							if($row = $stmt->fetch()){
+								$count++;
+							}
+						}
+					}
+				}
+
+			if ($count<=3){
 				$easteregg="";
-			}else if ($row['count']<=6){
+			}else if ($count<=6){
 				$easteregg="Look who's so popular!";
-			} else if ($row['count']<=10){
+			} else if ($count<=10){
 				$easteregg="You should try out for the Mr/Ms Popular next year.";
 			} else {
 				$easteregg="Either you're the most popular person in the world, or someone's spamming your board.";
 			}
-			echo "<div class='mininews'>Looks like you have ".$row['count']." new notes on your board. ".$easteregg."</div>";
+			if($count==1){
+			echo "<div class='mininews'>Looks like you have ".$count." new note on your board. ".$easteregg."</div>";
+			return true;
+			}else if($count>1){
+			echo "<div class='mininews'>Looks like you have ".$count." new notes on your board. ".$easteregg."</div>";
+			return true;
+			}else return false;
 			$stmt->closeCursor();
-		}
-		else
-		{
-			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
-		}
 	}
 	function getMiniTR(){
 		$sql = "SELECT COUNT(*) AS count
@@ -296,13 +370,75 @@
 				}
 			return $agotext;
 	}
+	
+	function getPostOnBoard($time){
+		
+		$sql = "SELECT
+			newsTime, newsContent	
+			FROM news
+			WHERE UserID=:uid AND newsType=0 AND newsTime>=:time ORDER BY newsTime DESC";
+		if($stmt = $this->_db->prepare($sql))
+		{
+			$stmt->bindParam(':uid', $_SESSION['UserID'], PDO::PARAM_INT);
+			$stmt->bindParam(':time', $time, PDO::PARAM_STR);
+			$stmt->execute();
+		
+			while($row = $stmt->fetch()){
+				$agotext = "<p class='agotext inline'>".$this->getTimeDiff($row["newsTime"])."</p>";
+				$sql = "SELECT
+					UserID, PostBy, PostText
+							FROM posts
+							WHERE PostID=:pid
+								AND PostBy<>:uid
+							LIMIT 1";
+						if($stmt = $this->_db->prepare($sql))
+						{
+							$stmt->bindParam(':uid', $_SESSION['UserID'], PDO::PARAM_INT);
+							$stmt->bindParam(':pid', $row['newsContent'], PDO::PARAM_INT);
+							$stmt->execute();
+							$news = new GSNews();
+							if($row = $stmt->fetch()){
+								$name = $news->getName($row['PostBy'])." has";								
+								$name1 = "<a class='link' href=\"/board.php?user=".$_SESSION['UserID']."\">your</a>";
+						
+								echo "<div class='story'>";
+										$rand = rand (0,2);
+										switch($rand){
+											case 0:
+											echo "<h3>New Post bitches!</h3>";
+											break;
+											case 1:
+											echo "<h3>You so Popular!</h3>";
+											break;
+											case 2:
+											echo "<h3>Someone left a message for you</h3>";
+											break;
+										}
+									echo "<div class='postBox'>".$name." put a note on ".$name1." board:<div class='posttext newsPostText'>".$row['PostText']."</div>".$agotext."</div></div>";
+
+							}
+							$stmt->closeCursor();
+						}
+						else
+						{
+							echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
+						}
+					}
+					}
+						else
+						{
+							echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
+						}
+	}
+	
+	
 	function getnewsContent($string){
 		//$string = Either about you or who you're tracking
 
 		$sql = "SELECT
 				UserID, newsTime, newsType, newsContent	
 				FROM news
-					WHERE UserID=".$string." ORDER BY newsTime DESC LIMIT 50";
+					WHERE ".$string." ORDER BY newsTime DESC LIMIT 50";
 		if($stmt = $this->_db->prepare($sql))
 		{
 			$stmt->execute();
@@ -329,7 +465,7 @@
         			echo "<div>ProgramUpdate</div>";
         			break;
         			case '4':
-        			echo "<div class='shortStory'>".$name." has just worked out. <a class='link' href=\"/progress.php?user=".$row['UserID']."&view=track&date=".$row['newsContent']."\">Check out what he did!</a> ".$agotext."</div>";
+        			echo "<div class='shortStory'>".$name." has just worked out. <a class='link' href=\"/progress.php?user=".$row['UserID']."&view=track&date=".$row['newsContent']."\">Check out what ".$he." did!</a> ".$agotext."</div>";
         			break;
         			case '5':
         			$program=$news->getprogramName($row['newsContent']);
@@ -408,21 +544,25 @@
 			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
 		}
 	}
+	
+	//only for when other people update status or post on each other's walls. Not for posts on your own wall
 	function getnewspost($nc, $agotext){
 		$sql = "SELECT
 						posts.UserID, PostBy, PostText
 							FROM posts
 							WHERE PostID=:pid
+								AND PostBy<>:uid
 							LIMIT 1";
 						if($stmt = $this->_db->prepare($sql))
 						{
+							$stmt->bindParam(':uid', $_SESSION['UserID'], PDO::PARAM_INT);
 							$stmt->bindParam(':pid', $nc, PDO::PARAM_INT);
 							$stmt->execute();
 							$news = new GSNews();
 							if($row = $stmt->fetch()){
 								
-								$name = $news->getName($row['PostBy']);
-								
+								$name = $news->getName($row['PostBy'])." has";
+								//if($row['PostBy']!=$_SESSION['UserID']){
 								//post on his own wall
 								if($row['UserID']==$row['PostBy']){
 									echo "<div class='story'>";
@@ -435,14 +575,14 @@
 										$name1 = ($news->getName($row['UserID']))."'s";
 									}
 									if ($row['PostBy']==$_SESSION['UserID']){
-										$name = "You";
+										$name = "You have";
 									}//USELESS? SINCE YOU NEVER TRACK YOURSELF							
 									echo "<div class='story'>";
 									if($row['UserID']==$_SESSION['UserID']){
 										$rand = rand (0,2);
 										switch($rand){
 											case 0:
-											echo "<h3>New Post for you bitches!</h3>";
+											echo "<h3>New Post bitches!</h3>";
 											break;
 											case 1:
 											echo "<h3>You so Popular!</h3>";
@@ -452,9 +592,10 @@
 											break;
 										}
 									}
-									echo "<div class='postBox'>".$name." has put a note on ".$name1." board:<div class='posttext newsPostText'>".$row['PostText']."</div>".$agotext."</div></div>";
+									echo "<div class='postBox'>".$name." put a note on ".$name1." board:<div class='posttext newsPostText'>".$row['PostText']."</div>".$agotext."</div></div>";
 								}
 							}
+						//}
 							$stmt->closeCursor();
 
 			// If there aren't any list items saved, no list ID is returned
@@ -1054,4 +1195,41 @@
 			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
 		}
  }
+ 	function updateLastVisit(){
+		$sql = "UPDATE users
+			 	SET lastNewsVisit =  CURRENT_TIMESTAMP
+				 WHERE UserID=:uid
+		            LIMIT 1"; 
+		if($stmt = $this->_db->prepare($sql))
+		{
+			$stmt->bindParam(':uid', $_SESSION['UserID'], PDO::PARAM_INT);
+			$stmt->execute();
+			$stmt->closeCursor();
+		}
+		else
+		{
+			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
+		}		
+	}
+	
+	function getLastNewsVisit(){
+		$sql = "SELECT
+					lastNewsVisit
+				FROM users
+				WHERE UserID=:uid
+		            LIMIT 1"; 
+		if($stmt = $this->_db->prepare($sql))
+		{
+			$stmt->bindParam(':uid', $_SESSION['UserID'], PDO::PARAM_INT);
+			$stmt->execute();
+			$row = $stmt->fetch();
+			return $row['lastNewsVisit'];
+			$stmt->closeCursor();
+		}
+		else
+		{
+			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
+		}
+	}
+ 
 }

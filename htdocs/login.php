@@ -24,10 +24,10 @@
                 <input type="password" name="password" id="password" class='inputfields' placeholder='Password'/>
                 <label for="password">Password</label>
                 <br /><br />
-                <input type="submit" name="login" id="login" value="Login" class="button" />
+                <input type="submit" name="login" id="login" value="Login" class="button wide box" />
             </div>
-        </form>
-        <p><a href="/password.php">Did you forget your password?</a></p>
+        </form><br /><br />
+        <p><a href="/password.php" class="twentyfont">Did you forget your password?</a></p>
 <?php
         endif;
     else:
