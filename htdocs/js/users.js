@@ -638,42 +638,37 @@ function sendToNewsDB (content,newstype)
 }
 $("#privacy1").change(function(){
 	if($(this).val()==2) {
-	$("#tprivacy1").val(1);
+	$("#tprivacy1").val(1);}
 	else{
 		$("#tprivacy1").val(0);
 	}
-}
 });
 $("#privacy2").change(function(){
 	if($(this).val()==2) {
-	$("#tprivacy2").val(1);
+	$("#tprivacy2").val(1);}
 	else{
 		$("#tprivacy2").val(0);
 	}
-}
 });
 $("#privacy3").change(function(){
 	if($(this).val()==2) {
-	$("#tprivacy5").val(1);
+	$("#tprivacy5").val(1);}
 	else{
 		$("#tprivacy5").val(0);
-	}
 }
 });
 $("#privacy4").change(function(){
 	if($(this).val()==2) {
-	$("#tprivacy5").val(1);
+	$("#tprivacy5").val(1);}
 	else{
 		$("#tprivacy5").val(0);
-	}
 }
 });
 $("#privacy5").change(function(){
 	if($(this).val()==2) {
-	$("#tprivacy5").val(1);
+	$("#tprivacy5").val(1);}
 	else{
 		$("#tprivacy5").val(0);
-	}
 }
 });
  $('#editpsave').live("click",function(){
@@ -860,16 +855,16 @@ $.ajax({
            // should be some error functionality here
        }
       });
-if (flocation!=previousLocation && flocation!=""){
+if (flocation!=previousLocation && flocation!="" && $("#tprivacy5").val()==0){
 	sendToNewsDB (location,9);
 }
-if (femail!=previousEmail && femail!=""){
+if (femail!=previousEmail && femail!="" && $("#tprivacy5").val()==0){
 	sendToNewsDB (email,10);
 }
-if (fphone!=previousPhone && fphone!=""){
+if (fphone!=previousPhone && fphone!="" && $("#tprivacy5").val()==0){
 	sendToNewsDB (phone,11);
 }
-if (fheight!=previousHeight && fheight!=""){
+if (fheight!=previousHeight && fheight!="" && $("#tprivacy2").val()==0){
 	sendToNewsDB (height,12)
 }
 if (sex!=genderVal){
