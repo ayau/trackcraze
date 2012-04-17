@@ -32,9 +32,10 @@
     	<form enctype="multipart/form-data" action="uploader.php" method="POST">
 <input type="hidden" name="MAX_FILE_SIZE" value="700000" />
 Choose a file to upload: <input name="file" type="file" />Maximum size-700kB<br />
-<input type="submit" value="Upload File" />
+<input type="submit" class='boxpadding' value="Upload File" />
 </form>
-	Or Choose from existing photos:	<input type='button' id='chooseprofilepic' alt="photochooser.php?height=400&width=570" title="Select a photo:" class="thickbox" value='Choose file'/>
+<br />
+	Or 	<input type='button' id='chooseprofilepic' alt="photochooser.php?height=400&width=570" title="Select a photo:" class="thickbox boxpadding box font14 lightgreen" value='Choose from existing photos'/>
 	<div id='profilepicselect' hidden></div>
   </td>
     </tr>
@@ -90,7 +91,7 @@ Choose a file to upload: <input name="file" type="file" />Maximum size-700kB<br 
      <td class='tar tat'>Sports You Play</td>
      <td class='tat'>
      	<span id="existingsports"><?php $users->loadSports($_SESSION['UserID'],0) ?></span>
-     	<li><input type='text' id='sportsinput' value="" autocomplete='off' placeholder='What Sports do you play?'/><button type="button" id='addsportsbutton'>Add</button></li>
+     	<li><input type='text' id='sportsinput' value="" class='boxpadding' autocomplete='off' placeholder='What Sports do you play?'/><button type="button" id='addsportsbutton' class='lightgreen mid box'>Add</button></li>
      </td><!-- limit character number-->
     </tr>
      <td class='tar tat'>Phone</td>
@@ -321,8 +322,10 @@ Choose a file to upload: <input name="file" type="file" />Maximum size-700kB<br 
 		</tr>
 	</table>
 	</span>
-   	<button type="button" id='editpsave'>Save Changes</button><span id="funnyerror"></span>
+   	<button type="button" class="wide box" id='editpsave'>Save Changes</button><span id="funnyerror"></span>
    </div>
+   <br />
+   <br />
    <script type="text/javascript" src="js/jquery-ui-1.7.2.custom.min.js"></script>
    <script type="text/javascript" src="js/users.js"></script>
    <script type="text/javascript" src="js/autocomplete/jquery.autocomplete.js"></script>

@@ -77,6 +77,20 @@ function initializeNews(get){
 		$(this).find(".delete").hide();
 		$(this).css('background','none');
 	});
+	
+	$("#stoptrack").hover(function(){
+		$(this).text("Untrack");
+		$(this).addClass("red");
+	}, function(){
+		$(this).text("Tracking");
+		$(this).removeClass("red");
+	});
+	
+	$("#stoptrack").live("click",function(){
+		$(this).before("<div style='color:#DE1818'>Don't worry, we won't tell anyone..</div>");
+		$(this).remove();
+	})
+	
 	$(".acceptTR").live("click",function(){
 		id = $(this).parent().attr('class');
 		$.ajax({

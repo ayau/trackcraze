@@ -176,7 +176,7 @@
 					COUNT(DISTINCT UserID) AS count
 				FROM news
 				WHERE newsType=4
-				AND newsTime>=:time AND ".$string;
+				AND DATE_FORMAT(newsTime, '%Y-%m-%d %H:%i:%s')>=:time AND (".$string.")";
 		if($stmt = $this->_db->prepare($sql))
 		{
 			$stmt->bindParam(':time', $time, PDO::PARAM_STR);
@@ -204,7 +204,7 @@
 				WHERE (newsType=9
 				OR newsType =10
 				OR newsType =11) 
-				AND newsTime>=:time AND ".$string;
+				AND DATE_FORMAT(newsTime, '%Y-%m-%d %H:%i:%s')>=:time AND (".$string.")";
 		if($stmt = $this->_db->prepare($sql))
 		{
 			$stmt->bindParam(':time', $time, PDO::PARAM_STR);
@@ -229,7 +229,7 @@
 					COUNT(DISTINCT UserID) AS count
 				FROM news
 				WHERE newsType=15 
-				AND newsTime>=:time AND ".$string;
+				AND DATE_FORMAT(newsTime, '%Y-%m-%d %H:%i:%s')>=:time AND (".$string.")";
 		if($stmt = $this->_db->prepare($sql))
 		{
 			$stmt->bindParam(':time', $time, PDO::PARAM_STR);
@@ -254,7 +254,7 @@
 		$sql = "SELECT
 			newsTime, newsContent	
 			FROM news
-			WHERE UserID=:uid AND newsType=0 AND newsTime>=:time ORDER BY newsTime DESC";
+			WHERE UserID=:uid AND newsType=0 AND DATE_FORMAT(newsTime, '%Y-%m-%d %H:%i:%s')>=:time ORDER BY newsTime DESC";
 		if($stmt = $this->_db->prepare($sql))
 		{
 			$stmt->bindParam(':uid', $_SESSION['UserID'], PDO::PARAM_INT);
@@ -376,7 +376,7 @@
 		$sql = "SELECT
 			newsTime, newsContent	
 			FROM news
-			WHERE UserID=:uid AND newsType=0 AND newsTime>=:time ORDER BY newsTime DESC";
+			WHERE UserID=:uid AND newsType=0 AND DATE_FORMAT(newsTime, '%Y-%m-%d %H:%i:%s')>=:time ORDER BY newsTime DESC";
 		if($stmt = $this->_db->prepare($sql))
 		{
 			$stmt->bindParam(':uid', $_SESSION['UserID'], PDO::PARAM_INT);
@@ -561,7 +561,7 @@
 							$news = new GSNews();
 							if($row = $stmt->fetch()){
 								
-								$name = $news->getName($row['PostBy'])." has";
+								$name = $news->getName($row['PostBy']);
 								//if($row['PostBy']!=$_SESSION['UserID']){
 								//post on his own wall
 								if($row['UserID']==$row['PostBy']){
@@ -569,6 +569,7 @@
 									echo "<div class='postBox'>".$name." wants the whole world to know that:<div class='posttext newsPostText'>".$row['PostText']."</div>".$agotext."</div>";	
 									echo "</div>";
 								}else{
+									$name = $name." has";
 									if ($row['UserID']==$_SESSION['UserID']){
 										$name1 = "<a class='link' href=\"/board.php?user=".$_SESSION['UserID']."\">your</a>";
 									}else{
@@ -997,7 +998,7 @@
 				$lastid = $this->_db->lastInsertId();
 				$news = new GSNews();
 				$name = $news->getName($UID);				
-				echo "<div id=\"".$lastid."comment\"><div class='delete sp' hidden></div>".$name."<p class='commenttext'>".$text."</p><p class='agotext'>0 seconds ago</p></div>";
+				echo "<div id=\"".$lastid."comment\" class='commentitem'><div class='delete sp' hidden></div>".$name."<p class='commenttext'>".$text."</p><p class='agotext'>0 seconds ago</p></div>";
 				$stmt->closeCursor();
 			 }
 	 		catch(PDOException $e)

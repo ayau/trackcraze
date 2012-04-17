@@ -1118,7 +1118,7 @@ function strip_tags(str, allowed_tags) {
 }
 }
 function profile(chest, forearm, waist, thigh, hip, calve, bicep, neck, shoulder, unit, fheighti, fprimaryWeight, lbkg, height, gender, birthday)
-{	var splitDOB = birthday.split("-")
+{	var splitDOB = birthday.split("-");
     	today = new Date();
 	if (birthday==""){
 		$("#DOfB").replaceWith("<a href='editprofile.php' class='toEditProfile'>Edit your profile to enter a birthday</a>");
@@ -1128,24 +1128,25 @@ function profile(chest, forearm, waist, thigh, hip, calve, bicep, neck, shoulder
 	$("#gender").val(gender);
 	$("#goalsbmi").hide();
 	var measurements = new Array(chest, forearm, waist, thigh, hip, calve, bicep, neck, shoulder, unit);
-	var mUnitArray = new Array
+	//var mUnitArray = new Array
 	mUnitArray = baseTwoConvert(unit,9);
 	for (var i=0; i<9; i++){
 		thiscache = $("#m"+i);
 		primaryMeasurement = measurements[i];
 		if(mUnitArray[i]==0){
 			var secondaryMeasurement = primaryMeasurement*2.54;
-			thiscache.text(primaryMeasurement+" in / "+secondaryMeasurement.toFixed(1)+" cm");
+			thiscache.text(parseFloat(primaryMeasurement).toFixed(1)+" in / "+secondaryMeasurement.toFixed(1)+" cm");
 		}
 		else if(mUnitArray[i]==1){
 			var secondaryMeasurement = primaryMeasurement*0.393700787;
-			thiscache.text(secondaryMeasurement.toFixed(1)+" in / "+primaryMeasurement.toFixed(1)+" cm");
+			thiscache.text(secondaryMeasurement.toFixed(1)+" in / "+parseFloat(primaryMeasurement).toFixed(1)+" cm");
 		}
 		if(measurements[i]==0){
 			thiscache.prev().remove();
 			thiscache.remove();
 		}
 	}
+	
 	if ($("#goals").find("tr").length==1){
 		$("#goals").remove();
 	}
@@ -1331,9 +1332,11 @@ function initializeTrack(trackee, TrackerO){
     				
     			success: function(){
     				if(TrackerO==1){
-    					$("#trackthisperson").remove();
+    					$("#trackthisperson").remove();		//What is this?
     				} else {
 					$("#trackthisperson").text("Track request pending");//remove onclick thing
+					$("#trackthisperson").removeClass("lightgreen");
+					$("#trackthisperson").addClass("grey");
 				}
     			},
     			error: function(){

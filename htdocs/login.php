@@ -14,7 +14,7 @@
         else:
 ?>
            <div id="loginheading">       
-        <h2>Login Failed&mdash;Try Again?</h2>
+       <h2>Login Failed&mdash;Try Again?</h2>
         </div>
         <form method="post" action="login.php" name="loginform" id="loginform">
             <div>
