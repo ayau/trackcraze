@@ -221,7 +221,7 @@
     		$("#privacya").remove();
     		var DOfB = "<?php echo $DOfB ?>";
     		splitDOfB = DOfB.split(" ");
-    		$("#DOfB").replaceWith(splitDOfB[0]+" "+splitDOfB[1]);
+    		$("#DOfB").text(splitDOfB[0]+" "+splitDOfB[1]);
     	}
     	</script>
     	<?php
