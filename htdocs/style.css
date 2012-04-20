@@ -46,7 +46,9 @@ p { margin: 0 0 6px 0; }
 .mid{width:80px;height:25px; font-size:18px;}
 .small{width:60px; height:20px;font-size:14px}
 
+.boxpadding {padding:5px;}
 .font14 {padding-top:5px;font-size:14px;}
+.font20 {font-size:20px;}
 
 .box {background-color:#2D79B3; border:none; font-family:Roboto; color:#FFFFFF;text-align: center;cursor:pointer;border-radius: 3px;}
 .box:hover {background-color:#276B9E;}
@@ -55,13 +57,14 @@ p { margin: 0 0 6px 0; }
 .lightgreen:hover{background-color:#3AB152}
 
 .red{background-color:#DE1818;}
-.red:hover{background-color:#DE1818;}
+.red:hover{background-color:#BD1717;}
 
 .orange{background-color:#FF9900;}
 .orange:hover{background-color:#FF9900}
 
 .grey {background-color:#B5B5B5;}
 .grey:hover {background-color:#A1A1A1;}
+
 
 .twentyfont{font:20px Rotobo;}
 
@@ -351,7 +354,7 @@ li {list-style:none;} //ALL LIST = no dots
 	width: 400px;
 	height: 50px;
 }
-#profile #sportsinput { width:180px;}
+#profile #sportsinput { width:180px; padding:5px}
 .pbody {
 	font-size:14px;
 }
@@ -387,7 +390,7 @@ li {list-style:none;} //ALL LIST = no dots
 	background:#bed5fd;cursor:pointer;
 }
 
-/*Edit prfile*/
+/*Edit profile*/
 #eprofile{
 	padding:7px;
 }
@@ -413,6 +416,10 @@ li {list-style:none;} //ALL LIST = no dots
 	width:200px;
 	height:20px;
 }
+
+#existingsports li{padding-bottom:5px;}
+#existingsports p{float:left; margin-right:20px}
+#addsportsbutton {margin-left:10px;}
 
 /*BOARD LAYOUT
 */

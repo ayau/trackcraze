@@ -14,10 +14,13 @@ if(isset($_SESSION['LoggedIn']) && isset($_SESSION['Username'])):
 include_once 'inc/class.news.inc.php';
 
 $news = new GSNews($db);
+
+
+
 echo "<div id='news'><h2>News & Updates</h2><br />";
 $news->getNews();
 echo "</div>";
-             
+$news->updateLastVisit();            
 ?>			
 			
             <div class="clear"></div>

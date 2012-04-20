@@ -1234,14 +1234,14 @@ public function verificationCheck($UID){
 			$stmt->execute();
 			if ($page ==0){//USER IS ON EDITPROFILE PAGE
 				while($row = $stmt->fetch()){
-				$removebutton = "<button type='button' class='sportremove'>Remove Sport</button>";
+				$removebutton = "<button type='button' class='sportremove red small box'>Remove Sport</button>";
 				if ($row['SportID']==0){
 					$attr = $row['SportName'];			
 				}
 				else{
 					$attr = $row['SportID'];
 				}
-				echo "<li sports='".$attr."'>".$row['SportName']."	".$removebutton."</li>";
+				echo "<li sports='".$attr."'><p>".$row['SportName']."</p>	".$removebutton."</li>";
 			}
 			}else if($page ==1){	//Profile page
 				while($row = $stmt->fetch()){
@@ -1509,12 +1509,12 @@ public function addemail(){
    	$comments = $_POST['comment'];
    	$email = $_POST['email'];
    	$name = $_POST['name'];
-        $to = 'trackcraze@gmail.com';
+        $to = 'feedback@trackcraze.com';
      
         $subject = "Feedback from trackCraze";
  
         $headers = <<<MESSAGE
-From: Support <support@trackcraze.com>
+From: Support <noreply@trackcraze.com>
 Content-Type: text/plain;
 MESSAGE;
  

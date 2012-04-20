@@ -39,13 +39,13 @@
     if($_SESSION['UserID']==$cuser):
     $statushover = ' statushover';
 	elseif($users->trackingCheck($_SESSION['UserID'],$cuser)==0)://TRACK AND REQUEST PENDING IS WAYY TOOO LONG(pushes other stuff out)
-			echo "<a id='trackthisperson'>Track this person</a>";
+			echo "<div class='boxpadding box lightgreen' id='trackthisperson'>Track this person</div>";
 			$birthday = "";//THINK OF BETTER WAY
 		elseif($users->trackingCheck($_SESSION['UserID'],$cuser)==1):
-			echo "<a id='pendingtrack'>Track request pending</a>";
+			echo "<div class='boxpadding box grey' id='pendingtrack'>Track request pending</div>";
 			$birthday = "";//THINK OF BETTER WAY
 		else:
-			echo "<a id='stoptracking'>Stop tracking</a>";
+			echo "<div class='mid box font14' id='stoptrack'>Tracking</div>";
 		endif;
 		//if($_SESSION['UserID']!=$cuser && $users->trackingCheck($cuser,$_SESSION['UserID'])==2):
 		//	echo "<a id='blocktracker'>Block Tracker</a>";
@@ -137,7 +137,7 @@
             $("#trackthisperson").bind("click",function(){
 			$(this).unbind();
 			getTrackerO(<?php echo $cuser.','.$TO?>);
-		})
+			})
             $("#addposttextbox").autogrow(); 
             $("#addposttextbox").charCounter(250);
             </script>
