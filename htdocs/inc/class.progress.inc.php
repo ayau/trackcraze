@@ -486,10 +486,10 @@ class GSProgress
 		//2. Load data from records (jusing javascript to add in)
 		//3. If Record does not belong to program, add "other" input boxes (javascript).
 		//Putting Other program ID in the other textbox
-		echo "<tr id='somethingnewrow'><td colspan='2'><b>Trying something new today?</b></td></tr><tr sid='$opsid'><td colspan='2'><input id='newExercise' size='27'/></td><td><input id='newWeight' class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' /><select id='newlbkg'><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select></td><td><input id='newRep' class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)'/></td><td colspan='2'><textarea id='newComment' class='commentInputTable'/></td><td width='30' class='zeropadding'><input id='addExerciseInputTable' type=button value='ne' /></td></tr>";//for if people want to add new exercises on the go
+		echo "<tr id='somethingnewrow'><td colspan='2'><b>Trying something new today?</b></td></tr><tr sid='$opsid'><td colspan='2'><input id='newExercise' placeholder='Enter new Exercise' size='27'/></td><td><input id='newWeight' class='weightInputTable'   maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' /><select id='newlbkg'><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select></td><td><input id='newRep' class='repInputTable'   maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)'/></td><td colspan='2'><textarea id='newComment' class='commentInputTable' placeholder='Notes'/></td><td width='30' class='zeropadding'><input id='addExerciseInputTable' type=button value='ne' /></td></tr>";//for if people want to add new exercises on the go
 		echo "<tr id='somethingoldrow'><td colspan='5'><b>Trying something you have already done before?</b></td></tr><tr sid='$opsid'><td colspan='2'>";
 		echo $this->loadExercise($_SESSION['UserID']);
-		echo"</td><td><input id='oldWeight' class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' /><select id='oldlbkg'><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select></td><td><input id='oldRep' class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)'/></td><td colspan='2'><textarea id='oldComment' class='commentInputTable'/></td><td width= '30' class='zeropadding'><input id='addoldExerciseInputTable' type=button value='ne' /></td></tr>";//for if people want to add existing exercises on the go
+		echo"</td><td><input id='oldWeight' class='weightInputTable'   maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' /><select id='oldlbkg'><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select></td><td><input id='oldRep' class='repInputTable'   maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)'/></td><td colspan='2'><textarea id='oldComment' class='commentInputTable' placeholder='Notes'/></td><td width= '30' class='zeropadding'><input id='addoldExerciseInputTable' type=button value='ne' /></td></tr>";//for if people want to add existing exercises on the go
 		echo "</table></tr>";
 			$stmt->closeCursor();
 
@@ -602,13 +602,13 @@ class GSProgress
 				if($Comment==""){
 				echo "<td class='ta prevInputTable commentSpan' rowspan='$Sum'><div>$oldnotes$rowPrev[Comment]</div>"
 					."<div style='display:none' class='prevnotes sp'></div>"
-					."<div class='mid orange box font14 recordsCommentBtn'>New Notes</div>"
+					."<div class='mid orange box recordsCommentBtn'>New Notes</div>"
 					."<textarea hidden class='recordsComment' spellcheck='false' placeholder='New Notes'>$Comment</textarea>"
 					."<input hidden type='button' value='Clear' class='recordsCommentCncl'/</td>";
 				}else{
 					echo "<td class='ta prevInputTable commentSpan' rowspan='$Sum'><div style='display:none'>$oldnotes$rowPrev[Comment]</div>"
 					."<div  class='prevnotes sp'></div>"
-					."<div style='display:none' class='mid orange box font14 recordsCommentBtn'>New Notes</div>"
+					."<div style='display:none' class='mid orange box recordsCommentBtn'>New Notes</div>"
 					."<textarea class='recordsComment' spellcheck='false' placeholder='New Notes'>$Comment</textarea>"
 					."<input type='button' value='Clear' class='recordsCommentCncl'/</td>";
 				}
@@ -671,7 +671,7 @@ class GSProgress
 		}else{
 			echo"<td class='prevInputTable'></td>";		//Change: removed the weight, lbkg and rep attributes. Might cause problems later?
 		}
-		echo "<td><input class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' value='$row1[Weight]'/><select>";
+		echo "<td><input class='weightInputTable'   maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' value='$row1[Weight]'/><select>";
 			if($row1['lbkg']=='kg'){
 				echo "<option value='lbs'>lbs</option><option selected value='kg'>kg</option>";
 			}else if($row1['lbkg']=='lbs'){
@@ -681,7 +681,7 @@ class GSProgress
 			} else {
 				echo "<option selected value='lbs'>lbs</option><option value='kg'>kg</option>";
 		}
-		echo "</select></td><td><input class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)' value='$row1[Rep]'/></td><td><div class='samelast sp'></div><div class='sameprev sp'></div>";
+		echo "</select></td><td><input class='repInputTable'   maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)' value='$row1[Rep]'/></td><td><div class='samelast sp'></div><div class='sameprev sp'></div>";
 		
 	}
 	function getmaxRecords($LID, $date){
@@ -1046,8 +1046,8 @@ class GSProgress
 			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
 		}
 	}
-	$start1= (date_format(date_create($sstart), 'M-j-Y'));
-	$final1= (date_format(date_create($sfinal), 'M-j-Y'));
+	$start1= (date_format(date_create($sstart), 'M j Y'));
+	$final1= (date_format(date_create($sfinal), 'M j Y'));
 	$diff = floor((strtotime($sfinal) - strtotime($sstart)) / (60*60*24*6));
 	echo"['$start1','$final1','$diff"." day','$start','$final']";
 		
@@ -1511,11 +1511,11 @@ class GSProgress
 		}else{
 			$newselectoption = "<select ><option value='lbs'>lbs</option><option selected value='kg'>kg</option></select>";
 		}
-    	echo "<tr class='recordtable newexercise' list=\"".$lid."\" rel='1'><td colspan='2'><input size='27' value=\"".$exercise."\"/></td><td><input class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' value=\"".$weight."\"/>".$newselectoption."</td><td><input class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)' value=\"".$rep."\"/></td><td></td>";
+    	echo "<tr class='recordtable newexercise' list=\"".$lid."\" rel='1'><td colspan='2'><input placeholder='Enter new Exercise' size='27' value=\"".$exercise."\"/></td><td><input class='weightInputTable'   maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' value=\"".$weight."\"/>".$newselectoption."</td><td><input class='repInputTable'   maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)' value=\"".$rep."\"/></td><td></td>";
     	
     	echo "<td class='ta prevInputTable commentSpan' rowspan='1'><div style='display:none'></div>"
 					."<div class='prevnotes sp'></div>"
-					."<div style='display:none' class='mid orange box font14 recordsCommentBtn'>New Notes</div>"
+					."<div style='display:none' class='mid orange box recordsCommentBtn'>New Notes</div>"
 					."<textarea class='recordsComment' spellcheck='false' placeholder='New Notes'>$comment</textarea>"
 					."<input type='button' value='Clear' class='recordsCommentCncl'/</td>";
 					
@@ -1668,11 +1668,11 @@ class GSProgress
 			$newselectoption = "<select ><option value='lbs'>lbs</option><option selected value='kg'>kg</option></select>";
 		}
 		//change to oldexercise?
-    	echo "<tr class='recordtable oldexercise' list=\"".$LID."\" rel='1'><td colspan='2'>".$eName."</td><td><input class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' value=\"".$weight."\"/>".$newselectoption."</td><td><input class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)' value=\"".$rep."\"/></td><td></td>";
+    	echo "<tr class='recordtable oldexercise' list=\"".$LID."\" rel='1'><td colspan='2'>".$eName."</td><td><input class='weightInputTable'   maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' value=\"".$weight."\"/>".$newselectoption."</td><td><input class='repInputTable'   maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)' value=\"".$rep."\"/></td><td></td>";
     	
     	echo "<td class='ta prevInputTable commentSpan' rowspan='1'><div style='display:none'></div>"
 					."<div class='prevnotes sp'></div>"
-					."<div style='display:none' class='mid orange box font14 recordsCommentBtn'>New Notes</div>"
+					."<div style='display:none' class='mid orange box recordsCommentBtn'>New Notes</div>"
 					."<textarea class='recordsComment' spellcheck='false' placeholder='New Notes'>$comment</textarea>"
 					."<input type='button' value='Clear' class='recordsCommentCncl'/</td>";
 					

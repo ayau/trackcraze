@@ -22,7 +22,7 @@
 <div id="main">
  <noscript>This site just doesn't work, without JavaScript, period. (not so period: and also cause we're shitty developers and javascript is easier to use)</noscript>
  <div id="profile">
-  <h1><?php echo ($Forename." ".$Surname) ?></h1>
+  <div><h1><?php echo ($Forename." ".$Surname) ?><a href="profile.php" class="fitwidth box" id="editbutton">View your Profile</a></h1></div>
     <h2><span id="eprofile">Edit Profile</span>|<span id="goaloptions">Goals</span>|<span id="privacyoptions">Privacy Options</span>|<span id="trackeroptions">Update Options</span>|<span class='hoverheading'>Body Measurements</span></h2>
    <table id="edittable" border="0">
    	 <tr>
@@ -32,10 +32,10 @@
     	<form enctype="multipart/form-data" action="uploader.php" method="POST">
 <input type="hidden" name="MAX_FILE_SIZE" value="700000" />
 Choose a file to upload: <input name="file" type="file" />Maximum size-700kB<br />
-<input type="submit" class='boxpadding' value="Upload File" />
+<input type="submit" class='fitwidth' value="Upload File" />
 </form>
 <br />
-	Or 	<input type='button' id='chooseprofilepic' alt="photochooser.php?height=400&width=570" title="Select a photo:" class="thickbox boxpadding box font14 lightgreen" value='Choose from existing photos'/>
+	Or 	<input type='button' id='chooseprofilepic' alt="photochooser.php?height=400&width=570" title="Select a photo:" class="thickbox fitwidth box font14 lightgreen" value='Choose from existing photos'/>
 	<div id='profilepicselect' hidden></div>
   </td>
     </tr>
@@ -91,7 +91,7 @@ Choose a file to upload: <input name="file" type="file" />Maximum size-700kB<br 
      <td class='tar tat'>Sports You Play</td>
      <td class='tat'>
      	<span id="existingsports"><?php $users->loadSports($_SESSION['UserID'],0) ?></span>
-     	<li><input type='text' id='sportsinput' value="" class='boxpadding' autocomplete='off' placeholder='What Sports do you play?'/><button type="button" id='addsportsbutton' class='lightgreen mid box'>Add</button></li>
+     	<li><input type='text' id='sportsinput' value="" class='fitwidth' autocomplete='off' placeholder='What Sports do you play?'/><button type="button" id='addsportsbutton' class='lightgreen fitwidth mid box'>Add</button></li>
      </td><!-- limit character number-->
     </tr>
      <td class='tar tat'>Phone</td>
@@ -243,7 +243,7 @@ Choose a file to upload: <input name="file" type="file" />Maximum size-700kB<br 
       <td  id="iron2"><input type="checkbox" id="subtype2"><label for="subtype2"> I will Squat </label><input type="text" maxlength="4" class="inputnumber goalweight" onkeypress="return func_obj.numbersOnly(event)"> <select class="goallbkg"><option value="0">lbs</option><option value="1">kg</option></select> for <input type="text" maxlength="3" class="inputnumber goalreps" onkeypress="return func_obj.numbersOnly(event)"> reps by <input class="goaldate" type="text"> <span class="errormessage"></span></td> 
      </tr>
  </table>
- <button type="button" id='addnewgoalbutt'>Add goal</button>
+ <button type="button" id='addnewgoalbutt' class='lightgreen fitwidth font14 mid box'>Add goal</button>
  <br />
    <span id="errorline"></span><br /></span>
    		<br /><span id='existinggoals'><h2>Existing goals</h2>

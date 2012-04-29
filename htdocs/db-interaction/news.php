@@ -46,6 +46,9 @@ if (!empty($_POST['action'])
         case 'expandcomments':
         	echo $listObj->expandcomments();
         	break;
+        case 'stopTrack':
+        	$listObj->stopTrack();
+        break;
     }
 }
 else

@@ -78,17 +78,32 @@ function initializeNews(get){
 		$(this).css('background','none');
 	});
 	
-	$("#stoptrack").hover(function(){
-		$(this).text("Untrack");
-		$(this).addClass("red");
-	}, function(){
-		$(this).text("Tracking");
-		$(this).removeClass("red");
+	$("#stoptrack").live("mouseover", function(){
+			$(this).text("Untrack");
+			$(this).addClass("red");
+		}).live("mouseout",function(){
+			$(this).text("Tracking");
+			$(this).removeClass("red");
 	});
 	
 	$("#stoptrack").live("click",function(){
-		$(this).before("<div style='color:#DE1818'>Don't worry, we won't tell anyone..</div>");
-		$(this).remove();
+		thiscache = $(this);
+		$.ajax({
+    			type: "POST",
+    			url: "/db-interaction/news.php",
+    			data: {
+    				"action":"stopTrack",
+    				"UID":get
+				},
+    				
+    			success: function(){
+					thiscache.before("<div style='color:#DE1818'>Don't worry, we won't tell anyone..</div>");
+					thiscache.remove();
+    			},
+    			error: function(){
+    			    // should be some error functionality here
+    			}
+    		});
 	})
 	
 	$(".acceptTR").live("click",function(){
@@ -196,7 +211,7 @@ function initializeNews(get){
 	$(".postcomment").live("click",function(){
 		$(this).parent().parent().parent().find('.commentbox').prev().show();
 		$(this).parent().parent().parent().find('.commentbox').remove();
-		$(this).parent().append("<div class='commentbox'>Comment<textarea class='addpostcomment' placeholder='Remember, be nice!' cols='80' rows='1' autocomplete='off' ></textarea><input id='commentsubmit' style='margin-top:2px' class='small box' type='button' value='Post it!'/><input id='commentcancel' style='margin-left:5px; margin-top:2px' class='small grey box' type='button' value='Cancel'/></div>");
+		$(this).parent().append("<div class='commentbox'>Comment<textarea class='addpostcomment' placeholder='Remember, be nice!' cols='80' rows='1' autocomplete='off' ></textarea><input id='commentsubmit' style='margin-top:2px' class='small box' type='button' value='Post it'/><input id='commentcancel' style='margin-left:5px; margin-top:2px' class='small grey box' type='button' value='Cancel'/></div>");
 		$(".addpostcomment").autogrow(); 
         $(".addpostcomment").charCounter(150);
         $(".addpostcomment").select();

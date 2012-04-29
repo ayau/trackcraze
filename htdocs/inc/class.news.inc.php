@@ -1232,5 +1232,24 @@
 			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
 		}
 	}
+	function stopTrack(){
+		$UID = $_POST['UID'];
+		$sql = "DELETE FROM relationship
+                WHERE Tracker=:sid
+		 		AND Trackee=:uid
+		        LIMIT 1"; 
+        try
+        {
+            $stmt = $this->_db->prepare($sql);
+            $stmt->bindParam(':uid', $UID, PDO::PARAM_INT);
+			$stmt->bindParam(':sid', $_SESSION['UserID'], PDO::PARAM_INT);
+            $stmt->execute();
+            $stmt->closeCursor();
+        }
+                catch(Exception $e)
+        {
+            return $e->getMessage();
+        }	
+	}
  
 }

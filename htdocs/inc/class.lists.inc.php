@@ -1183,11 +1183,12 @@ public function updateExerciseItem()
 		{
 			$stmt->bindParam(':MID', $MainID, PDO::PARAM_INT);
 			$stmt->execute();
-			$row = $stmt->fetch();
+			if($row = $stmt->fetch()){
 				echo "<tr id=\"$row[ProgramID]\""
 			."class=\"exerciseEdit\" name=\"exerciseList\">"
 			."<td class=program>$row[ProgramName]</td>"
 				. "<td><a class=programview href='/program.php?program=$row[ProgramID]'>View</a></td></tr>";
+			}
 			$stmt->closeCursor();
 		}
 		else

@@ -43,14 +43,13 @@ p { margin: 0 0 6px 0; }
 
 .wide {width:350px;height:50px; font-size:20px; border-radius: 5px;}
 .fitwidth {padding:6px 12px 6px 12px;}
-.mid{width:80px;height:25px; font-size:18px;}
-.small{width:60px; height:20px;font-size:14px}
+.mid{min-width:80px; min-height:15px; font-size:18px; padding:5px}
+.small{min-width:60px; min-height:14px;font-size:14px; padding:3px}
 
-.boxpadding {padding:5px;}
-.font14 {padding-top:5px;font-size:14px;}
+.font14 {font-size:14px;}
 .font20 {font-size:20px;}
 
-.box {background-color:#2D79B3; border:none; font-family:Roboto; color:#FFFFFF;text-align: center;cursor:pointer;border-radius: 3px;}
+.box {background-color:#2D79B3; border:none; font-family:Roboto; color:#FFFFFF;text-align: center;cursor:pointer;border-radius: 3px; }
 .box:hover {background-color:#276B9E;}
 
 .lightgreen{background-color:#3EBD58;}
@@ -320,7 +319,6 @@ li {list-style:none;} //ALL LIST = no dots
 	font-size:12px;
 	font-weight:normal;
 	font-family: 'lucida grande',tahoma,verdana,arial,sans-serif;
-	padding-left:10px;
 }
 #editbutton:hover{text-decoration:none;}
 #profile h2 {
@@ -479,7 +477,7 @@ li {list-style:none;} //ALL LIST = no dots
 #profileCon table{padding-left:5px;}
 #profileCon td{height:23px;}
 
-#overlay { position: absolute; left: 295px; top: 363px; width: 548px; height:34px; background: url("/images/transpBlue_overlay.png"); }
+#overlay { position: absolute; left: 295px; top: 363px; width: 548px; height:334px; background: url("/images/transpBlue_overlay.png"); }
 #overlay img { position:relative; left:274px; bottom:-10px; }
 
 .kudostext {padding: 5px 10px 10px;}
@@ -543,7 +541,7 @@ li {list-style:none;} //ALL LIST = no dots
 #InputTable .zeropadding {padding:0px;}
 
 
-#recordsubmit {position:relative; left:20px; top:5px;}
+#recordsubmit {position:relative; left:20px; top:-2px;}
 
 #progressSelector {width:400px; padding-top:15px; }
 #progressSelector p {width:200px; padding:0px 10px; font-weight:bold;font-size:15px;display:inline}

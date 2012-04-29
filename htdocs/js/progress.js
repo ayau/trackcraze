@@ -11,13 +11,25 @@ keynum = e.keyCode
 else if(e.which) // Netscape/Firefox/Opera
 {
 keynum = e.which
+}else if(evt){
+	keynum = evt.keyCode;
 }
+// Allow: backspace, delete, tab and escape
+if ( keynum == 46 || keynum == 8 || keynum == 9 || keynum == 27 || 
+			// Allow: home, end, left, right
+            (keynum >= 35 && keynum <= 39)) {
+                 // let it happen, don't do anything
+                 return;
+        }
+
+
 keychar = String.fromCharCode(keynum);
 if(dots==0){
 	numcheck = /\d/;
 }else{
-numcheck = /\d|\./
+	numcheck = /\d|\./
 }
+
 return numcheck.test(keychar)
 }
 	//What is the use of this function? Test it out.
@@ -323,6 +335,7 @@ return numcheck.test(keychar)
 		//alert(parseInt(maxmin));
 		//maxmin.split(",");
 		//alert(Math.max(127,128));
+		
 		var plot = $.jqplot('weightChart',  [weightdata],
 			{ title:'Weight',
   				axes:{
@@ -790,6 +803,7 @@ return numcheck.test(keychar)
 			$("#weightsubmit").hide();
 			$("#InputTable").hide();
 			$("#inputLine").hide();
+			$("#recordsbydate").show();
 			$("#trackoptions").show();
 				today = new Date();
 				if (today.getMonth()+1<10){
@@ -889,13 +903,19 @@ return numcheck.test(keychar)
 		$("#weightsubmit").live("click",function(){
 			if (testFloat($("#newWeightInput").val()) ==true && testdate($("#weightdate").val())==true){
 			
+				weight = $("#newWeightInput").val();
+				//temporarily doing this for the graph
+				if($(".lbkgselect").val()=="kg"){
+					weight = weight*2.25;
+				}
+				
 			$.ajax({
     			type: "POST",
     			url: "/db-interaction/gsprogress.php",
     			data: {
     				"action":"addweight",
-    				"weight":$("#newWeightInput").val(),
-    				"lbkg":$(".lbkgselect").val(),
+    				"weight":weight,
+    				"lbkg":"lbs",
     				"date":$("#weightdate").val()//PASS IN THE DATE(AVOID DIFFERENT TIMEZONE AND ALLOW USERS TO CHOOSE DATE)
 				},
     				

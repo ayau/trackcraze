@@ -14,8 +14,10 @@
         else:
 ?>
            <div id="loginheading">       
-       <h2>Login Failed&mdash;Try Again?</h2>
+       <h2 style='color:red'>Login Failed &mdash; Try Again?</h2>
         </div>
+        <h3>The password does not match the account for the email address entered</h3>
+       <br />
         <form method="post" action="login.php" name="loginform" id="loginform">
             <div>
                 <input type="text" name="username" id="username" class='inputfields' placeholder='Email'/>

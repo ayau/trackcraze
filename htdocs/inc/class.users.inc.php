@@ -988,7 +988,7 @@ public function verificationCheck($UID){
 				$lbkg = $this->getlbkg($row['goalweightlbkg']);
 				$date =  date_format(date_create($row['goaldate']),'m/d/Y');
 				if($page==0){//User is viewing the edit profile page
-					$buttonecho="<td><button type='button' class='removebutton'>Remove</button></td>";
+					$buttonecho="<td><button type='button' class='removebutton red small box'>Remove</button></td>";
 					if ($row['goalshown']==1){
 						$checkbox = "<td><input type='checkbox' class='goalshowornot' id='showgoal".$row['goalID']."'></td>";
 					}
@@ -1234,7 +1234,7 @@ public function verificationCheck($UID){
 			$stmt->execute();
 			if ($page ==0){//USER IS ON EDITPROFILE PAGE
 				while($row = $stmt->fetch()){
-				$removebutton = "<button type='button' class='sportremove red small box'>Remove Sport</button>";
+				$removebutton = "<button type='button' class='sportremove red small box'>Remove</button>";
 				if ($row['SportID']==0){
 					$attr = $row['SportName'];			
 				}

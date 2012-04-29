@@ -117,7 +117,7 @@
 				<tr>
 					<td class='tal'>Gender</td>
 					<td><?php echo ($users->getGender($Gender))?></td>
-					<td><input class="inputnumber" type='text' id='weightbmi'> <select id="bmilbkg"><option value="0">lbs</option><option value="1">kg</option></select> <input class="inputnumber" type='text' id='heightbmi'><button type="button" id='calc'>Calculate BMI</button> <button type="button" id='loadstats'>Load Me</button></td>
+					<td><input class="inputnumber" type='text' id='weightbmi'> <select id="bmilbkg"><option value="0">lbs</option><option value="1">kg</option></select> <input class="inputnumber" type='text' id='heightbmi'> <button type="button" id='loadstats' class='lightgreen box fitwidth'>Load Me</button> <button type="button" id='calc' class='fitwidth box'>Calculate BMI</button></td>
 				</tr>
 				<tr>
 					<td class='tal'>Age</td>
@@ -127,7 +127,7 @@
 				<tr>
 					<td class='tal'>Weight</td>
 					<td class="weightrow"></td>
-					<td><select id="gender"><option value="0">Male</option><option value="1">Female</option><option value="2">Undisclosed</option></select> <input class="inputnumber" type='text' id='agebmi'> <button type="button" id='percentile'>Find Percentile</button> <button type="button" id='loadage'>Load Age</button></td>
+					<td><select id="gender"><option value="0">Male</option><option value="1">Female</option><option value="2">Undisclosed</option></select> <input class="inputnumber" type='text' id='agebmi'> <button type="button" id='loadage' class='lightgreen box fitwidth'>Load Age</button> <button type="button" id='percentile' class='fitwidth box'>Find Percentile</button></td>
 				</tr>
 				<tr>
 					<td class='tal'>Height</td>

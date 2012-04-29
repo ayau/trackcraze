@@ -39,10 +39,10 @@
     if($_SESSION['UserID']==$cuser):
     $statushover = ' statushover';
 	elseif($users->trackingCheck($_SESSION['UserID'],$cuser)==0)://TRACK AND REQUEST PENDING IS WAYY TOOO LONG(pushes other stuff out)
-			echo "<div class='boxpadding box lightgreen' id='trackthisperson'>Track this person</div>";
+			echo "<div class='mid box lightgreen font14' id='trackthisperson'>Track this person</div>";
 			$birthday = "";//THINK OF BETTER WAY
 		elseif($users->trackingCheck($_SESSION['UserID'],$cuser)==1):
-			echo "<div class='boxpadding box grey' id='pendingtrack'>Track request pending</div>";
+			echo "<div class='mid box grey font14' id='pendingtrack'>request pending</div>";
 			$birthday = "";//THINK OF BETTER WAY
 		else:
 			echo "<div class='mid box font14' id='stoptrack'>Tracking</div>";
@@ -52,7 +52,8 @@
 		//endif;
 	echo "<p id='status' class='statusboard".$statushover."'>".$status."</p>"; 
 	echo $users->loadSports($cuser,2)."</div>";
-	echo "<table><tr><td class='tal'>Gender:</td><td style='min-width:70px'>".$users->getGender($Gender1)."</td><td class='tal'>Weight:</td><td id='privacy1'>".$Weight1."</td></tr><tr><td class='tal'>Age:</td><td id='privacya'>".$users->getAge($DOB1)."</td><td class='tal'>Height:</td><td id='privacy2'>".$Height1." cm</td></tr>".$birthday."</table>";
+	echo "<table><tr><td class='tal'>Gender:</td><td style='min-width:70px'>".$users->getGender($Gender1)."</td>";
+	echo"<td class='tal'>Weight:</td><td id='privacy1'>".$Weight1."</td></tr><tr><td class='tal'>Age:</td><td id='privacya'>".$users->getAge($DOB1)."</td><td class='tal'>Height:</td><td id='privacy2'>".$Height1." cm</td></tr>".$birthday."</table>";
 	if ($_SESSION['UserID']==$cuser):
 	echo "<a href='editprofile.php'><div class='editprofile sp'></div></a>";
 	endif;
@@ -93,8 +94,8 @@
 				<textarea id='addposttextbox' placeholder="Remember, be nice!" cols='80' rows="1" autocomplete='off' ></textarea>
 				
 				<div id='addpostbuttons' >
-					<input type='submit' id='addpostsubmit' class="mid box" value='Post it!' />
-					<input type='button' id='addpostcancel' class="mid grey box" value='Cancel' />
+					<input type='submit' id='addpostsubmit' class="font14 mid box" value='Post it' />
+					<input type='button' id='addpostcancel' class="font14 mid grey box" value='Cancel' />
 				</div>
 			</form>
 						
@@ -136,7 +137,7 @@
             initializeNews("<?php echo $cuser?>");//INSPECT ELEMENT HACK?
             $("#trackthisperson").bind("click",function(){
 			$(this).unbind();
-			getTrackerO(<?php echo $cuser.','.$TO?>);
+			getTrackerO(<?php echo $cuser?>);
 			})
             $("#addposttextbox").autogrow(); 
             $("#addposttextbox").charCounter(250);

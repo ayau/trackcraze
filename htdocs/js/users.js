@@ -1259,9 +1259,14 @@ pct[1][18] = new Array(17.5,31.3,21.4,1.835396,-59.80232,489.29761,24, -0.882751
 
 function percentile(g,a,b) {
 
-var p = pct[g][a - 1]
-
-   if        (b < p[0]) {
+	if(a==""){
+		$("#percentileresult").text("Age can't be empty");
+	}else if(parseInt(a-1)>19){
+		$("#percentileresult").text("Sorry we can only do percentiles up to age of 19");
+	}else{
+		var p = pct[g][parseInt(a - 1)];
+		
+   if (b < p[0]) {
       result = "<  5th";
    } else if (b > p[1]) {
       result = "> 95th";
@@ -1273,6 +1278,7 @@ var p = pct[g][a - 1]
       result = ((p[10]*b*b)+(p[11]*b)+p[12]);
    }
    $("#percentileresult").text("Your BMI Percentile is "+result);
+   }
 }
 $("#percentile").live("click",function(){
 	percentile($("#gender").val(),$("#agebmi").val(),$("#bmibox").val());
@@ -1301,7 +1307,7 @@ function baseTwoConvert(n, r) //For tracker options
 	}
 	return converted
 }
-function getTrackerO(UID, index){
+function getTrackerO(UID){
 	$.ajax({
     			type: "POST",
     			url: "/db-interaction/users.php",
@@ -1312,7 +1318,7 @@ function getTrackerO(UID, index){
     				
     			success: function(r){
 					converted = baseTwoConvert(r,7);
-					initializeTrack (UID, converted[index]);
+					initializeTrack (UID, converted[0]);	//0 index = auto accept trackers
 					
     			},
     			error: function(){
@@ -1321,6 +1327,7 @@ function getTrackerO(UID, index){
     		});
 }
 function initializeTrack(trackee, TrackerO){
+
 		$.ajax({
     			type: "POST",
     			url: "/db-interaction/users.php",
@@ -1332,9 +1339,10 @@ function initializeTrack(trackee, TrackerO){
     				
     			success: function(){
     				if(TrackerO==1){
-    					$("#trackthisperson").remove();		//What is this?
+    					$("#trackthisperson").remove();		//If auto accepted
+    					$("#profileinfo").prepend("<div class='mid box font14' id='stoptrack'>Tracking</div>");
     				} else {
-					$("#trackthisperson").text("Track request pending");//remove onclick thing
+					$("#trackthisperson").text("request pending");//remove onclick thing
 					$("#trackthisperson").removeClass("lightgreen");
 					$("#trackthisperson").addClass("grey");
 				}
