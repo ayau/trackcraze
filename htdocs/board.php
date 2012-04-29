@@ -207,9 +207,9 @@ if (privacy[0]==2)
     	else if (privacy[0]==1)
     	{
     		$("#privacya").text("Private")
-	  		var DOfB = $("#DOfB").text();
+	  		var DOfB = $("#privacyb").text();
     		splitDOfB = DOfB.split(" ");
-    		$("#DOfB").replaceWith(splitDOfB[0]+" "+splitDOfB[1]);
+    		$("#privacyb").text(splitDOfB[0]+" "+splitDOfB[1]);
     	}
 </script>
 <?php
