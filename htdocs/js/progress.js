@@ -32,7 +32,7 @@ if(dots==0){
 
 return numcheck.test(keychar)
 }
-	//What is the use of this function? Test it out.
+	//Populates Input records
 	function loadInputBySplitID(sid){
 		$("#InputTable").children().remove();
 		$("#container").append("<p id='loading'>loading...please wait (or get faster internet)</p>");
@@ -95,10 +95,12 @@ return numcheck.test(keychar)
 	function loadRecordsByDate(get,date){
 		$("#TrackTable").append("<div id='recordsbydate'><div id='recordleft'></div><div id='recordright'></div>");
 		viewingDate = date;
+		
 		prevnextRecords(get,1);   
 	}
 	function prevnextRecords(get,prevnext){		
 		$("#TrackTable").append("<p id='loading'>loading...please wait (or get faster internet)</p>");
+		
 		$.ajax({
     		type: "POST",
     		url: "/db-interaction/gsprogress.php",
@@ -364,7 +366,28 @@ return numcheck.test(keychar)
 	}
 	
 	function initializeProgress(get){
-		  		var request = {};
+				//fill_Splits ($('#programoption').find(":selected").attr("value"));
+				//loadInputBySplitID($("#splitoption").find(":selected").attr("value"));
+				loadInputBySplitID(48);
+				var currentdate;
+				$("#weightdate").change(function(){
+					if($(this).val()!=currentdate && testdate($(this).val())){
+					//$("#splitoption").find("option[value='49']").attr("selected", true);
+					//loadInputBySplitID(49);	
+					alert("lol");
+					currentdate = $("#weightdate").val();
+				}
+				})
+				$("#weightdate").focus(function(){
+					//alert($(this).val());
+					if($(this).val()!=currentdate && testdate($(this).val())){
+					//$("#splitoption").find("option[value='49']").attr("selected", true);
+					//loadInputBySplitID(49);	
+					alert("lol");
+					currentdate = $("#weightdate").val();
+				}
+				})
+		  		var request = new Array();
 				var pairs = location.search.substring(1).split('&');
 				for (var i = 0; i < pairs.length; i++) {
   						var pair = pairs[i].split('=');
@@ -389,7 +412,8 @@ return numcheck.test(keychar)
 		}
 	});
 	
-	
+
+	//mouseout
 	//Empties the recordsComment box
 	$(".recordsCommentCncl").live("click",function(){
 		$(this).prev().val("");
@@ -789,7 +813,7 @@ return numcheck.test(keychar)
 			$("#PhysiqueSelect").removeAttr("disabled");
 		}
 		});
-		$("#TrackSelect").live("click",function(){			
+		$("#TrackSelect").live("click",function(){	
 			if($(this).attr("disabled")!=1){
 			$("#TrackSelect").attr("disabled",1);
 			$("#weightsubmit").hide();
@@ -815,15 +839,22 @@ return numcheck.test(keychar)
     				day = "0"+today.getDate();
     			}else{
     			day = today.getDate();
-    		}
+    			}
   		stoday =  today.getFullYear()+"-"+month+"-"+day;
   		startdateExercise = stoday;
   		$("#TrackTable").show();
   			if (!$("#TrackTable").children().length){
-
-				if(request.length==0)
+				
+				if(!request['date'])
 				loadRecordsByDate(get,stoday);
-				else loadRecordsByDate(get, request['date']);
+				else{
+					//converting to javascript date
+					myDateParts = request['date'].split("/");
+
+					request['date'] = myDateParts[2]+"-"+myDateParts[0]+"-"+myDateParts[1];
+					
+					loadRecordsByDate(get, request['date']);
+				}
 				calgen();
 				currentMonth=today.getMonth()+1;
     			currentYear=today.getFullYear();
@@ -1007,8 +1038,11 @@ return numcheck.test(keychar)
 	});
 	
 	//Goes to the corresponding views
-	if(request['view']=="track") $("#TrackSelect").click();
-	else if(request['view']=="physique") $("#PhysiqueSelect").click();
+	if(request['view']=="track"){
+		$("#TrackSelect").attr("disabled", 0);
+		//$("#TrackTable").empty();
+		$("#TrackSelect").click();
+	}else if(request['view']=="physique") $("#PhysiqueSelect").click();
 }
 function getFirstDay(theYear, theMonth){
     	var firstDate = new Date(theYear,theMonth,1);
@@ -1087,6 +1121,7 @@ function populateFields(month, theYear, get) {
             $("#day"+i).attr("class","day "+color)
             $("#day"+i).attr("date", theYear+"-"+month+"-"+day);
             $("#day"+i).text(i - firstDay + 1);
+            $("#day"+i).attr("title","");		//Small hover to show all programs in calendar
        }
     }
      $.ajax({
@@ -1102,6 +1137,8 @@ function populateFields(month, theYear, get) {
 					var search =JSON.parse(r);
 					for (j=0;j<search.length;j++){
 						$("div[date=\""+search[j][0]+"\"]").append("<p>"+search[j][1]+"</p>");
+						title = $("div[date=\""+search[j][0]+"\"]").attr("title");	//hover to show all programs in calendar
+						$("div[date=\""+search[j][0]+"\"]").attr("title", title+search[j][1]+"\n");
 					}
     			},
     			error: function(){

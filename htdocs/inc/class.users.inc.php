@@ -854,9 +854,17 @@ public function verificationCheck($UID){
  	
  }
  
+ //For certain news, like track acceptance, check if exist -> update time
  public function newsUpdate($type, $content){
  	if($type==0) $UID = $_POST['postto'];
  	else $UID = $_SESSION['UserID'];
+ 	
+ 	//reverse the order if tracking
+ 	if($type==20){
+ 		$temp = $UID;
+ 		$UID = $content;
+ 		$content = $temp;
+ 	}
 	$time = date("Y-m-d H:i:S");
  	$sql = "INSERT INTO news
  		(UserID, newsTime, newsType, newsContent)
@@ -969,7 +977,7 @@ public function verificationCheck($UID){
 			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
 		}
 		if ($page==2){//USER ON BOARD
-			$sqltext=" ORDER BY rand() LIMIT 2";
+			$sqltext=" AND goalshown=0 ORDER BY rand() LIMIT 1";	//goalshown 0 = shown. (weird..right?)
 		}
 		else {
 			$sqltext=" ORDER BY goalcomplete ASC";
@@ -981,7 +989,9 @@ public function verificationCheck($UID){
 		{
 			$stmt->bindParam(':uid', $UID, PDO::PARAM_INT);
 			$stmt->execute();
+			$count = 0;
 			while($row = $stmt->fetch()){
+				$count ++;
 			if($_SESSION['UserID']==$UID || ($row['goalshown']==0 && $_SESSION['UserID']!=$UID)){
 				$type = $row['goaltype'];
 				$completed = $row['goalcomplete'];
@@ -1057,7 +1067,7 @@ public function verificationCheck($UID){
 					$targettext="<td class='19'>Goal Achieved, Congratulations!!</td>";
 				}
 				else {
-					$completedtext="No";
+					$completedtext="";
 				}
 				if ($page==2){
 					$targettext="";
@@ -1071,6 +1081,8 @@ public function verificationCheck($UID){
 				}
 			}
 			}
+			if($count ==0) return false;
+			else return true;
 			$stmt->closeCursor();
 		}
 		else{

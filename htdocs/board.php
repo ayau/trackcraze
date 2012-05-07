@@ -78,7 +78,11 @@
    	else{
    		$("#privacy1").append("kg");}</script><?php
 	echo "<div id='progressCon' class='container'><a class='TitleConlink' href='progress.php".$getuser."'><div class='TitleCon  h3 hover'>Progress</div></a><table>";
-	echo $users->loadGoalsByUserID($cuser,2)."</table></div>";
+	$goals = $users->loadGoalsByUserID($cuser,2);
+	$news->loadLastWorkouts($cuser);
+	if($goals==true)
+	echo "<br /><h3>One of ".$Forename1."'s goals</h3>";
+	echo "</table></div>";
 	if ($_SESSION['UserID']==$cuser):
 	echo "<div id='newsCon'><div class='TitleCon hover h3' onclick='window.location=\"/news.php".$getuser."\"'?>News & Updates</div><div id='newscontent'>";
 	$news->getMiniNews();
@@ -106,7 +110,8 @@
 				<img src="images/loader.gif" />
 			</div>
 			<?php echo "</div>";
-		echo "<div id='toptracks'><a class='TitleConlink' href='toptracks.php".$getuser."'><div class='TitleCon  h3 hover'>Top Tracks</div></a>";
+		//echo "<div id='toptracks'><a class='TitleConlink' href='toptracks.php".$getuser."'><div class='TitleCon  h3 hover'>Top Tracks</div></a>";
+		echo "<div id='toptracks'><div class='TitleCon  h3'>Top Tracks</div>";
 		echo $users->getrandTracking($cuser,1);
     	echo "</div>";
 		echo "<div id='trackerCon'><div class='halftrack'>";
@@ -234,6 +239,3 @@ endif;
                                        
         </div>
 		
-
-<?php 
-include_once "common/footer.php"; ?>

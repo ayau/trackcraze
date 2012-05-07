@@ -42,6 +42,3 @@
         echo"What are you trying to do...";
     endif;
 ?>
-<?php
-    include_once "common/footer.php";
-?>

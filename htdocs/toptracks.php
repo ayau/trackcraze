@@ -1,6 +1,6 @@
 <?php
 	include_once "common/base.php"; 
-    $pageTitle = "Tracking";//Change to the name of the person?
+    $pageTitle = "Top Tracks";//Change to the name of the person?
 	include_once "common/header.php"; 
 	echo "<div id='container'>";
 	include_once "common/sidebar.php";

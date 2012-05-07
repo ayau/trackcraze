@@ -1,6 +1,6 @@
 <?php
     include_once "common/base.php";
-    $pageTitle = "Home";
+    $pageTitle = "Log in";
     include_once "common/header.php";
  
     if(!empty($_SESSION['LoggedIn']) && !empty($_SESSION['UserID'])):

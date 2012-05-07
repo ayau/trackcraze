@@ -1,6 +1,6 @@
 <?php
     include_once "common/base.php";
-    $pageTitle = "Home";
+    $pageTitle = "Feedback";
     include_once "common/header.php";
  
    
@@ -29,7 +29,7 @@
 ?>               
                  <br /><br />
                 <label class="toplabel" for='feedback'>Your comments:</label>
-				<textarea class='inputtextarea' id="feedback" rows="10" cols="60"></textarea>
+				<textarea class='inputtextarea' id="feedback" rows="10" cols="60" placeholder="Be honest! We won't hate you."></textarea>
 				<br />
                 <input type="submit" name="Submit" id="submitfeedback" value="Submit" class="lightgreen wide box" />
                  <p id='feedbackthanks'></p>

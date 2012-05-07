@@ -1,6 +1,6 @@
 <?php
 	include_once "common/base.php"; 
-    $pageTitle = "Programs";//Change to the name of the person?
+    $pageTitle = "Program";//Change to the name of the person?
 	include_once "common/header.php"; 
 	echo "<div id='container'>";
 	include_once 'inc/class.lists.inc.php';
@@ -89,20 +89,20 @@ if(isset($_SESSION['LoggedIn']) && isset($_SESSION['Username'])&&($UID!=NULL)&& 
 		endif;
 	elseif($PID==-1):
 		if($_SESSION['UserID']==$UID):
-		echo "<a id='moreprograms' href=\"programlists.php?user=".$UID."\">View More Programs</a>";
-			echo "Choose a program as your main program";
+		echo "<a id='moreprograms' href=\"programlists.php?user=".$UID."\" class='fitwidth box noUnderline'>View More Programs</a>";
+			echo "<br /><br /><br /><br /><br /><h3>Please choose a program as your main program in 'View More Programs'</div>";
 		else:
-		echo "<a id='moreprograms' href=\"programlists.php?user=".$UID."\">View More Programs</a>";
-			echo "This person did not set a program as his main program";//just forward to programlist
+		echo "<a id='moreprograms' href=\"programlists.php?user=".$UID."\" class='fitwidth box noUnderline'>View More Programs</a>";
+			echo "<br /><br /><br /><br /><br /><h3>This person did not set a program as his main program<h3>";//just forward to programlist
 		endif;
 	else:
 	$users = new GymScheduleUsers($db);
 	$relationship = $users->trackingCheck($_SESSION['UserID'],$UID);
 	$privacy = $program->getprogramprivacy($PID);
-	echo "<a id='moreprograms' href=\"programlists.php?user=".$UID."\">View More Programs</a>";
+	echo "<a id='moreprograms' href=\"programlists.php?user=".$UID."\" class='fitwidth box noUnderline'>View More Programs</a>";
 	$bool=false;
 	if ($_SESSION['UserID']==$UID && ($OSID!=$PID)):	//Prevent editing Default program
-		echo "<a id='editview' href=\"programedit.php?program=".$PID."\">Edit Program</a>";
+		echo "<a id='editview' href=\"programedit.php?program=".$PID."\" class='orange fitwidth box noUnderline'>Edit Program</a>";
 		$bool=true;
 	endif;
 if ($_SESSION['UserID']==$UID||$privacy==0||($privacy==1&&$relationship==2)):
@@ -112,7 +112,7 @@ echo $news->checkkudos($PID,1,$UID);
 echo "<div class='kudos'>";
 $news->getkudos($PID,1);
 echo "</div>";
-echo "<div class='commentbox' >Comment<textarea class='addpostcomment' placeholder='Remember, be nice!' cols='80' rows='1' autocomplete='off' ></textarea><input id='commentsubmit' type='button' value='Post it!'/><input id='commentcancel' type='button' value='Cancel'/></div><div class='comments'>";
+echo "<div class='commentbox' >Comment<textarea class='addpostcomment' placeholder='Remember, be nice!' cols='80' rows='1' autocomplete='off' ></textarea><input id='commentsubmit' type='button' style='margin-top:2px' class='small box' value='Post it!'/> <input id='commentcancel' type='button' style='margin-top:2px' class='grey small box' value='Cancel'/></div><div class='comments'>";
 echo $news->loadprogramcomments($PID,1,$bool);
 echo "</div></div></div>";    
 else:
@@ -125,7 +125,7 @@ endif;
 <br /><br />
  
             <div id="share-area">
-                <p>Share your workout program with your friends! <a href="<?php echo $URL ?>.html">www.trackcraze.com/<?php echo strtolower($Username)?></a></p>
+                <p>Share your workout program with your friends! <a href="http://www.trackcraze.com<?php echo $_SERVER['REQUEST_URI']?>">www.trackcraze.com<?php echo $_SERVER['REQUEST_URI']?></a></p>
             </div>
  
   <span></span>

@@ -101,8 +101,8 @@ class GSProgress
 				}
 				</script>";
 			$stmt->closeCursor();
-			?><script>fill_Splits ($('#programoption').find(":selected").attr("value"));
-			loadInputBySplitID($("#splitoption").find(":selected").attr("value"));</script><?php
+			// ?><script>fill_Splits ($('#programoption').find(":selected").attr("value"));
+			// loadInputBySplitID($("#splitoption").find(":selected").attr("value"));</script><?php
 
 			// If there aren't any list items saved, no list ID is returned
 			//if(!isset($LID))
@@ -649,7 +649,7 @@ class GSProgress
 			echo "<td class='zeropadding'><input class='addnewset' type=button value=ad /></td></tr>";
 		}else{
 			echo "<tr list=\"".$LID."\" rel='1'><td class='exerciseTable'>$eName</td>";
-			echo "<td colspan=5>No sets are specified for this exercise</td>";
+			echo "<td colspan=5>No sets specified for this exercise</td>";
 		}
 			$stmt->closeCursor();
 

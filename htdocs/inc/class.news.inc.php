@@ -43,7 +43,8 @@
 		$news = new GSNews();
 		$news->getTR();		
 		$string = $news->getTracking();
-		$time = $news->getLastNewsVisit();
+		$time = $news->getLastNewsVisit();		
+		$news -> getAcceptedTR($time);
 		$news->getPostOnBoard($time);
 		$news->getnewsContent($string);
 	}
@@ -55,11 +56,12 @@
 		if ($string=="UserID="){
 			echo "Seems like you have no friends.";
 		}else{
+		$tr = $news -> getMiniAcceptedTR($time);
 		$post = $news->getMiniPost($string, $time);
 		$record = $news->getMiniRecord($string, $time);
 		$contact = $news->getMiniContact($string, $time);
 		$gender = $news->getMiniGender($string, $time);
-		if(!$post && !$record && !$contact && !$gender){
+		if(!$tr && !$post && !$record && !$contact && !$gender){
 			echo "<br /><br />Nothing much has happened since you last logged in.<br/><br />Consider getting more friends";
 		}
 	}
@@ -320,6 +322,55 @@
 			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
 		}
 	}
+	
+	function getMiniAcceptedTR($time){
+		$sql = "SELECT COUNT(*) AS count
+				FROM news
+				WHERE UserID=:uid 
+				AND newsType=20 
+				AND DATE_FORMAT(newsTime, '%Y-%m-%d %H:%i:%s')>=:time
+					ORDER BY newsTime DESC";
+		if($stmt = $this->_db->prepare($sql))
+		{
+			$stmt->bindParam(':time', $time, PDO::PARAM_STR);
+			$stmt->bindParam(':uid', $_SESSION['UserID'], PDO::PARAM_INT);
+			$stmt->execute();
+			$row = $stmt ->fetch();
+			if($row['count']>0){
+				if($row['count'] ==1) $ppl = "person has";
+				else $ppl = "people have";
+				echo "<div class='mininews'>".$row['count']." ".$ppl." accepted your Track Request. Congrats on getting more friends.</div>";
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			echo "Something went wrong";
+		}
+	}
+	
+	function getAcceptedTR($time){
+		$sql = "SELECT
+				UserID, newsTime, newsType, newsContent	
+				FROM news
+				WHERE UserID=:uid 
+				AND newsType=20 
+				AND DATE_FORMAT(newsTime, '%Y-%m-%d %H:%i:%s')>=:time
+					ORDER BY newsTime DESC";
+		if($stmt = $this->_db->prepare($sql))
+		{
+			$stmt->bindParam(':time', $time, PDO::PARAM_STR);
+			$stmt->bindParam(':uid', $_SESSION['UserID'], PDO::PARAM_INT);
+			$stmt->execute();
+			while($row = $stmt -> fetch()){
+				$him = $this->getSex($row['UserID'],4);
+				$trackee = $this->getName($row['newsContent']);
+				echo "<div class='shortStory'>".$trackee." has accepted your Track Request. Now you can stalk ".$him."!!</div>";
+			}
+		}else{
+			echo "Something's gone wrong";
+		}
+	}
 	function getTR(){
 		$sql = "SELECT
 					relationship.Tracker, Trackee, Verified
@@ -511,7 +562,11 @@
         			break;
         			case '20':
         				$trackee = $news->getName($row['newsContent']);
+        				if($row['newsContent']==$_SESSION['UserID']){
+        					echo "<div class='shortStory'>".$name." is now tracking you. So you better hide yo kids, hide yo wives and hide yo husbands cuz they stalking everybody out there..</div>";
+        				}else{
         				echo "<div class='shortStory'>".$name." is now tracking ".$trackee."</div>";
+    				}
         			break;
 			}
 		}
@@ -520,6 +575,25 @@
 		else
 		{
 			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
+		}
+	}
+	
+	function loadLastWorkouts($UID){
+		$sql = "SELECT
+				UserID, newsTime, newsType, newsContent	
+				FROM news
+					WHERE UserID=:uid AND newsType=4 ORDER BY newsTime DESC LIMIT 3";
+		if($stmt = $this->_db->prepare($sql))
+		{			
+			$stmt->bindParam(':uid', $UID, PDO::PARAM_INT);
+			$stmt->execute();
+			$news = new GSNews();
+			While($row = $stmt->fetch()){
+				$name = $news->getName($row['UserID']);
+				echo "<div class='shortStory'>".$name." has worked out on <a class='link' href=\"/progress.php?user=".$row['UserID']."&view=track&date=".$row['newsContent']."\">$row[newsContent]</a></div>";
+			}
+		}else{
+			echo "Something went wrong";
 		}
 	}
 	function getprogramName($PID){

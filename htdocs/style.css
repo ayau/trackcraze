@@ -6,6 +6,7 @@
 img, a img { border: none; }
 input { outline: none; }
 html {overflow-y: scroll;}
+button {background:none;}
 
 .sp { background: url(images/sprite.png) no-repeat;}
 
@@ -23,7 +24,7 @@ html {overflow-y: scroll;}
      "lucida grande",tahoma,verdana,arial,sans-serif
 */
 body {font-size: 13px; font-family:"lucida grande",tahoma,verdana,arial,sans-serif; background: url(images/stripe.png) repeat-x; }
-#page-wrap { width:981px; margin:0 auto; position:relative; direction:ltr; }
+#page-wrap { width:981px; min-height:500px; margin:0 auto; position:relative; direction:ltr; }
 hr { height: 1px; background: #ccc; clear: both; margin: 20px 0; border: none; display: block; }
 
 /*
@@ -59,7 +60,7 @@ p { margin: 0 0 6px 0; }
 .red:hover{background-color:#BD1717;}
 
 .orange{background-color:#FF9900;}
-.orange:hover{background-color:#FF9900}
+.orange:hover{background-color:#F09000}
 
 .grey {background-color:#B5B5B5;}
 .grey:hover {background-color:#A1A1A1;}
@@ -131,6 +132,38 @@ background: -moz-linear-gradient(top, white 0%, white 55%, #D5E4F3 130%); */
 #mainNSB{float:left;padding:0px 20px 0px; }
 #main {float:left;padding:0px 20px 0px;width:690px; }
 
+
+
+/*
+FOOTER
+*/
+
+#footer {background: url(images/footer_background.png); margin-top:50px; height:300px; width:100%; position:relative; float:left}
+#footer_items {position:relative; top:20px; left:25%; width:900px;}
+#footer_items ul{width:170px; padding-right:50px; height:200px}
+#footer_items li{float:left; padding:10px 30px 0px 0px; color:white}
+#footer_items h3{position:relative; left:13px; color:white;text-shadow: black 0.1em 0.1em 0.1em}
+
+.nav_button {
+	padding:7px 15px 7px 15px;
+	font-weight:bold;
+	color:#DDD;
+	/*text-shadow: 0 -1px -1px rgba(0, 0, 0, 0.5);*/
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	-moz-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+ 	-webkit-transition: all 0.5s ease-in-out;
+}	
+ 
+.nav_button:hover {
+	text-decoration:none;
+	color:#FFF;
+ 	background: rgba(30, 78, 130, 0.9);
+ 	cursor:pointer;
+}
+
 /*
     FORM STUFF
 */
@@ -142,20 +175,20 @@ input[type="text"], input[type="password"], .inputtextarea {  border: 2px solid 
 /*THIS LINE FUCKS UP AUTOGROW ul.list li span input[style] { width: 90% !important; } */
 input[name="gender"]{position:relative;top:1px;margin:0px 3px 0px 15px;}
 
-.exerciseAdd {height:60px;}
+.exerciseAdd {height:70px;}
 .addsubmit {position:relative; float:right; background-position:-2px -72px; width:58px; height:27px; top:5px; color:white; font:bold 16px Calibri; border:none;cursor:pointer;}
 .addsubmit:hover{background-position:-2px -100px} //Add button on each split
-.addexercisetextbox {float:left; left:30px; top:10px; height:20px; padding:7px; cursor:text; font: 14px Calibri; border: 1px solid #999999;}
+.addexercisetextbox {float:left; left:30px; top:10px; height:20px; padding:7px; cursor:text; font: 18px Calibri; border: 1px solid #999999;}
 .addexercisetextbox:focus { border-color: #73B8BF; }
 
 
-#addsplittrigger {position:absolute;float:left;z-index:1;padding:10px 0px 0px 10px;cursor:pointer;}
-#addsplittextbox {float:left; left:30px; top:10px; height:20px; padding:7px; width:160px;cursor:text; font: 14px Calibri; border: 1px solid #999999;}
+#addsplittrigger {position:absolute;float:left;z-index:1; cursor:pointer;}
+#addsplittextbox {float:left; left:30px; top:10px; height:20px; padding:7px; width:160px;cursor:text; font: 20px Calibri; border: 1px solid #999999;}
 #addsplittextbox:focus { border-color: #73B8BF; }
-#addsplitbuttons {float:left; padding-left:10px}
+#addsplitbuttons {float:left; padding-left:10px; margin-top:2px}
 
-#addprogramtrigger {position:absolute;float:left;z-index:1;padding:10px 0px 0px 10px;cursor:pointer;}
-#addprogramtextbox {float:left; left:30px; top:10px; height:20px; padding:7px; width:160px;cursor:text; font: 14px Calibri; border: 1px solid #999999;}
+#addprogramtrigger {position:absolute;float:left;z-index:1;cursor:pointer;}
+#addprogramtextbox {float:left; left:30px; top:10px; height:20px; padding:7px; width:160px;cursor:text; font: 18px Calibri; border: 1px solid #999999;}
 #addprogramtextbox:focus { border-color: #73B8BF; }
 #addprogrambuttons {float:left; padding-left:10px}
 
@@ -178,7 +211,9 @@ li {list-style:none;} //ALL LIST = no dots
 //.list li span { padding: 8px; -moz-border-radius: 5px; -webkit-border-radius: 5px; width: 589px; display: block; position: relative;}
 .setnrep {position:relative; margin:1px;}
 .setnrep li{position:relative; padding:2px 0px 30px;width:700px}
-#moreprograms{float:right;}
+#moreprograms{float:right;margin-top:10px}
+
+.noUnderline:hover{text-decoration:none;}
 
 
 
@@ -187,16 +222,19 @@ li {list-style:none;} //ALL LIST = no dots
 
 
 /*PROGRAM PAGE*/
-.programview{float:right;padding:15px}
-.programedit{float:right;padding:15px}
-.program {padding:20px;width:240px}
+.programview{float:left;}
+.programedit{float:left;}
+.program {padding:20px;width:200px}
+.programBoard {padding:10px 0px; width:170px;}
+
 .hidden {height:40px;}/*WHAT IF THERE"S A LOT OF SPLITS?"*/
 .hiddensplits {font-size:12px;	font-weight:bold;	font-family: 'lucida grande',tahoma,verdana,arial,sans-serif; padding:5px 15px; float:left}
 
 #programlist {width:720px;}
 .tablesure {width:110px;}
 
-#editview {float:right;margin-top:25px; margin-right:20px;}
+#editview {float:right;margin-top:10px; margin-right:20px;}
+
 /*FOR INPUT
 */
 #exercise{position:absolute; left:37px;}
@@ -218,7 +256,7 @@ li {list-style:none;} //ALL LIST = no dots
 /*Side buttons PROGRAMS
 */
 .exerciseEdit{min-height:50px}
-.exerciseEdit button { position:relative;background: url(images/button-bg.png) no-repeat; border:none; color: white; cursor: pointer; font: 14px Helvetica;}
+.exerciseEdit button { position:relative; border:none; color: white; cursor: pointer; font: 14px Helvetica;}
 .setnrep button{right:-650px; top:-10px; padding:1px; margin:3px;}
 .jeditable-activate {position:absolute; right: 55px; top:19px; width: 16px; height: 16px;background-position:-34px -2px; border:none; cursor: pointer;}
 .jeditable-activate:hover{background-position:-34px -22px;}
@@ -228,35 +266,43 @@ li {list-style:none;} //ALL LIST = no dots
 .morelists {position:absolute; top:18px; right:30px; width:19px; height: 19px;background-position:-15.3px -1.5px; border:none; cursor:pointer}
 
 .setdelete {position:absolute; right:0px; background-position: -16px -40px; top:5px; width:12.1px; height:12.1px; cursor:pointer}
-.dragup {position:absolute; left:180px; top:-5px; background-position: -55px -2px; width:12.2px; height:12px; cursor:pointer; z-index:1}
+.dragup {position:absolute; left:180px; top:-3px; background-position: -55px -2px; width:12.2px; height:12px; cursor:pointer; z-index:1}
 .dragup:hover {background-position:-55px -33px;}
-.dragdown {position:absolute; left:180px; top:15px; background-position: -55px -19px; width:12.2px; height:12px;cursor:pointer}
+.dragdown {position:absolute; left:180px; top:12px; background-position: -55px -19px; width:12.2px; height:12px;cursor:pointer}
 .dragdown:hover {background-position:-55px -50px;}
 
 .exerciseAdd{list-style:none;}
 .exerciseAdd button{position:relative; right:-580px;top:20px; background: url(images/button-bg.png) no-repeat; border:none; color: white; cursor: pointer; font: 14px Helvetica;width: 40px;height:20px;}
-.setAdd button{right:-620px;top:10px;padding:2px 5px;margin:5px;}
+.setAdd button{right:-620px;top:10px;margin:5px;}
 .setAdd {height:50px;}
 
-.oldexercisediv{float:left;}/*no code attached to this*/
+.oldexercisediv{float:left;margin-top:10px}/*no code attached to this*/
 .addexercisediv{float:left;width:350px;}
-#popup{position:absolute; z-index:1; height:300px; width:400px; border: 2px solid #c0cdd8; background-color:white; overflow:scroll;}
+#popup{position:absolute; z-index:1; height:300px; width:420px; border: 2px solid #c0cdd8; background-color:white; overflow:scroll;}
 .searchexercise {float:left;}
 #popup li{float:left;padding:3px;min-width:400px;font-family: "lucida grande",tahoma,verdana,arial,sans-serif;	font-size:16px; cursor:pointer}
 #popup li:hover{background-color:#e1f0fd;}
+
+#popupsubmit {height:40px; width:60px}
+
+.addexercisebuttons {margin-top:5px;}
 
 #share-area { margin: 20px 0 0 69px; width: 600px; }
 
 .deletered {background-position: -16px -40px; top:5px; width:12.1px; height:12.1px; cursor:pointer}
 .sectionname{height:40px; padding-bottom:15px}
 .sectionname h1{float:left}
-.sectionname .edit {float:left; margin:15px 5px 10px 10px; width:30px; height:30px}
+.sectionname .edit {float:left; margin:7px 5px 10px 10px;}
+.sectionname button{border:none;background:none;margin-left:10px; position:relative; top:-5px;}
+.sectionname input{font-size:20px;}
 .sectionname .deletered {float:left; margin:15px 5px; }
 .readydelete {float:left;width:110px;margin:10px 5px;font-weight:bold;color:#900;font-family: "lucida grande",tahoma,verdana,arial,sans-serif;	font-size:16px;}
 
 .programName{height:40px; padding-bottom:15px}/*same line as sectionname*/
 .programName h1{float:left;}
-.programName .edit{float:left;margin:15px 5px 10px 10px; width:30px; height:30px}
+.programName .edit{float:left;margin:10px 5px 10px 10px;}
+.programName button{border:none;background:none;margin-left:10px; position:relative; top:-2px;}
+.programName input{font-size:20px;}
 /* Left Side Bar
 */
 .photo{height:120px; width:120px;}
@@ -419,6 +465,10 @@ li {list-style:none;} //ALL LIST = no dots
 #existingsports p{float:left; margin-right:20px}
 #addsportsbutton {margin-left:10px;}
 
+/*Search*/
+#searchtrack {position:relative; top:10px; left:5px;}
+
+
 /*BOARD LAYOUT
 */
 
@@ -456,7 +506,7 @@ li {list-style:none;} //ALL LIST = no dots
 .charcounter {float:right; padding-right:20px; font-size:11px; font-family: "lucida grande",tahoma,verdana,arial,sans-serif;color:#999}
 .delete {float:right;background-position: -16px -55px; top:15px; width:12.1px; height:12.1px; margin:10px; cursor:pointer}
 
-.container{float:left; width:260px;height:250px;border: 2px solid #c0cdd8;margin:10px; border-radius:5px}
+.container{float:left; width:260px;height:250px;border: 2px solid #c0cdd8;margin:10px; border-radius:5px; }
 
 .TitleCon{width:250;padding:10px;}
 .TitleConlink:hover {text-decoration:none}
@@ -477,10 +527,12 @@ li {list-style:none;} //ALL LIST = no dots
 #profileCon table{padding-left:5px;}
 #profileCon td{height:23px;}
 
+#progressCon h3, table{margin-left:10px;}
+
 #overlay { position: absolute; left: 295px; top: 363px; width: 548px; height:334px; background: url("/images/transpBlue_overlay.png"); }
 #overlay img { position:relative; left:274px; bottom:-10px; }
 
-.kudostext {padding: 5px 10px 10px;}
+.kudostext {padding: 5px 10px 10px; font-size:18px}
 .kudoscount {float:right}
 .commentbreak {position:relative;left:240px;background-position: -110px -123px; width:32px; height:24px; cursor:pointer}
 .pointer {cursor:pointer;}
@@ -525,8 +577,13 @@ li {list-style:none;} //ALL LIST = no dots
 .newsPostText{padding-top:10px;}
 
 
+/*FOOTER PAGES*/
+.fullsizeContainer {float:left; border: 2px solid #c0cdd8;margin:10px; border-radius:5px; width:100%; height:auto;}
+.containerContent {padding:30px;}
+.h1 {font-size:30px;}
+.permaHover {background:#e1f0fd;}
 
-
+.containerContent li {padding:10px 50px}
 /*PROGRESS*/
 #progressTitle {position:relative;height:35px;}
 #progressLeft {float:left; width:400px; font: bold 28px Calibri;}
@@ -553,6 +610,9 @@ li {list-style:none;} //ALL LIST = no dots
 .weightInputTable {float:left;margin: 5px 0px 5px 0px;}
 #TrackTable td {padding:5px;}
 
+#TrackTable{overflow:auto;}
+#PhyTable{}
+
 .recordsComment {width:185px; resize: none; height:50px; }
 .recordsCommentBtn {margin-top:5px;}
 
@@ -571,7 +631,7 @@ li {list-style:none;} //ALL LIST = no dots
 #InputTable {position:relative;top:0px;}
 #inputLine {position:relative;height:30px;top:10px;padding-bottom:30px}
 #inputLine a{float:left; margin:6px 0px}
-#errordate {float:right;width:250px;margin:0px;}
+#errordate {float:right;width:200px;margin:0px; background:red}
 #weightChart {left:20px; width:650px; height:300px;}
 #newWeightInput {float:left; margin: 5px 0px 5px 5px;}
 #inputLine select{float:left;margin: 5px 0px 5px 0px;}

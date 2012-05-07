@@ -24,7 +24,7 @@
 <div id="main">
 	<noscript>This site just doesn't work, without JavaScript, period. (not so period: and also cause we're shitty developers and javascript is easier to use)</noscript>
 	<div id="profile">
-		<div><h1><?php echo ($Forename." ".$Surname) ?><a href="editprofile.php" class="fitwidth box" id="editbutton">Edit your Profile</a></h1></div>
+		<div><h1><?php echo ($Forename." ".$Surname) ?><a href="editprofile.php" class="orange fitwidth box" id="editbutton">Edit your Profile</a></h1></div>
 				<h2><span class="hoverheading hovered">User Information</span>|<span class="hoverheading">Goals and Body Measurements</span></h2>
 			<span id="userinformation"><table border="0">	
 				<tr>
@@ -79,7 +79,13 @@
 					<td class='tat'></td>
 					<td class='tat'>Weight from target</td>
 				</tr>
-				<?php echo $users->loadGoalsByUserID($cuser,1) ?>
+				<?php $goalsbmi = $users->loadGoalsByUserID($cuser,1);
+					if($goalsbmi==false){
+						if($cuser == $_SESSION['UserID']){
+							echo "You have not entered any goals yet. You can do so by editing your profile.<br /><br />";
+						}else{ echo "This person has not entered any goals.<br /><br />";}
+					}
+				 ?>
 			</table>
 			<h2>Body Measurements</h2>
 			<table border="0" id="bodymeasurements">
@@ -138,6 +144,7 @@
 		</span>		
 
 	</div>
+	<br /><br /><br /><br /><br /><br /><br /><br /><br />
 </div>
 	<script type="text/javascript" src="js/jquery-ui-1.7.2.custom.min.js"></script>
 	<script type="text/javascript" src="js/users.js"></script>
@@ -230,6 +237,9 @@
     	?>
 <?php
 endif;
+?>
+
+<?php
 	include_once "common/footer.php"; 
 
 ?>

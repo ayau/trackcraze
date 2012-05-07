@@ -23,6 +23,7 @@ function initialize() {
        					$("#popup").scrollTop(0);
    					});
    					var search =JSON.parse(r)[1];
+   					$("#popupsubmit").unbind();
        				$("#popupsubmit").bind("click",function(){//FIX THE MULTIPLE BINDING!!!!!!!!!!!!!!!!!!!!!!!set global variable = a certain chooseoldexercise
        					var match = new Array();
        					var exercise = 0;
@@ -79,7 +80,7 @@ function initialize() {
     		});
 		position = $(this).position();
 		$('#popup').show();
-		$('#popup').css({left: position.left, top: position.top+20 });
+		$('#popup').css({left: position.left, top: position.top+30 });
 		$(document.body).bind("click",function() {
 			$('#popup').hide();
     		$(document.body).unbind();
@@ -93,8 +94,8 @@ function initialize() {
     $(".jeditable-activate").live("click",function(){
     	if ($(this).parent().prev().prev().children().length>0&&$(this).parent().prev().prev().find('.save_button').length==0){
    		$(this).parent().prev().prev().children().trigger("editclick");
-   		$(this).parent().prev().prev().append("<button class='save_button'>Save</button>");
-   		$(this).parent().prev().prev().append("<button class='cancel_button'>Cancel</button>");
+   		$(this).parent().prev().prev().append("<button class='save_button'><div class='lightgreen small box'>Save</div></button>");
+   		$(this).parent().prev().prev().append("<button class='cancel_button'><div class='grey small box'>Cancel</div></button>");
    		}
 	});
 	$(".editSection").live("click",function(){
@@ -243,7 +244,7 @@ function initialize() {
 		if($(this).parent().parent().find(".setAdd").find(".canceladd").length==0){
 		$(this).parent().parent().find(".setAdd").trigger("editclick");
 		$(this).parent().parent().find(".setAdd").show();
-		$(this).parent().parent().find(".setAdd").append("<button class='canceladd'>Cancel</button>");
+		$(this).parent().parent().find(".setAdd").append("<button class='canceladd'><div class='grey small box'>Cancel</div></button>");
 	}
 	});
 	$(".canceladd").live("click",function(){
@@ -270,7 +271,7 @@ function initialize() {
     				+ "&text=" + URLtext
     				+ "&pos=" + newListItemRel,
     			success: function(r){
-    			$("#splits").append("<ul id=\""+r+"split\" rel="+newListItemRel+">\n <div class='sectionname'><h1>"+newListItemText+"</h1><div class='edit editSection'>Edit</div><div class='deletered sp deletesection'></div></div><h3>&emsp;&emsp;Exercise &emsp;&emsp;&emsp;&emsp;&emsp;Sets &emsp;&emsp;&nbsp;Weight &emsp;&emsp;&emsp;Reps&emsp;&emsp;Comments</h3>\t\t\t<ul class=\"list\">\n\t\t\t</ul><form action='db-interaction/lists.php' class='exerciseAdd' method='post'><input type='button' class='addsubmit sp' value='Add'/><div class='addexercisediv'><input type='text' class='addexercisetextbox' autocomplete='off' style='width:0px; display:none' /><div class='addexercisebuttons' hidden ><input type='submit' class='addexercisesubmit' value='Add' /><input type='button' class='addexercisecancel' value='Cancel' /></div></div><div hidden class='oldexercisediv'> OR &emsp;<a class='chooseoldexercise'>Choose from your existing exercises</a><input type='hidden' class='current-split' name='current-list' value="+r+" /><input type='hidden' class='new-exercise-position' name='new-list-item-position' value="+newListItemRel+" /></form></ul>");                 
+    			$("#splits").append("<ul id=\""+r+"split\" rel="+newListItemRel+">\n <div class='sectionname'><h1>"+newListItemText+"</h1><div class='edit editSection orange small box'>Edit</div><div class='deletered sp deletesection'></div></div><h3>&emsp;&emsp;Exercise &emsp; &emsp; &emsp;&emsp;&emsp;&emsp;&nbsp;Sets &emsp;&emsp;&emsp;&nbsp;Weight &emsp;&emsp;&emsp;&emsp;Reps&emsp;&emsp;&nbsp;&nbsp;Comments</h3>\t\t\t<ul class=\"list\">\n\t\t\t</ul><form action='db-interaction/lists.php' class='exerciseAdd' method='post'><input type='button' class='addsubmit sp' value='Add'/><div class='addexercisediv'><input type='text' class='addexercisetextbox' placeholder='Enter a new exercise' autocomplete='off' style='width:0px; display:none' /><div class='addexercisebuttons' hidden ><input type='submit' class='addexercisesubmit lightgreen small box' value='Add' /> <input type='button' class='addexercisecancel grey small box' value='Cancel' /></div></div><div hidden class='oldexercisediv'>OR &emsp;&emsp;<a class='chooseoldexercise fitwidth box noUnderline'>Choose from your existing exercises</a><input type='hidden' class='current-split' name='current-list' value="+r+" /><input type='hidden' class='new-exercise-position' name='new-list-item-position' value="+newListItemRel+" /></form></ul>");                 
                   $("#addsplitcancel").click();
                  $("#add-split").removeAttr("disabled");
                  $(".addexercisetextbox").autocomplete('txt/exercise.php');
@@ -612,7 +613,7 @@ function bindAllTabs2(editableTarget){
              $(editableTarget).editable("/db-interaction/lists.php", {
              		id         : 'setID', 
                     type       : "exerciseEdit",
-                    submit     : 'Add',
+                    submit     : '<button><div class="lightgreen small box">Add</div></button>',
                     style      : "display: inline",
                     //onblur	:cancel,
                     event     : 'editclick',
@@ -641,7 +642,7 @@ function bindAllTabs3(editableTarget){
     	select : true,
     	//onblur: "cancel",
     	//cancel:"cancel",
-    	submit:"save",
+    	submit:'<button><div class="lightgreen small box">Save</div></button>',
         submitdata: function(){
                     	var hash = {};
                     	hash["sname"] = $(this).find('input').val();
@@ -659,7 +660,7 @@ function bindAllTabs4(editableTarget){
     	select : true,
     	//onblur: "cancel",
     	//cancel:"cancel",
-    	submit:"save",
+    	submit:"<button><div class='lightgreen small box'>Save</div></button>",
         submitdata: function(){
                     	var hash = {};
                     	hash["pname"] = $(this).find('input').val();

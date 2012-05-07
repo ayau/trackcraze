@@ -24,7 +24,7 @@
    		$lists = new GymScheduleItems($db);
    		list($order) = $lists->loadProgramsByUser($UID);
    		echo "\t\t\t</table>";
-	   	echo "<input type='button' class='programprivacy' id='updateprogram' value='Update' /><div id='updateconfirmation'></div>";
+	   	echo "<input type='button' class='programprivacy mid lightgreen box' id='updateprogram' value='Update'/><div id='updateconfirmation'></div>";
 	 if ($_SESSION['UserID']!=$UID):
 	 ?><script> $("input[name='mainprogram']").filter("[value="+<?php echo $lists->loadMainProgramByUser($UID)?> +"]").removeAttr("class"); $(".programprivacy").remove();</script><?php
 	 endif;
@@ -32,11 +32,11 @@
 <br /><br />
 
             <form action="db-interaction/lists.php" id="add-program" method="post"> <!--DOESN"TWORK YET"-->
-				<a id='addprogramtrigger'>Click to add a new Program</a>
-				<input type='text' id='addprogramtextbox' style='display:none' autocomplete='off'/>
+				<a id='addprogramtrigger' class='noUnderline' ><div class='fitwidth box font20'>Click to add a new Program</div></a>
+				<input type='text' id='addprogramtextbox' placeholder='Enter the name of your Program' style='display:none' autocomplete='off'/>
 				<div id='addprogrambuttons' hidden>
-					<input type='submit' id='addprogramsubmit' value='Add' />
-					<input type='button' id='addprogramcancel' value='Cancel' />
+					<input type='submit' id='addprogramsubmit' class='lightgreen fitwidth box' value='Add' />
+					<input type='button' id='addprogramcancel' class='grey fitwidth box' value='Cancel' />
 				</div>
 			<input type="hidden" id="new-list-item-position" name="new-list-item-position" value="<?php echo ++$order; ?>" />
 			</form>
@@ -90,7 +90,7 @@
     				+ "&text=" + URLtext
     				+ "&pos=" + newListItemRel,
     			success: function(r){
-    			$("#programlist").append("<tr id=\""+r+"\" rel=\""+newListItemRel+"\" class=\"exerciseEdit\" name=\"exerciseList\"><td><Input type = 'Radio' class='programprivacy' name='mainprogram' value= '"+r+"'><td class=program>"+newListItemText+"</td><td class='toggle'>(Splits)</td><td><select class='programprivacy programprivacyselect'><option value='0'>Public</option><option value='1'>Trackers only</option><option value='2'>Private</option></select></td><td><a class=programview href='/program.php?program="+r+"'>View</a></td><td><a class =\"programedit programprivacy\" href='/programedit.php?program="+r+"'>Edit</a></td><td><div class='deletered sp programprivacy deleteprogram'></div></td><td class='tablesure'></td></tr><tr><td colspan='7'><div class='hidden' hidden></div></td></tr>");            
+    			$("#programlist").append("<tr id=\""+r+"\" rel=\""+newListItemRel+"\" class=\"exerciseEdit\" name=\"exerciseList\"><td><Input type = 'Radio' class='programprivacy' name='mainprogram' value= '"+r+"'><td class=program>"+newListItemText+"</td><td class='toggle'><a class='small grey box noUnderline'>Splits</a></td><td><select class='programprivacy programprivacyselect'><option value='0'>Public</option><option value='1'>Trackers only</option><option value='2'>Private</option></select></td><td><a class='programview small box noUnderline' href='/program.php?program="+r+"'>View</a></td><td><a class =\"programedit programprivacy\" href='/programedit.php?program="+r+"'>Edit</a></td><td><div class='deletered sp programprivacy deleteprogram'></div></td><td class='tablesure'></td></tr><tr><td colspan='7'><div class='hidden' hidden></div></td></tr>");            
                   $("#addprogramcancel").click();
                  $("#add-program").removeAttr("disabled");
                 	},
@@ -161,10 +161,11 @@
              })
              $(".toggle").live("click",function(){
              	$(this).parent().next().find(".hidden").slideToggle();
-             	if($(this).text()=="(Splits)"){
-             		$(this).text("(Hide)");
+             	$thiscache = $(this).find("a");
+             	if($thiscache.text()=="Splits"){
+             		$thiscache.text("Hide");
          		}else{
-         			$(this).text("(Splits)");
+         			$thiscache.text("Splits");
              	}
          	});
          	function deleteprogram(thiscache){

@@ -283,6 +283,9 @@ function initializeNews(get){
     		});
 	})
 	$(".delete").live("click",function(){
+		var answer = confirm("Are you sure you want to delete this?");
+		if (answer){
+		
 		thiscache=$(this);
 		if (parseInt(thiscache.parent().attr('id'))==thiscache.parent().attr('id')){
 			$.ajax({
@@ -316,6 +319,7 @@ function initializeNews(get){
     			}
     		});
 		}
+	}
 		});
 		$(".kudos2u").live("click",function(){
 			thiscache=$(this);
@@ -339,6 +343,7 @@ function initializeNews(get){
     			    // should be some error functionality here
     			}
     		});
+
 		})
 
 

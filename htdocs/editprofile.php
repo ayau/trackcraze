@@ -255,7 +255,7 @@ Choose a file to upload: <input name="file" type="file" />Maximum size-700kB<br 
    				<td class='tat'>Weight from Target</td>
    				<td></td>
    			</tr>
-   			<?php echo $users->loadGoalsByUserID($_SESSION['UserID'],0) ?>
+   			<?php $users->loadGoalsByUserID($_SESSION['UserID'],0) ?>
    		</table></span>
    	</span>
 	<span id="measurements" style="display:none">
@@ -335,6 +335,7 @@ Choose a file to upload: <input name="file" type="file" />Maximum size-700kB<br 
     </script>	   
     <link rel="stylesheet" href="js/thickbox/thickbox.css" type="text/css" media="screen" />
     <link rel="stylesheet" type="text/css" media="screen" href="js/datepicker/css/datepicker.css" />
+    </div>
 <?php
  include_once "common/footer.php"; 
 ?>

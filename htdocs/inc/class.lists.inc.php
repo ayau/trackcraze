@@ -128,7 +128,7 @@ class GymScheduleItems
 			$stmt->execute();
 			$row = $stmt->fetch();
 			$PName = $row['ProgramName'];
-			echo "<div class='programName' pid='$pid'><h1>$PName</h1><div class='edit editProgram'>Edit</div></div>";		
+			echo "<div class='programName' pid='$pid'><h1>$PName</h1><div class='edit editProgram orange small box'>Edit</div></div>";		
 		$sql = "SELECT
 					sections.ProgramID, SectionID, SectionName, SectionPosition, ListURL
 				FROM sections
@@ -159,7 +159,7 @@ class GymScheduleItems
 				$SNAME = $row['SectionName'];
 				$URL = $row['ListURL'];
 				echo "<ul id=\"$SID"."split\" rel=$row[SectionPosition]>\n";
-				echo "<div class='sectionname'><h1>$SNAME</h1><div class='edit editSection'>Edit</div><div class='deletered sp deletesection'></div></div>";         
+				echo "<div class='sectionname'><h1>$SNAME</h1><div class='edit editSection orange small box'>Edit</div><div class='deletered sp deletesection'></div></div>";         
 				echo "<h3>&emsp;&emsp;Exercise &emsp; &emsp; &emsp;&emsp;&emsp;&emsp;&nbsp;Sets &emsp;&emsp;&emsp;&nbsp;Weight &emsp;&emsp;&emsp;&emsp;Reps&emsp;&emsp;&nbsp;&nbsp;Comments</h3>";
 				echo "\t\t\t<ul class=\"list\">\n";
     			$lists = new GymScheduleItems(); //REMOVED $db BECAUSE ERROR
@@ -168,12 +168,12 @@ class GymScheduleItems
     			echo "\t\t\t</ul>";
     			echo "<form action='db-interaction/lists.php' class='exerciseAdd' method='post'> 
 				<input type='button' class='addsubmit sp' value='Add'/>
-				<div class='addexercisediv'><input type='text' class='addexercisetextbox' autocomplete='off' style='width:0px; display:none' />
+				<div class='addexercisediv'><input type='text' class='addexercisetextbox' placeholder='Enter a new exercise' autocomplete='off' style='width:0px; display:none' />
 				<div class='addexercisebuttons' hidden >
-					<input type='submit' class='addexercisesubmit' value='Add' />
-					<input type='button' class='addexercisecancel' value='Cancel' />
+					<input type='submit' class='addexercisesubmit lightgreen small box' value='Add' />
+					<input type='button' class='addexercisecancel grey small box' value='Cancel' />
 				</div></div>
-				<div hidden class='oldexercisediv'> OR &emsp;<a class='chooseoldexercise'>Choose from your existing exercises</a>
+				<div hidden class='oldexercisediv'>OR &emsp;&emsp;<a class='chooseoldexercise fitwidth box noUnderline'>Choose from your existing exercises</a>
             <input type='hidden' class='current-split' name='current-list' value=$SID />
 			<input type='hidden' class='new-exercise-position' name='new-list-item-position' value=$newOrder />
 			</form>";
@@ -1135,14 +1135,14 @@ public function updateExerciseItem()
 		{
 			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
 		}
-		
+		//osbool -> true for Default program
 		if($osbool){
 			return "<tr id=\"$row[ProgramID]\" rel=\"$order\""
 			."class=\"exerciseEdit\" name=\"exerciseList\">"
 		//	."<td><Input type = 'Radio' class='programprivacy' name='mainprogram' value= '$row[ProgramID]'>"
 			."<td></td><td class=program>$row[ProgramName]</td><td></td>"//."<td class=program>$row[ProgramName]</td><td class='toggle'>(Splits)</td>"
 			."<td><select class='programprivacy programprivacyselect'><option value='0'>Public</option><option value='1'>Trackers only</option><option value='2'>Private</option></select></td>" 
-			. "<td><a class=programview href='/program.php?program=$row[ProgramID]'>View</a></td>"
+			. "<td><a class='programview small box noUnderline' href='/program.php?program=$row[ProgramID]'>View</a></td>"
 			//."<td><a class =\"programedit programprivacy\" href='/programedit.php?program=$row[ProgramID]'>Edit</a></td><td><div class='deletered sp programprivacy deleteprogram'></div></td><td class='tablesure'></td></tr>"
 			."<td></td>";
 			//."<tr><td colspan='7'><div class='hidden' hidden>".$splits."</div></td></tr>";
@@ -1151,10 +1151,10 @@ public function updateExerciseItem()
 		return "<tr id=\"$row[ProgramID]\" rel=\"$order\""
 			."class=\"exerciseEdit\" name=\"exerciseList\">"
 			."<td><Input type = 'Radio' class='programprivacy' name='mainprogram' value= '$row[ProgramID]'>"
-			."<td class=program>$row[ProgramName]</td><td class='toggle'>(Splits)</td>"
+			."<td class=program>$row[ProgramName]</td><td class='toggle'><a class='small grey box noUnderline'>Splits</a></td>"
 			."<td><select class='programprivacy programprivacyselect'><option value='0'>Public</option><option value='1'>Trackers only</option><option value='2'>Private</option></select></td>" 
-			. "<td><a class=programview href='/program.php?program=$row[ProgramID]'>View</a></td>"
-			."<td><a class =\"programedit programprivacy\" href='/programedit.php?program=$row[ProgramID]'>Edit</a></td><td><div class='deletered sp programprivacy deleteprogram'></div></td><td class='tablesure'></td></tr>"
+			. "<td><a class='programview small box noUnderline' href='/program.php?program=$row[ProgramID]'>View</a></td>"
+			."<td><a class =\"programedit programprivacy orange small box noUnderline\" href='/programedit.php?program=$row[ProgramID]'>Edit</a></td><td><div class='deletered sp programprivacy deleteprogram'></div></td><td class='tablesure'></td></tr>"
 			."<tr><td colspan='7'><div class='hidden' hidden>".$splits."</div></td></tr>";
 		}
 	}
@@ -1186,8 +1186,8 @@ public function updateExerciseItem()
 			if($row = $stmt->fetch()){
 				echo "<tr id=\"$row[ProgramID]\""
 			."class=\"exerciseEdit\" name=\"exerciseList\">"
-			."<td class=program>$row[ProgramName]</td>"
-				. "<td><a class=programview href='/program.php?program=$row[ProgramID]'>View</a></td></tr>";
+			."<td class='programBoard'>$row[ProgramName]</td>"
+				. "<td ><a class='programview small box noUnderline' href='/program.php?program=$row[ProgramID]'>View</a></td></tr>";
 			}
 			$stmt->closeCursor();
 		}
@@ -1221,8 +1221,8 @@ public function updateExerciseItem()
 			{
 				echo "<tr id=\"$row[ProgramID]\""
 			."class=\"exerciseEdit\" name=\"exerciseList\">"
-			."<td class=program>$row[ProgramName]</td>"
-				. "<td><a class=programview href='/program.php?program=$row[ProgramID]'>View</a></td></tr>";
+			."<td class=programBoard>$row[ProgramName]</td>"
+				. "<td><a class='programview small box noUnderline' href='/program.php?program=$row[ProgramID]'>View</a></td></tr>";
 			//."<td><a class =\"programedit programprivacy\" href='/programedit.php?program=$row[ProgramID]'>Edit</a></td><td><div class='deletered sp programprivacy deleteprogram'></div></td><td class='tablesure'></td></tr>"
 			//."<tr><td colspan='7'><div class='hidden' hidden>".$splits."</div></td></tr>";
 			}

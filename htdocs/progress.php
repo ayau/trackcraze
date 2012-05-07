@@ -16,7 +16,7 @@
 	echo "<div id='progressTitle'><div id='progressLeft'>Progress</div>";
 	if ($cuser==$_SESSION['UserID']):
 	echo "<div id='progressRight'><p>|</p><a id='RecordSelect' disabled='1'>Record</a><a id='TrackSelect'>Track</a><a id='PhysiqueSelect'>Physique</a></div></div>";
-	echo "<div id='trackoptions' hidden><a id='daySelect'>By Day</a><a id='exerciseSelect'>By Exercise</a><a>Graphs and other shit</a></div>";
+	echo "<div id='trackoptions' hidden><a id='daySelect'>By Day</a><a id='exerciseSelect'>By Exercise</a></div>";//<a>Graphs and other shit</a></div>";
 	echo "<div id='progressSelector'><p>Select Program</p><p>Select Split</p><p id='ExerciseSel' style='display:none'>Select Exercise</p></div>";
    		echo "<div id='inputLine'><div id='recordLine'>";
    		list($order) = $progress->loadProgramsOptionByUser();
@@ -30,11 +30,11 @@
    	else://DOESN"T WORK YET. NEED TO PUT IN THE INPUT TABLE, PHY TABLE AND TRACKTABLE" and TRACKBYEXERCISE
    	echo "<div id='progressRight'><p>|</p><a id='TrackSelect' disabled='1'>Track</a><a id='PhysiqueSelect'>Physique</a></div></div>";
 	//echo "<div id='progressSelector'><p>Select Program</p><p>Select Split</p></div>";
-   	echo "<div id='trackoptions' ><a id='daySelect'>By Day</a><a id='exerciseSelect'>By Exercise</a><a>Graphs and other shit</a></div>";	
+   	echo "<div id='trackoptions' ><a id='daySelect'>By Day</a></div>";//<a id='exerciseSelect'>By Exercise</a><a>Graphs and other shit</a></div>";	
 	//echo "<div id='inputLine'><input id='weightdate' display:none maxlength='10' size='7'/><input id='weightsubmit' type=button value='Enter' hidden/><div id='errordate'></div></div>";
    		echo "<div id='TrackTable'></div>"; 
    		echo "<div id='PhyTable'></div>";
-   		?><script>	
+   		/*?><script>	
    				today = new Date();
 		if (today.getMonth()+1<10){
     		month = "0"+eval(today.getMonth()+1);
@@ -52,13 +52,14 @@
 				currentMonth=today.getMonth()+1;
     			currentYear=today.getFullYear();
 				populateFields(today.getMonth()+1, today.getFullYear(), '<?php echo $cuser?>');
-  			 </script><?php
+  			 </script><?php*/
    endif;
    		//$progress->loadInputExercise();
 ?>
 <br /><br />
 <br /><br />
 <br /><br />
+
 
 
 			 <input type="hidden" id="current-id" value="<?php echo $_SESSION['UserID']; ?>" /><!--ENCRYPT THIS-->
