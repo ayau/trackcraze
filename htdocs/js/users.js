@@ -548,7 +548,7 @@ $("#addsportsbutton").live("click",function(){
 	    data: "action=addsport&sportid="+sportid+
 	    "&sportname="+$("#sportsinput").val(),		
 			success:function(){
-			$("#existingsports").append("<li sports='"+sportid+"'>"+$("#sportsinput").val()+" <button type='button' class='sportremove'>Remove Sport</button></li>");
+			$("#existingsports").append("<li sports='"+sportid+"'>"+$("#sportsinput").val()+" <button type='button' class='sportremove small red box'>Remove Sport</button></li>");
 			$("li:contains('"+$("#sportsinput").val()+"')").find(".sportremove").click(function(){
 				var thiscache = $(this).parent();
 				$.ajax({

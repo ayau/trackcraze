@@ -65,6 +65,31 @@ class GSProgress
 		}
     	
     }
+    
+    //Retrieves ProgramID using SplitID
+    public function getProgramIDbySplitID(){
+    	$SID = $_POST['sid'];
+    	$sql = "SELECT
+					ProgramID
+				FROM sections
+					WHERE SectionID=:sid
+				LIMIT 1";
+		if($stmt = $this->_db->prepare($sql))
+		{
+			$stmt->bindParam(':sid', $SID, PDO::PARAM_INT);
+			$stmt->execute();
+			$row = $stmt->fetch();
+			return $row['ProgramID'];
+			$stmt->closeCursor();
+
+		}
+		else
+		{
+			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
+		}
+    }
+    
+    
     public function loadProgramsOptionByUser()
 	{
 		$osid = $this->getOtherProgram($_SESSION['UserID']);
@@ -81,14 +106,14 @@ class GSProgress
 			$stmt->bindParam(':userid', $_SESSION['UserID'], PDO::PARAM_INT);
 			$stmt->bindParam(':osid', $osid, PDO::PARAM_INT);
 			$stmt->execute();
-			echo "<select id='programoption' onchange=' fill_Splits ($(this).find(\":selected\").attr(\"value\"));loadInputBySplitID($(\"#splitoption\").find(\":selected\").attr(\"value\"));'>";
+			echo "<select id='programoption' onchange=' fill_Splits ($(this).find(\":selected\").attr(\"value\"));loadInputBySplitID($(\"#splitoption\").find(\":selected\").attr(\"value\"), $(\"#weightdate\").val());'>";
 			while($row = $stmt->fetch())
 			{
 				$MPID=$row['MainProgramID'];
 				echo $this->formatProgramsOption($row);
 			}
 			echo '</select>';
-			echo "<select id='splitoption' name='splitoption' onchange='loadInputBySplitID($(this).find(\":selected\").attr(\"value\"));' ></select>";
+			echo "<select id='splitoption' name='splitoption' onchange='loadInputBySplitID($(this).find(\":selected\").attr(\"value\"), $(\"#weightdate\").val());' ></select>";
 			echo "<script language='javascript'>
 					var i;
 					function fill_Splits(i){
@@ -359,10 +384,14 @@ class GSProgress
 			$stmt->bindParam(':sid', $SID, PDO::PARAM_INT);
 			$stmt->execute();
 			$row = $stmt->fetch();
+			if($row['ProgramName']==null) $pN = "[Deleted Program]";
+			else $pN = $row['ProgramName'];
+			if($row['SectionName']==null) $sN = "[Deleted Split]";
+			else $sN = $row['SectionName'];
 			if ($fh==0){
-				return $row['ProgramName']." - ".$row['SectionName'];
+				return $pN." - ".$sN;
 			}else{
-				return $row['SectionName'];
+				return $sN;
 			}
 		}else{
 			echo "<tr><td>This Split is empty.</td></tr>";
@@ -385,6 +414,59 @@ class GSProgress
 			//HOW TO HANDLE ERROR!??!!!!!!!!!!!!!!!!!!!!!!
 		}
 	}
+	
+	public function getOtherSplit($osid){
+		//Retrieving OtherProgramID
+		$sql = "SELECT
+					SectionID
+				FROM sections
+					WHERE ProgramID=:osid
+				LIMIT 1";
+		if($stmt = $this->_db->prepare($sql))
+		{
+			$stmt->bindParam(':osid', $osid, PDO::PARAM_INT);
+			$stmt->execute();
+			$row = $stmt->fetch();
+			return $row['SectionID'];
+		}else{
+			//HOW TO HANDLE ERROR!??!!!!!!!!!!!!!!!!!!!!!!
+		}
+	}
+	
+	public function getSplitIDByDate(){
+		$date = $_POST['date'];
+		$stoday=substr($date, 6,4)."-".substr($date, 0,2)."-".substr($date, 3,2);
+		
+		//Make sure split chosen is not other program
+		$osid = $this->getOtherProgram($_SESSION['UserID']);
+		$defaultSplit = $this->getOtherSplit($osid);
+		
+		//Retrieving splitID that the user had recorded for a specific date
+		$sql = "SELECT
+					SectionID
+				FROM list_items
+				LEFT JOIN records
+				USING (ListItemID)
+					WHERE UserID=:uid
+						AND RecordDate=:td
+							AND SectionID<>:ds
+				LIMIT 1";
+		if($stmt = $this->_db->prepare($sql))
+		{
+			$stmt->bindParam(':uid', $_SESSION['UserID'], PDO::PARAM_INT);
+			$stmt->bindParam(':td', $stoday, PDO::PARAM_STR);
+			$stmt->bindParam(':ds',$defaultSplit, PDO::PARAM_INT);
+			$stmt->execute();
+			if($row = $stmt->fetch()){
+				return $row['SectionID'];
+			}else{
+				return -1;
+			}
+		}else{
+			//ERROR HANDLING
+		}
+	}
+	
 	public function loadInputExercise(){
 		$SID = $_POST['SID'];
 		$date = $_POST['date'];
@@ -412,7 +494,7 @@ class GSProgress
 			$stmt->execute();
 			echo "<table border='0'>";
 			if($row = $stmt->fetch()){ //A LOT OF SQL THINGSY ARE LIKE THIS. THE FIRST ROW IS UNIQUE THEN REST ARE THE SAME. FIX???
-			echo "<tr><td class='InputTitle' width=110>Exercise</td><td class='InputTitle' width=80>Previous</td><td class='InputTitle' width=110>Weight</td><td class='InputTitle' width=50>Rep</td><td width=68></td><td class='InputTitle' width=190>Comments</td><td width=30></td></tr>";
+			echo "<tr><td class='InputTitle' width=110>Exercise</td><td class='InputTitle' width=80>Prev</td><td class='InputTitle' width=110>Weight</td><td class='InputTitle' width=50>Rep</td><td width=68></td><td class='InputTitle' width=190>Comments</td><td width=30></td></tr>";
 				echo $this->loadInputSet($row["ListItemID"],$stoday,$row['EID']);
 			while($row = $stmt->fetch())
 			{
@@ -468,8 +550,10 @@ class GSProgress
 			$stmt->bindParam(':uid', $_SESSION['UserID'], PDO::PARAM_INT);
 			$stmt->execute();
 			if($row= $stmt->fetch()){
-				echo "<tr><td class='InputTitle' width=110>New Exercises</td><td class='InputTitle' width=80>Previous</td><td class='InputTitle' width=110>Weight</td><td class='InputTitle' width=50>Rep</td><td width=68></td><td class='InputTitle' width=190>Comments</td><td width=30></td></tr>";
+				echo "<tr><td class='InputTitle' width=110>New Exercises</td><td class='InputTitle' width=70>Prev</td><td class='InputTitle' width=110>Weight</td><td class='InputTitle' width=50>Rep</td><td width=68></td><td class='InputTitle' width=190>Comments</td><td width=30></td></tr>";
 				echo $this->loadInputSet($row["ListItemID"],$stoday,$row['EID']);//OVERKILL. But works for now. Cannot edit name though!?
+			}else{
+				echo "<tr id='newExerciseHeader' hidden><td class='InputTitle' width=110>New Exercises</td><td class='InputTitle' width=70>Prev</td><td class='InputTitle' width=110>Weight</td><td class='InputTitle' width=50>Rep</td><td width=68></td><td class='InputTitle' width=190>Comments</td><td width=30></td></tr>";
 			}
 			while($row = $stmt->fetch())
 			{
@@ -487,9 +571,14 @@ class GSProgress
 		//3. If Record does not belong to program, add "other" input boxes (javascript).
 		//Putting Other program ID in the other textbox
 		echo "<tr id='somethingnewrow'><td colspan='2'><b>Trying something new today?</b></td></tr><tr sid='$opsid'><td colspan='2'><input id='newExercise' placeholder='Enter new Exercise' size='27'/></td><td><input id='newWeight' class='weightInputTable'   maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' /><select id='newlbkg'><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select></td><td><input id='newRep' class='repInputTable'   maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)'/></td><td colspan='2'><textarea id='newComment' class='commentInputTable' placeholder='Notes'/></td><td width='30' class='zeropadding'><input id='addExerciseInputTable' type=button value='ne' /></td></tr>";//for if people want to add new exercises on the go
-		echo "<tr id='somethingoldrow'><td colspan='5'><b>Trying something you have already done before?</b></td></tr><tr sid='$opsid'><td colspan='2'>";
-		echo $this->loadExercise($_SESSION['UserID']);
-		echo"</td><td><input id='oldWeight' class='weightInputTable'   maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' /><select id='oldlbkg'><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select></td><td><input id='oldRep' class='repInputTable'   maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)'/></td><td colspan='2'><textarea id='oldComment' class='commentInputTable' placeholder='Notes'/></td><td width= '30' class='zeropadding'><input id='addoldExerciseInputTable' type=button value='ne' /></td></tr>";//for if people want to add existing exercises on the go
+		
+		$oldEx = $this->loadExercise($_SESSION['UserID']);
+		if ($oldEx!=""){
+			echo "<tr id='somethingoldrow'><td colspan='5'><b>Trying something you have already done before?</b></td></tr><tr sid='$opsid'><td colspan='2'>";
+			echo $oldEx;
+			echo"</td><td><input id='oldWeight' class='weightInputTable'   maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' /><select id='oldlbkg'><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select></td><td><input id='oldRep' class='repInputTable'   maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)'/></td><td colspan='2'><textarea id='oldComment' class='commentInputTable' placeholder='Notes'/></td><td width= '30' class='zeropadding'><input id='addoldExerciseInputTable' type=button value='ne' /></td></tr>";//for if people want to add existing exercises on the go
+		}
+		
 		echo "</table></tr>";
 			$stmt->closeCursor();
 
@@ -1533,11 +1622,16 @@ class GSProgress
 		{
 			$stmt->bindParam(':uid', $UID, PDO::PARAM_INT);
 			$stmt->execute();
-			echo "<select id='OldExerciseSelect'>";
-			while ($row = $stmt->fetch()){
-				echo "<option value=\"".$row['EID']."\">".$row['ExerciseName']."</option>";
+			$out = "";
+			if($row = $stmt -> fetch()){
+				$out = $out."<select id='OldExerciseSelect'>";
+				$out = $out."<option value=\"".$row['EID']."\">".$row['ExerciseName']."</option>";
+				while ($row = $stmt->fetch()){
+					$out = $out."<option value=\"".$row['EID']."\">".$row['ExerciseName']."</option>";
+				}
+				$out = $out."</select>";
 			}
-			echo "</select>";
+			return $out;
 			$stmt->closeCursor();
 		}
 		else

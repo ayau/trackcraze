@@ -32,30 +32,65 @@ if(dots==0){
 
 return numcheck.test(keychar)
 }
+
+	//Retrieves one of the SplitID that the user entered records for for a specific date.
+	//Picks a default one if no records are entered for that date.
+	function getSplitIDByDate(date){
+		$.ajax({
+    			type: "POST",
+    			url: "/db-interaction/gsprogress.php",
+    			data: {
+    				"action":"getSplitIDByDate",
+    				"date":date
+				},
+    				
+    			success: function(r){
+    				//manually select Program Dropdown and manually select Split Dropdown
+    				selectDropdownBySplitID(r);
+                 	loadInputBySplitID(r, date);
+    			},
+    			error: function(){
+    			    // should be some error functionality here
+    			}
+    		});    		
+	}
+	
+	//chooses program from drop down list based on the sid selected
+	function selectDropdownBySplitID(sid){
+		$.ajax({
+    			type: "POST",
+    			url: "/db-interaction/gsprogress.php",
+    			data: {
+    				"action":"getProgramIDbySplitID",
+    				"sid":sid
+				},
+    				
+    			success: function(r){
+    				$("#programoption").find("option[value='"+r+"']").attr("selected", true);
+    				$("#splitoption").find("option[value='"+sid+"']").attr("selected", true);
+    			},
+    			error: function(){
+    			    // should be some error functionality here
+    			}
+    		});
+	}
+	
 	//Populates Input records
-	function loadInputBySplitID(sid){
+	function loadInputBySplitID(sid, date){
 		$("#InputTable").children().remove();
 		$("#container").append("<p id='loading'>loading...please wait (or get faster internet)</p>");
-		today = new Date();
-		if (today.getMonth()+1<10){
-    		month = "0"+eval(today.getMonth()+1);
-    	} else {
-    		month = today.getMonth()+1;
-    	}
-    	    	if (today.getDate()<10){
-    		day = "0"+today.getDate();
-    		}else{
-    			day = today.getDate();
-    		}
-       	today = month+"/"+day+"/"+today.getFullYear();//FIX ALL THE DAYSS!!!!!!!!!!!!!!!!!!!!!!!!!!!!! AND REMOVE SOME OF THE TODAY FUNCTIONS
-       	
+		
+		if(sid=="-1"){
+			sid = $("#splitoption").find(":selected").attr("value");
+		}
+		
 			$.ajax({
     			type: "POST",
     			url: "/db-interaction/gsprogress.php",
     			data: {
     				"action":"loadInputExercise",
     				"SID":sid,
-    				"date":today
+    				"date":date
 				},
     				
     			success: function(r){
@@ -100,6 +135,7 @@ return numcheck.test(keychar)
 	}
 	function prevnextRecords(get,prevnext){		
 		$("#TrackTable").append("<p id='loading'>loading...please wait (or get faster internet)</p>");
+		before = viewingDate;
 		
 		$.ajax({
     		type: "POST",
@@ -124,6 +160,11 @@ return numcheck.test(keychar)
 				viewingDate = $("#recordsbydate table").attr("class");
 				$(".day").removeClass("selected");
 				$("div[date=\""+viewingDate+"\"]").addClass("selected");
+				after = viewingDate;
+				
+				if(before.substring(0, 7)!= after.substring(0, 7)){
+					populateFields(after.substring(6, 7), after.substring(0, 4), get);
+				}
 			},
 			error: function(){
 			}			
@@ -233,7 +274,7 @@ return numcheck.test(keychar)
     				
     			success: function(r){
     				weightdata=r;
-    				refreshtable(r); 
+    				refreshtable(r, get); 
     				refreshoption(get);   				
     			},
     			error: function(){
@@ -266,7 +307,7 @@ return numcheck.test(keychar)
     			}
     		});  
 	}
-	function refreshtable(r){
+	function refreshtable(r, get){
 			var dates = new Array(),
 			weights = new Array(),
 			datestr = "<tr>",
@@ -276,18 +317,25 @@ return numcheck.test(keychar)
 				dates.push(r[i][0]);
 				weights.push(r[i][1]);
 		}
+		
 		for (var i = 0; i<dates.length;i++){
 			datestr=datestr+"<td date="+dates[i]+">"+dates[i].replace(/-/,' ').replace(/-20/g,' ')+"</td>";
 		}
 		datestr=datestr+"</tr>";
+		
 		for (var i = 0; i<weights.length;i++){
 			weightstr=weightstr+"<td date="+dates[i]+">"+weights[i]+" lbs</td>";
-			optionstr=optionstr+"<td date="+dates[i]+">"+"<div date=\""+dates[i]+"options\">"+"<div class='weightedit sp'></div><div class='weightdelete sp'></div></div></td>";
+			optionstr=optionstr+"<td date="+dates[i]+">"+"<div date=\""+dates[i]+"options\">"+"<div class='weightdelete sp'></div></div></td>";
 		}
 		weightstr=weightstr+"</tr>";
 		optionstr=optionstr+"</tr>";
 		$("#weightcontent").children().remove();
-		$("#weightcontent").append(datestr+weightstr+optionstr);//FIX THE WHOLE CLASS THING. USE ANOTHER ATTR AND MAKE j M Y WITHOUT HIVENS
+		if(user_id == get){
+			$("#weightcontent").append(datestr+weightstr+optionstr);//FIX THE WHOLE CLASS THING. USE ANOTHER ATTR AND MAKE j M Y WITHOUT HIVENS	
+		}else{ 
+			$("#weightcontent").append(datestr+weightstr);
+			$("#weightdiv").height(75);	
+		}
 		document.getElementById('weightdiv').scrollLeft = $("#weightcontent").width(); //WHY ARE WE BINDING IT THREE TIMES???!?!?!?!
 		$("#weightcontent").find("td").each(function(){//TRY LiVE? SO DON"T HAVE TO BIND AGAIN LATER? RESEARCH ABOUT LIVE"
 			$("#weightcontent").find("div[date="+$(this).attr('date')+"options]").hide();
@@ -365,16 +413,54 @@ return numcheck.test(keychar)
 			
 	}
 	
-	function initializeProgress(get){
+	var user_id;
+	
+	function initializeProgress(get, uid){
+				user_id = uid;
+				var request = new Array();
+				var pairs = location.search.substring(1).split('&');
+				for (var i = 0; i < pairs.length; i++) {
+  						var pair = pairs[i].split('=');
+  						request[pair[0]] = pair[1];
+				}
+				
+				today = new Date();
+				if (today.getMonth()+1<10){
+    				month = "0"+eval(today.getMonth()+1);
+    			} else {
+    				month = today.getMonth()+1;
+	    		}	
+    	    	if (today.getDate()<10){
+    				day = "0"+today.getDate();
+    			}else{
+    				day = today.getDate();
+    			}
+       			today = month+"/"+day+"/"+today.getFullYear();//FIX ALL THE DAYSS!!!!!!!!!!!!!!!!!!!!!!!!!!!!! AND REMOVE SOME OF THE TODAY FUNCTIONS
+				
+				
+				/* UnCOMMENT when records can be accessed with ?date = in url to select which day to enter record
+				if(!request['date'])
+				loadRecordsByDate(get,stoday);
+				else{
+					//converting to javascript date
+					myDateParts = request['date'].split("/");
+
+					request['date'] = myDateParts[2]+"-"+myDateParts[0]+"-"+myDateParts[1];
+					
+					loadRecordsByDate(get, request['date']);
+				} */
+				
+				
 				//fill_Splits ($('#programoption').find(":selected").attr("value"));
 				//loadInputBySplitID($("#splitoption").find(":selected").attr("value"));
-				loadInputBySplitID(48);
+				getSplitIDByDate(today);	//This calls loadInputBySplitID
+				
 				var currentdate;
 				$("#weightdate").change(function(){
 					if($(this).val()!=currentdate && testdate($(this).val())){
 					//$("#splitoption").find("option[value='49']").attr("selected", true);
 					//loadInputBySplitID(49);	
-					alert("lol");
+					getSplitIDByDate($("#weightdate").val());
 					currentdate = $("#weightdate").val();
 				}
 				})
@@ -383,17 +469,12 @@ return numcheck.test(keychar)
 					if($(this).val()!=currentdate && testdate($(this).val())){
 					//$("#splitoption").find("option[value='49']").attr("selected", true);
 					//loadInputBySplitID(49);	
-					alert("lol");
+					getSplitIDByDate($("#weightdate").val());
 					currentdate = $("#weightdate").val();
 				}
 				})
-		  		var request = new Array();
-				var pairs = location.search.substring(1).split('&');
-				for (var i = 0; i < pairs.length; i++) {
-  						var pair = pairs[i].split('=');
-  						request[pair[0]] = pair[1];
-				}
-				
+		  		
+				//Save previously viewed records in cache?
 		$("#recordleft").live("click",function(){//MAKE MORE EFFICIENT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			$("#recordsbydate table").remove();//animate({width:'toggle'},350);
 			prevnextRecords(get,0);
@@ -452,6 +533,7 @@ return numcheck.test(keychar)
 	});
 
 	$("#recordsubmit").live("click",function(){
+		$("#TrackTable").empty(); //clear it for tracktable
 		//flag = false;
 		weightdate = $("#weightdate").val()
 		if(testdate(weightdate)==true){
@@ -484,7 +566,6 @@ return numcheck.test(keychar)
        						data: "action=newsForRecord&content="+weightdate+
     			   			"&newstype=4",
        						success: function(){
-       							
        						},
       						error: function(){
        						}
@@ -577,6 +658,7 @@ return numcheck.test(keychar)
 						},
     				
     					success: function(r){
+    						$('#newExerciseHeader').show();
     						$("#somethingnewrow").before(r);
 							$('#oldWeight').val('');
 							$('#oldRep').val('');
@@ -635,6 +717,7 @@ return numcheck.test(keychar)
 						},
     				
     					success: function(r){
+    						$('#newExerciseHeader').show();
     						$("#somethingnewrow").before(r);
 							$('#newExercise').val('');
 							$('#newWeight').val('');
@@ -685,15 +768,7 @@ return numcheck.test(keychar)
     			}
     		});
 		});
-		$(".weightedit").live("click",function(){
-			date = $(this).parent().parent().attr("date");
-			target = $(this).parent().parent().parent().prev().find('td[date='+date+']');
-			prevWeight = target.text();
-			target.text("");
-			target.append("<input type='text' class='weightEditBox' size='6' placeholder='"+prevWeight+"'/>");
-			$(this).css('visibility','hidden');
-			
-		});
+		
 		$("#printbyExercise").live("click",function(){
 			$.ajax({
     		type: "POST",
@@ -1005,6 +1080,20 @@ return numcheck.test(keychar)
     		});
 		});
 		
+		/*$(".day").live("mouseover", function() {
+			$("#calHover").empty();
+    		$("#calHover").append($(this).html());//alert("LOL");//$(this).addClass("over");
+    		//position = $(this).position();
+    		position = $("#calendar").position();
+    		$('#calHover').css({left: position.left-200, top: position.top+50 });
+    		//alert(position.left);
+    		//$('#calHover').css({left: position.left, top: position.top-30 });
+  		});
+  		$(".day").live("mouseout", function() {
+    			//alert("lol");//$(this).addClass("over");
+  		});*/
+		
+		
 // deferred function to fill fields of table MAYBE CALL THIS IN CALGEN OR SOMETHING SO NO NECESSARILY BIND
 	$(".day").live("click",function(){
 		if ($(this).hasClass("next")){
@@ -1061,6 +1150,7 @@ function getFirstDay(theYear, theMonth){
     	var yr = today.getYear();
     	return ((yr < 1900) ? yr+1900 : yr);
 	}
+	
 // create basic array
 	theMonths = new MakeArray(12);
 // load array with English month names
@@ -1083,6 +1173,7 @@ function getFirstDay(theYear, theMonth){
 var currentMonth;
 var currentYear;
 function populateFields(month, theYear, get) {
+	
     // which is the first day of this month?
     var theMonth = month-1;
     var firstDay = getFirstDay(theYear, theMonth);
@@ -1094,6 +1185,7 @@ function populateFields(month, theYear, get) {
     if(firstDay==0){
     	firstDay=7;
     }
+    
     if(month<10){
         month = "0"+month;
             }

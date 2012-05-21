@@ -34,7 +34,7 @@
 	//echo "<div id='inputLine'><input id='weightdate' display:none maxlength='10' size='7'/><input id='weightsubmit' type=button value='Enter' hidden/><div id='errordate'></div></div>";
    		echo "<div id='TrackTable'></div>"; 
    		echo "<div id='PhyTable'></div>";
-   		/*?><script>	
+   		?><script>	
    				today = new Date();
 		if (today.getMonth()+1<10){
     		month = "0"+eval(today.getMonth()+1);
@@ -52,8 +52,9 @@
 				currentMonth=today.getMonth()+1;
     			currentYear=today.getFullYear();
 				populateFields(today.getMonth()+1, today.getFullYear(), '<?php echo $cuser?>');
-  			 </script><?php*/
+  			 </script><?php
    endif;
+   //echo "<div id='calHover'></div>";
    		//$progress->loadInputExercise();
 ?>
 <br /><br />
@@ -74,7 +75,7 @@
             <script type="text/javascript" src="js/jquery.jeditable.mini.js"></script>
              <script language="javascript" src="js/datepicker/js/datepicker.js" type="text/javascript"></script>
             <script type="text/javascript">
- 				initializeProgress('<?php echo $cuser?>');
+ 				initializeProgress('<?php echo $cuser?>', '<?php echo $_SESSION["UserID"]?>'); //Need a better way so people cannot edit this
             </script>
             <link rel="stylesheet" type="text/css" media="screen" href="js/datepicker/css/datepicker.css" />
             <script src="js/jqgrid/grid.locale-en.js" type="text/javascript"></script>

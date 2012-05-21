@@ -317,7 +317,7 @@ function initialize() {
     				+ "&text=" + URLtext
     				+ "&pos=" + newListItemRel,
     			success: function(r){
-                  $("#"+sid+"split").find(".list").append("<ul id='" +r+ "' rel='"+newListItemRel+"' class='exerciseEdit' name='exerciseList'><p class='exercise'>"+newListItemText+"</p><span class='setnrep'></span><li class='setAdd' hidden><p class='set'></p><p class='weight'></p><p class='lbkg'></p> <p class='rep'></p><p class='comment'></p></li><div class='editbuttons'><input type='button' title='edit' class='jeditable-activate sp' /><input title='add more sets' type='button' class='morelists sp'/><div title='delete' class='deletetab sp'></div></div><div title='hold mouse to drag' class='draggertab sp'></div></ul>");
+                  $("#"+sid+"split").find(".list").append("<ul id=\""+r+"\" rel=\""+newListItemRel+"\" class='exerciseEdit' name='exerciseList'><p class='exercise'>"+newListItemText+"</p><span class='setnrep'></span><li class='setAdd' hidden><p class='set'></p><p class='weight'></p><p class='lbkg'></p> <p class='rep'></p><p class='comment'></p></li><div class='editbuttons'><input type='button' title='edit' class='jeditable-activate sp' /><input title='add more sets' type='button' class='morelists sp'/><div title='delete' class='deletetab sp'></div></div><div title='hold mouse to drag' class='draggertab sp'></div></ul>");
                  bindAllTabs2("#"+r+" .setAdd");
                  //bindAllTabs3("#"+theResponse+" .exercisename .exercise");
     			},

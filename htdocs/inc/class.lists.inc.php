@@ -1165,6 +1165,7 @@ public function updateExerciseItem()
 					MainProgramID
 				FROM users
 				WHERE UserID=:userid
+				AND MainProgramID<>null
 				LIMIT 1";
 		if($stmt = $this->_db->prepare($sql))
 		{
@@ -1173,7 +1174,9 @@ public function updateExerciseItem()
 			if($row = $stmt->fetch()){
 			$MainID = $row['MainProgramID'];
 			$stmt->closeCursor();
-					//Display main program
+			
+			
+		//Display main program
 		$sql = "SELECT
 					ProgramID, ProgramName, ListURL
 				FROM lists
@@ -1195,6 +1198,10 @@ public function updateExerciseItem()
 		{
 			//echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
 		}
+	}else{
+		//when no main program can be found
+		$MainID = 0;
+		
 	}
 		}
 		else

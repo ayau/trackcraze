@@ -613,7 +613,7 @@ li {list-style:none;} //ALL LIST = no dots
 #TrackTable{overflow:auto;}
 #PhyTable{}
 
-.recordsComment {width:185px; resize: none; height:50px; }
+.recordsComment {width:170px; resize: none; height:50px; }
 .recordsCommentBtn {margin-top:5px;}
 
 .commentInputTable {width:220px; resize: none; height:50px; }
@@ -627,6 +627,9 @@ li {list-style:none;} //ALL LIST = no dots
 #selectandbutton {position:absolute; left:250px;}
 #viewbyExercise {position:relative; left:20px; top:5px;}
 #sortby {padding:10px 0px 10px;}
+
+#calHover {position:absolute; background:white; border:1px solid #000; padding:10px; min-width:88px; min-height:88px; text-align:center}
+
 /*GRAPH*/
 #InputTable {position:relative;top:0px;}
 #inputLine {position:relative;height:30px;top:10px;padding-bottom:30px}
@@ -644,16 +647,15 @@ li {list-style:none;} //ALL LIST = no dots
 #weightstartfinal {padding:30px;}
 #weightstartfinal input{margin-left:20px;}
 /*TABLE*/
-#weightheader {width: 85px; float:left;border-spacing:0px;}
+#weightheader {width: 85px; float:left;border-spacing:0px; margin-left:0px}
 #weightheader td {padding:5px 10px 5px;border:1px solid #D3D3D3; background:#E6E6E6 url(js/images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x; color:#555;font-weight:normal}
 #weightdiv {margin:0;width:605px; float:left; overflow-x:scroll; height:105px;overflow-y:hidden}
 #weightcontent {width:100%; table-layout:fixed;border-spacing:0px;border-left: 1px solid #999;}
-#weightcontent td {width:85px;height:28px;text-align: center;border-bottom:1px solid #999;border-right: 1px solid #999;}
+#weightcontent td {width:85px;height:28px;text-align: center;border-bottom:1px solid #999;border-right: 1px solid #999; cursor:default}
 .weightcontenthover {background:#DADADA url(js/images/ui-bg_glass_75_dadada_1x400.png) 50% 50% repeat-x;}
-.weightdelete {position:relative; left:50px; top:-8px;background-position: -16px -40px; width:12.1px; height:12.1px; cursor:pointer}
+.weightdelete {position:relative; left:35px; background-position: -16px -40px; width:12.1px; height:12.1px; cursor:pointer}
 #weightcontentheader {padding: 5px 10px; position: relative;margin-top:10px}
-.weightedit {position:relative; left:20px; top:5px;width: 16px; height: 16px;background-position:-34px -2px; border:none; cursor: pointer;}
-.weightedit:hover {background-position:-34px -22px;}
+
 
 
 

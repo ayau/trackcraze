@@ -61,6 +61,12 @@ if (!empty($_POST['action'])
         case 'addOldExerciseSet':
         	echo $listObj->addOldExerciseSet();
         	break;
+        case 'getSplitIDByDate':
+        	echo $listObj->getSplitIDByDate();
+        	break;
+        case 'getProgramIDbySplitID':
+        	echo $listObj->getProgramIDbySplitID();
+        	break;
     }
 }
 else
