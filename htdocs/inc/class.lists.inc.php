@@ -1127,6 +1127,9 @@ public function updateExerciseItem()
 			{
 				$splits=$splits."<p class='hiddensplits'>".$row1['SectionName']."</p>";
 			}
+			if($splits == ""){
+				$splits = "No splits specified for this program.";
+			}
 			$stmt->closeCursor();
 
 			//IF THERE ARE NO SPLITS (RECENTLY CHANGED. NEED TO LOOK AT OTHER LOADING CODES)
@@ -1333,9 +1336,12 @@ public function updateExerciseItem()
 		{
 			$stmt->bindParam(':uid', $UID, PDO::PARAM_INT);
 			$stmt->execute();
+			$empty = true;
 			while ($row = $stmt->fetch()){
+				$empty = false;
 				echo "<li class=\"".$row['EID']."\">".$row['ExerciseName']."</li>";
 			}
+			return $empty;
 			$stmt->closeCursor();
 		}
 		else

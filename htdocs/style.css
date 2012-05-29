@@ -532,7 +532,7 @@ li {list-style:none;} //ALL LIST = no dots
 #overlay { position: absolute; left: 295px; top: 363px; width: 548px; height:334px; background: url("/images/transpBlue_overlay.png"); }
 #overlay img { position:relative; left:274px; bottom:-10px; }
 
-.kudostext {padding: 5px 10px 10px; font-size:18px}
+.kudostext {padding: 5px 20px 10px; font-size:18px}
 .kudoscount {float:right}
 .commentbreak {position:relative;left:240px;background-position: -110px -123px; width:32px; height:24px; cursor:pointer}
 .pointer {cursor:pointer;}
@@ -564,7 +564,7 @@ li {list-style:none;} //ALL LIST = no dots
 
 .postcomment{color:#0E63C4;}
 
-.kudos2u{padding-left:20px; color:#0E63C4;}
+.kudos2u{padding-right:10px; color:#0E63C4;}
 .commenttext{width:450px;padding-top:5px;margin:0px;font-size:13px;word-wrap:break-word;font-family: "lucida grande",tahoma,verdana,arial,sans-serif;}
 
 /*NEWS*/

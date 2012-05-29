@@ -12,6 +12,7 @@ echo "<div id='container'>";
 if(isset($_GET['search'])):
 $item = urldecode($_GET['search']);
 echo "<h3>Search results for: ".$item."</h3>";
+echo "<i>The search algorithm is still in beta testing. <a href='/feedback.php'>Let us know if it's doing anything funky</a>!</i>";
 echo "<br />";
 
 $users = new GymScheduleUsers($db);
@@ -19,7 +20,6 @@ echo "<table>";
 echo $users->search($item);
 echo "</table>";
 ?>
-
  <script type='text/javascript' src='/js/jquery.min.js'></script>
  <script type="text/javascript" src="js/jquery-ui-1.7.2.custom.min.js"></script>
     	<?php

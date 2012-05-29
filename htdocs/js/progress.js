@@ -78,7 +78,7 @@ return numcheck.test(keychar)
 	//Populates Input records
 	function loadInputBySplitID(sid, date){
 		$("#InputTable").children().remove();
-		$("#container").append("<p id='loading'>loading...please wait (or get faster internet)</p>");
+		$("#container").append("<div id='loading'><center><div>loading...please wait (or get faster internet)</div><br /><br /><img width='50px' src='/images/loading_circle.gif'/></center></div>");
 		
 		if(sid=="-1"){
 			sid = $("#splitoption").find(":selected").attr("value");
@@ -109,7 +109,7 @@ return numcheck.test(keychar)
 	}
 	function loadExerciseOptions(selected){
 		$("#exerciseoption").remove();
-		$("#recordLine").append("<p id='loading'>Loading...</p>");
+		$("#recordLine").append("<div id='loading'><center><div>loading...please wait (or get faster internet)</div><br /><br /><img width='50px' src='/images/loading_circle.gif'/></center></div>");
 		$.ajax({
     		type: "POST",
     		url: "/db-interaction/gsprogress.php",
@@ -134,7 +134,7 @@ return numcheck.test(keychar)
 		prevnextRecords(get,1);   
 	}
 	function prevnextRecords(get,prevnext){		
-		$("#TrackTable").append("<p id='loading'>loading...please wait (or get faster internet)</p>");
+		$("#TrackTable").append("<div id='loading'><center><div>loading...please wait (or get faster internet)</div><br /><br /><img width='50px' src='/images/loading_circle.gif'/></center></div>");
 		before = viewingDate;
 		
 		$.ajax({

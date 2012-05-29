@@ -1543,17 +1543,45 @@ EMAIL;
    }	
    
 	function search($item){
+		
+   		$news = new GSNews();
+		
+		$sql = "SELECT UserID
+                FROM users
+                WHERE Username=:email";
+        if($stmt = $this->_db->prepare($sql)) {
+            $stmt->bindParam(":email", $item, PDO::PARAM_STR);
+            $stmt->execute();
+            if($row = $stmt->fetch()){
+            	$name = $news->getName($row['UserID']);
+    			$Ename = strip_tags($news->getName($row['UserID']));
+    			$profilepic = $news->getProfilePic($row['UserID']);
+    			echo "<tr><td>";
+    			echo "<div><div class='miniphoto' title=\"".$Ename."\">".$profilepic."</div></div></td>";
+    			echo "<td width='150px'>".$name."</td>";
+    			echo "<td> email match: 100% </td>";
+    			echo "<tr />";
+    			$repeated_user = $row['UserID'];
+			}else{
+				$repeated_user=-1;
+			}
+            $stmt->closeCursor();
+        }else{
+        	
+        }
+		
 		$item1 = urldecode(str_replace('+','|',urlencode($item)));
 		$item1 = str_replace("+","|",$item1);
 		$count = (strlen($item1)-substr_count($item1,"|"))/(substr_count($item1,"|")+1);//average word length
 		$sql = "SELECT *, (Forename REGEXP '$item1') + (Surname REGEXP '$item1') +0.5*('$item' REGEXP Surname)+0.5*('$item' REGEXP Forename)+ 0.5*(1-ABS(length(concat(Forename,Surname))-'$count')/length(concat(Forename,Surname))) AS rel
   				FROM profile
-  				WHERE Surname REGEXP '$item1' OR Forename REGEXP '$item1' OR '$item' REGEXP Surname OR '$item' REGEXP Forename
+  				WHERE (Surname REGEXP '$item1' OR Forename REGEXP '$item1' OR '$item' REGEXP Surname OR '$item' REGEXP Forename)
+	  				AND UserID<>:repeated_user
   				ORDER BY rel DESC, Forename ASC";//LIMIT!!!!!!!!!!!!!!!!!
   			if($stmt = $this->_db->prepare($sql))
-   				{	
+   				{
+   				$stmt->bindParam(":repeated_user", $repeated_user, PDO::PARAM_INT);		
     			$stmt->execute();
-   				$news = new GSNews();
     			while($row = $stmt->fetch()){
     				$name = $news->getName($row['UserID']);
     				$Ename = strip_tags($news->getName($row['UserID']));
@@ -1561,7 +1589,8 @@ EMAIL;
     				echo "<tr><td>";
     				echo "<div><div class='miniphoto' title=\"".$Ename."\">".$profilepic."</div></div></td>";
     				echo "<td width='150px'>".$name."</td>";
-    				echo "<td> relevance: ".$row['rel']."</td>";
+    				$percent = $row['rel']/3.25 * 100;
+    				echo "<td> name match: ".$percent."%</td>";
     				echo "<tr />";
 				}
 				echo "<tr><td>end of search</td></tr>";

@@ -63,6 +63,14 @@
 		$gender = $news->getMiniGender($string, $time);
 		if(!$tr && !$post && !$record && !$contact && !$gender){
 			echo "<br /><br />Nothing much has happened since you last logged in.<br/><br />Consider getting more friends";
+		}else{
+			echo "<script>$('#newsCon').css({backgroundColor: '#DFEDF7'}); 
+				$('#newsCon').find('.TitleCon').hover( function(){
+      				$(this).css({backgroundColor: '#276B9E', color: '#FFF'});
+   				},
+   				function(){
+      				$(this).css({backgroundColor: '#DFEDF7', color: '#000'});
+   				});</script>";
 		}
 	}
 	}

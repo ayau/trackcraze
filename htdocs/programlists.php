@@ -45,7 +45,14 @@
 			<br />
 	<?php
 		echo "<h3>Your Exercises</h3><ul>";
-	   	echo $lists->loadExercise($UID);
+	   	$empty = $lists->loadExercise($UID);
+	   	if($empty == true){
+	   		if ($_SESSION['UserID']==$UID){
+	   			echo "You haven't done any exercises yet. Let's get started!";
+   			}else{
+   				echo "This user has not done any exercises yet. What a lazy bum..";
+   			}
+	   	}
 	   	echo "</ul>";
 	   	?>
 
@@ -90,7 +97,7 @@
     				+ "&text=" + URLtext
     				+ "&pos=" + newListItemRel,
     			success: function(r){
-    			$("#programlist").append("<tr id=\""+r+"\" rel=\""+newListItemRel+"\" class=\"exerciseEdit\" name=\"exerciseList\"><td><Input type = 'Radio' class='programprivacy' name='mainprogram' value= '"+r+"'><td class=program>"+newListItemText+"</td><td class='toggle'><a class='small grey box noUnderline'>Splits</a></td><td><select class='programprivacy programprivacyselect'><option value='0'>Public</option><option value='1'>Trackers only</option><option value='2'>Private</option></select></td><td><a class='programview small box noUnderline' href='/program.php?program="+r+"'>View</a></td><td><a class =\"programedit programprivacy\" href='/programedit.php?program="+r+"'>Edit</a></td><td><div class='deletered sp programprivacy deleteprogram'></div></td><td class='tablesure'></td></tr><tr><td colspan='7'><div class='hidden' hidden></div></td></tr>");            
+    			$("#programlist").append("<tr id=\""+r+"\" rel=\""+newListItemRel+"\" class=\"exerciseEdit\" name=\"exerciseList\"><td><Input type = 'Radio' class='programprivacy' name='mainprogram' value= '"+r+"'><td class=program>"+newListItemText+"</td><td class='toggle'><a class='small grey box noUnderline'>Splits</a></td><td><select class='programprivacy programprivacyselect'><option value='0'>Public</option><option value='1'>Trackers only</option><option value='2'>Private</option></select></td><td><a class='programview small box noUnderline' href='/program.php?program="+r+"'>View</a></td><td><a class =\"programedit programprivacy orange small box noUnderline\" href='/programedit.php?program="+r+"'>Edit</a></td><td><div class='deletered sp programprivacy deleteprogram'></div></td><td class='tablesure'></td></tr><tr><td colspan='7'><div class='hidden' hidden>No splits specified for this program.</div></td></tr>");            
                   $("#addprogramcancel").click();
                  $("#add-program").removeAttr("disabled");
                 	},

@@ -637,7 +637,7 @@ function bindAllTabs2(editableTarget){
 function bindAllTabs3(editableTarget){
 	$(editableTarget).editable("db-interaction/lists.php", {
         id        : 'SectionID',
-        indicator : 'Saving...',
+        indicator : '<img width="30px" src="/images/loading_circle.gif"/>',
         event: 'editclick',
     	select : true,
     	//onblur: "cancel",
@@ -655,7 +655,7 @@ function bindAllTabs3(editableTarget){
 function bindAllTabs4(editableTarget){
 	$(editableTarget).editable("db-interaction/lists.php", {
         id        : 'SectionID',
-        indicator : 'Saving...',
+        indicator : '<img width="30px" src="/images/loading_circle.gif"/>',
         event: 'editclick',
     	select : true,
     	//onblur: "cancel",

@@ -7,7 +7,7 @@
       <div id="footer">
       	<div id="footer_items">
 		<ul style='float:left'>
-        	<h3>TrackCraze Assemble</h3>
+        	<h3>trackCraze Assemble</h3>
         	<li><a href="/theteam.php" class="noUnderline"><div class='nav_button'>Meet the Team</div></a></li>
  			<li><a href="/timeline.php" class="noUnderline"><div class='nav_button'>Timeline</div></a></li>
         	<li><a href="http://behindtheworkout.com" class="noUnderline"><div class='nav_button'>Our Blog</div></a></li>
@@ -15,7 +15,7 @@
         	<li><div class='nav_button'>Jobs</div></li>-->
         	<li><div class='nav_button'>The Idea</div></li>
         	<li><div class='nav_button'>Our Core Values</div></li>
-        	<li><div class='nav_button'>Contact us</div></li>
+        	<li><a href='/contact.php' class='noUnderline'><div class='nav_button'>Contact us</div></a></li>
       	</ul>
       
       	<ul style='float:left'>
