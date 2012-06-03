@@ -1,10 +1,11 @@
-<html style='overflow:hidden'>
+<html style='overflow-x:hidden'>
 <title>trackCraze</title>
 <meta name='KEYWORDS' content='trackcraze,fitness,tracking,gym,workout,log,exercise,record,share'>
 <meta name='Description' content="Trackcraze lets you follow other people's workout, record your own, and share it with others. Track your friends, your idol, and most importantly, yourself. Make fitness simple, customizable and motivating.">
 <link rel="stylesheet" href="/style.css" type="text/css" />
 <head><meta name="google-site-verification" content="ZsfdLKxUCoT4ItYyO2KQNsM1kx8IqP8bE8ZB_su4h_4" /></head>
-<body id='index'>
+<body style='background:none'>
+	<div id='index'>
 <link rel="shortcut icon"  href="images/favicon.ico" type="images/favicon.ico" />
 <center id='trackcrazelogo'><a href='login.php'><img src='images/trackcrazelogo.png'></a></center>
 
@@ -59,5 +60,6 @@ $("#emailbutton").live("click",function(){
     	}
  }
 </script>
-</body>
-</html>
+<?php
+ include_once "common/footer.php"; 
+?>

@@ -22,10 +22,18 @@
        // <!--<form method="post" name="feedbackform" id="feedbackform">
       //      <div>-->
             	echo '<label class="toplabel" for="Name">Your Name</label>';
+            	if(isset($Forename)&&isset($Surname)){
             	echo "<input type='text' name='name' id='name' class='inputfields' placeholder='Name' value=\"".$Forename." ".$Surname."\"/>";
+        		}else{
+        			echo "<input type='text' name='name' id='name' class='inputfields' placeholder='Name' />";
+        		}
                 echo "<br /><br />";
                 echo '<label class="toplabel" for="username">Your Email</label>';
+                if(isset($_SESSION['Username'])){
                 echo "<input type='text' name='username' id='username' class='inputfields' placeholder='Email' value=\"".$_SESSION['Username']."\"/>";
+            	}else{
+            		echo "<input type='text' name='username' id='username' class='inputfields' placeholder='Email' />";
+            	}
 ?>               
                  <br /><br />
                 <label class="toplabel" for='feedback'>Your comments:</label>

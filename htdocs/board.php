@@ -51,7 +51,8 @@
 		//	echo "<a id='blocktracker'>Block Tracker</a>";
 		//endif;
 	echo "<p id='status' class='statusboard".$statushover."'>".$status."</p>"; 
-	echo $users->loadSports($cuser,2)."</div>";
+	//echo $users->loadSports($cuser,2);
+	echo "</div>";
 	echo "<table><tr><td class='tal'>Gender:</td><td style='min-width:70px'>".$users->getGender($Gender1)."</td>";
 	echo"<td class='tal'>Weight:</td><td id='privacy1'>".$Weight1."</td></tr><tr><td class='tal'>Age:</td><td id='privacya'>".$users->getAge($DOB1)."</td><td class='tal'>Height:</td><td id='privacy2'>".$Height1." cm</td></tr>".$birthday."</table>";
 	if ($_SESSION['UserID']==$cuser):
@@ -172,8 +173,8 @@
         event: 'dblclick',
     	select : false,
     	placeholder: "Double click to add a short description of yourself",
-    	cancel:"cancel",
-    	submit:"save",
+    	cancel:"<button class='grey small box'>cancel</button>",
+    	submit:"<input type='submit' class='lightgreen small box' value='save'/>",
         submitdata: function(){
         	var status = $("#status1").val();
                     	var hash = {};

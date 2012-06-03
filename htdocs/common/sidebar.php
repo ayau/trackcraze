@@ -98,8 +98,8 @@
         event: 'dblclick',
     	select : false,
     	placeholder: "Double click to add a short description of yourself",
-    	cancel:"cancel",
-    	submit:"save",
+    	cancel:"<button class='grey small box'>cancel</button>",
+    	submit:"<input type='submit' class='lightgreen small box' value='save'/>",
         submitdata: function(){
         	var status = $("#status1").val();
                     	var hash = {};
