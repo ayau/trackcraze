@@ -1583,6 +1583,7 @@ EMAIL;
    				$stmt->bindParam(":repeated_user", $repeated_user, PDO::PARAM_INT);		
     			$stmt->execute();
     			while($row = $stmt->fetch()){
+    				if($row['rel']>0){
     				$name = $news->getName($row['UserID']);
     				$Ename = strip_tags($news->getName($row['UserID']));
     				$profilepic = $news->getProfilePic($row['UserID']);
@@ -1592,6 +1593,7 @@ EMAIL;
     				$percent = $row['rel']/3.25 * 100;
     				echo "<td> name match: ".$percent."%</td>";
     				echo "<tr />";
+					}
 				}
 				echo "<tr><td>end of search</td></tr>";
     			$stmt->closeCursor();

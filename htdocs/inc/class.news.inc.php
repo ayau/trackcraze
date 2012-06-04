@@ -596,7 +596,7 @@
 			$stmt->bindParam(':uid', $UID, PDO::PARAM_INT);
 			$stmt->execute();
 			$news = new GSNews();
-			While($row = $stmt->fetch()){
+			while($row = $stmt->fetch()){
 				$name = $news->getName($row['UserID']);
 				echo "<div class='shortStory'>".$name." has worked out on <a class='link' href=\"/progress.php?user=".$row['UserID']."&view=track&date=".$row['newsContent']."\">$row[newsContent]</a></div>";
 			}
@@ -856,7 +856,7 @@
 			$stmt->execute();
 			$row = $stmt->fetch();
 			if ($row['count']!=0){
-				echo '<div class="kudostext"><FONT COLOR="#FF0000">K</FONT><FONT COLOR="#FF4900">u</FONT><FONT COLOR="#FF9200">d</FONT><FONT COLOR="#FFDB00">o</FONT><FONT COLOR="#FFff00">s</FONT><FONT COLOR="#B6ff00"> </FONT><FONT COLOR="#6Dff00">t</FONT><FONT COLOR="#24ff00">o</FONT><FONT COLOR="#00ff00"> </FONT><FONT COLOR="#00ff49">y</FONT><FONT COLOR="#00ff92">o</FONT><FONT COLOR="#00ffDB">u</FONT><FONT COLOR="#00ffff"> </FONT><FONT COLOR="#00DBff">S</FONT><FONT COLOR="#0092ff">i</FONT><FONT COLOR="#0049ff">r</FONT><FONT COLOR="#FF00ff">!</FONT>';
+				echo '<div class="kudostext">Kudos to you Sir!';
 				echo "<div class='kudoscount'>x".$row['count']."</div></div>";
 				//echo "<div class='kudostext'>Kudos to you Sir!<div class='kudoscount'>x".$row['count']."</div></div>";
 			}

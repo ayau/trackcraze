@@ -230,6 +230,7 @@ return numcheck.test(keychar)
 	}
 
 	function loadWeightByUserID(get){
+		$("#PhyTable").append("<div id='loading'><center><div>loading...please wait (or get faster internet)</div><br /><br /><img width='50px' src='/images/loading_circle.gif'/></center></div>");
 		UID = get;//can delete hidden currentid
 		$("#PhyTable").append("<form name='weightchartoptions' id='weightchartoptions'><div id='trendlineonoff'>Trendline</div><input type='checkbox' name='trendlinecheck' value='yes'/></form><div id='weightChart'></div><div id='weightstartfinal'><input id='weightstart' maxlength='10' size='7'/><input id='weightfinal' maxlength='10' size='7'/><input id='weightoptionsubmit' type=button value='change'/></div><div id='weightcontentheader' class='ui-corner-top ui-widget-header'><span class='ui-jqgrid-title'>Weight</span></div><div><table id='weightheader'><tr><td>Date</td></tr><tr><td>Weight</td></tr></table><div id='weightdiv'><table id='weightcontent'></table></div></div>");
 		//,{placeholder:"_"}
@@ -385,7 +386,7 @@ return numcheck.test(keychar)
 		//alert(parseInt(maxmin));
 		//maxmin.split(",");
 		//alert(Math.max(127,128));
-		
+		$("#loading").remove();
 		var plot = $.jqplot('weightChart',  [weightdata],
 			{ title:'Weight',
   				axes:{

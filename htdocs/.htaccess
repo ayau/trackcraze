@@ -10,3 +10,5 @@ RewriteRule ^([a-zA-Z0-9_-]+)\.html$ index.php?username=$1
 
 RewriteCond %{HTTP_HOST} ^trackcraze\.(.*) [NC]
 RewriteRule ^(.*)$ http://www\.trackcraze\.%1/$1 [R=301,NC,L]
+
+ErrorDocument 404 /notfound.php

@@ -75,7 +75,7 @@ p { margin: 0 0 6px 0; }
 
 /* INDEX
 */
-#index{background:none; margin:0px auto;height:600px; width:700px;}
+#index{background:none; margin:0px auto;height:500px; width:700px;}
 #index h2 {text-align:center;padding-top:20px; padding-bottom:5px}
 .indextext{font-family:tahoma; text-align:left; left:117px;font-size:20px; top:5px;position:relative; }
 .indextext2{font-family:tahoma; font-size:20px; position:relative; left:17px; display:inline}
@@ -490,10 +490,10 @@ li {list-style:none;} //ALL LIST = no dots
 #status1{ word-wrap:break-word;overflow:hidden;border:0; resize:none;font-size:13px;font-family: "lucida grande",tahoma,verdana,arial,sans-serif;}
 .statustop {width:500px;height:40px;}
 .statusboard {width:120px;height:80px;margin:0px}
-.statusboard button[type=submit]{position:absolute; top:180px}
-.statusboard button[type=cancel]{position:absolute; top:200px}
-.statustop button[type=submit]{position:absolute; top:110px}
-.statustop button[type=cancel]{position:absolute; top:130px}
+.statusboard input[type=submit]{position:absolute; top:220px; left:145px;}
+.statusboard button{position:absolute; top:220px; left:210px;}
+.statustop input[type=submit]{position:absolute; top:100px; left:660px}
+.statustop button{position:absolute; top:130px; left:660px;}
 .editprofile {background-position: -111px -148px; width:16px; height:16px; float:right;position:relative; top:-30px;margin:10px;cursor:pointer}
 .statushover{border:#FFF 2px solid;}
 .statushover:hover{border:#8DAFEB 2px solid;}
@@ -625,8 +625,13 @@ li {list-style:none;} //ALL LIST = no dots
 .prevnotes {float:left;margin:1px;background-position: -2px -165px; width:42px; height:33px; cursor:pointer}
 
 #selectandbutton {position:absolute; left:250px;}
-#viewbyExercise {position:relative; left:20px; top:5px;}
+#viewbyExercise {position:relative; left:20px; top:3px;}
 #sortby {padding:10px 0px 10px;}
+#sortby input{margin-left: 10px;}
+
+#tablebyExercise h3 {margin-left:10px;}
+#tablebyExercise {margin-top:20px;}
+#tablebyExercise td{padding:5px 40px 5px 0px}
 
 #calHover {position:absolute; background:white; border:1px solid #000; padding:10px; min-width:88px; min-height:88px; text-align:center}
 
