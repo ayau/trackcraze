@@ -30,7 +30,7 @@
 	echo "<div class='photo'>".$news->getProfilePic($cuser)."</div>";
     echo "<div id='profileinfo'>";
     if (isset($DOB1)){
-	$birthday = "<tr><td class='tal'>Birthday:</td><td id='privacyb'>".date_format(date_create($DOB1),'jS M Y')."</td></tr>";//SOLUTION TO MAKING STUFF NOT GO OUTSIDE THE BOX IF THE USER IS NOT TRACKING
+	$birthday = "<tr><td class='tal'>Birthday:</td><td id='privacyb' style='display:none'>".date_format(date_create($DOB1),'jS M Y')."</td></tr>";//SOLUTION TO MAKING STUFF NOT GO OUTSIDE THE BOX IF THE USER IS NOT TRACKING
 }
 	else{
 		$birthday = "";
@@ -53,7 +53,7 @@
 	echo "<p id='status' class='statusboard".$statushover."'>".$status."</p>"; 
 	echo $users->loadSports($cuser,2)."</div>";
 	echo "<table><tr><td class='tal'>Gender:</td><td style='min-width:70px'>".$users->getGender($Gender1)."</td>";
-	echo"<td class='tal'>Weight:</td><td id='privacy1'>".$Weight1."</td></tr><tr><td class='tal'>Age:</td><td id='privacya'>".$users->getAge($DOB1)."</td><td class='tal'>Height:</td><td id='privacy2'>".$Height1." cm</td></tr>".$birthday."</table>";
+	echo"<td class='tal'>Weight:</td><td id='privacy1' style='display:none'>".$Weight1."</td></tr><tr><td class='tal'>Age:</td><td id='privacya' style='display:none'>".$users->getAge($DOB1)."</td><td class='tal'>Height:</td><td id='privacy2' style='display:none'>".$Height1." cm</td></tr>".$birthday."</table>";
 	if ($_SESSION['UserID']==$cuser):
 	echo "<a href='editprofile.php'><div class='editprofile sp'></div></a>";
 	endif;
@@ -197,25 +197,51 @@ for (var i=1; i<3; i++)
     		if (privacy[i]==2)
     		{
     			$("#privacy"+i).text("Private");
+    			$("#privacy"+i).show();
     			
     		}
     		else if (privacy[i]==1 && (relationship==0||relationship==1))
     		{
     			$("#privacy"+i).text("Private");
+    			$("#privacy"+i).show();
+    		}
+    		else
+    		{
+    			$("#privacy"+i).show();
     		}
     	}
-if (privacy[0]==2)
+		if (privacy[0]==2)
     	{
-    		$("#privacya").text("Private")
+    		$("#privacya").text("Private");
+    		$("#privacya").show();
     		$("#privacyb").text("Private");
+    		$("#privacyb").show();
     	}
     	else if (privacy[0]==1)
     	{
-    		$("#privacya").text("Private")
+    		$("#privacya").text("Private");
+    		$("#privacya").show();
 	  		var DOfB = $("#privacyb").text();
     		splitDOfB = DOfB.split(" ");
     		$("#privacyb").text(splitDOfB[0]+" "+splitDOfB[1]);
+    		$("#privacyb").show();
     	}
+    	else
+    	{
+    		$("#privacya").show();
+    		$("#privacyb").show();
+    	}
+</script>
+<?php
+else:
+?>
+<script>
+for (var i=1; i<3; i++)
+{
+	$("#privacy"+i).show();
+}
+$("#privacya").show();
+$("#privacyb").show();
 </script>
 <?php
 endif;
