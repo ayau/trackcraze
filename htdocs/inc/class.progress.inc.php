@@ -570,13 +570,13 @@ class GSProgress
 		//2. Load data from records (jusing javascript to add in)
 		//3. If Record does not belong to program, add "other" input boxes (javascript).
 		//Putting Other program ID in the other textbox
-		echo "<tr id='somethingnewrow'><td colspan='2'><b>Trying something new today?</b></td></tr><tr sid='$opsid'><td colspan='2'><input id='newExercise' placeholder='Enter new Exercise' size='27'/></td><td><input id='newWeight' class='weightInputTable'   maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' /><select id='newlbkg'><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select></td><td><input id='newRep' class='repInputTable'   maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)'/></td><td colspan='2'><textarea id='newComment' class='commentInputTable' placeholder='Notes'/></td><td width='30' class='zeropadding'><input id='addExerciseInputTable' type=button value='ne' /></td></tr>";//for if people want to add new exercises on the go
+		echo "<tr id='somethingnewrow'><td colspan='2'><b>Trying something new today?</b></td></tr><tr sid='$opsid'><td colspan='2'><input id='newExercise' placeholder='Enter new Exercise' size='27'/></td><td><input id='newWeight' class='weightInputTable'   maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' /><select id='newlbkg'><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select></td><td><input id='newRep' class='repInputTable'   maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)'/></td><td colspan='2'><textarea id='newComment' class='commentInputTable' placeholder='Notes'/></td><td width='30' class='zeropadding'><div id='addExerciseInputTable' class='add_set_btn sp'></div></td></tr>";//for if people want to add new exercises on the go
 		
 		$oldEx = $this->loadExercise($_SESSION['UserID']);
 		if ($oldEx!=""){
 			echo "<tr id='somethingoldrow'><td colspan='5'><b>Trying something you have already done before?</b></td></tr><tr sid='$opsid'><td colspan='2'>";
 			echo $oldEx;
-			echo"</td><td><input id='oldWeight' class='weightInputTable'   maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' /><select id='oldlbkg'><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select></td><td><input id='oldRep' class='repInputTable'   maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)'/></td><td colspan='2'><textarea id='oldComment' class='commentInputTable' placeholder='Notes'/></td><td width= '30' class='zeropadding'><input id='addoldExerciseInputTable' type=button value='ne' /></td></tr>";//for if people want to add existing exercises on the go
+			echo"</td><td><input id='oldWeight' class='weightInputTable'   maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' /><select id='oldlbkg'><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select></td><td><input id='oldRep' class='repInputTable'   maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)'/></td><td colspan='2'><textarea id='oldComment' class='commentInputTable' placeholder='Notes'/></td><td width= '30' class='zeropadding'><div id='addoldExerciseInputTable' class='add_set_btn sp'></div></td></tr>";//for if people want to add existing exercises on the go
 		}
 		
 		echo "</table></tr>";
@@ -735,7 +735,7 @@ class GSProgress
 				echo $this->formatInputTable($row,$rowRecords,$rowPrev);
 				$order++;
 			}
-			echo "<td class='zeropadding'><input class='addnewset' type=button value=ad /></td></tr>";
+			echo "<td class='zeropadding'><div class='addnewset add_set_btn sp'></div></td></tr>";
 		}else{
 			echo "<tr list=\"".$LID."\" rel='1'><td class='exerciseTable'>$eName</td>";
 			echo "<td colspan=5>No sets specified for this exercise</td>";
@@ -1608,7 +1608,7 @@ class GSProgress
 					."<textarea class='recordsComment' spellcheck='false' placeholder='New Notes'>$comment</textarea>"
 					."<input type='button' value='Clear' class='recordsCommentCncl'/</td>";
 					
-    	echo "<td class='zeropadding'><input class='addnewset' type=button value=ad /></td></tr>";
+    	echo "<td class='zeropadding'><div class='addnewset add_set_btn sp'></div></tr>";
     }
     //Loads exercise into dropdown box
     //kinda repeated functionality.
@@ -1770,6 +1770,6 @@ class GSProgress
 					."<textarea class='recordsComment' spellcheck='false' placeholder='New Notes'>$comment</textarea>"
 					."<input type='button' value='Clear' class='recordsCommentCncl'/</td>";
 					
-    	echo "<td class='zeropadding'><input class='addnewset' type=button value=ad /></td></tr>";
+    	echo "<td class='zeropadding'><div class='addnewset add_set_btn sp'></div></td></tr>";
     }
 }

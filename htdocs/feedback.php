@@ -19,6 +19,7 @@
 
                
        echo '<div id="loginheading"><h2 >Tell us what you think</h2></div>';
+       echo '<div style="float:left">';
        // <!--<form method="post" name="feedbackform" id="feedbackform">
       //      <div>-->
             	echo '<label class="toplabel" for="Name">Your Name</label>';
@@ -37,10 +38,12 @@
 ?>               
                  <br /><br />
                 <label class="toplabel" for='feedback'>Your comments:</label>
-				<textarea class='inputtextarea' id="feedback" rows="10" cols="60" placeholder="Be honest! We won't hate you."></textarea>
+				<textarea class='inputtextarea' id="feedback" rows="10" cols="55" placeholder="Be honest! We won't hate you."></textarea>
 				<br />
                 <input type="submit" name="Submit" id="submitfeedback" value="Submit" class="lightgreen wide box" />
                  <p id='feedbackthanks'></p>
+                 </div>
+                 <img style='float:left; margin-left:50px' src='images/mail.png'/>
            <!-- </div>
     </form> -->
 <?php

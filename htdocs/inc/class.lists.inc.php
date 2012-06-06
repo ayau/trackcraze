@@ -1168,7 +1168,7 @@ public function updateExerciseItem()
 					MainProgramID
 				FROM users
 				WHERE UserID=:userid
-				AND MainProgramID<>null
+				AND MainProgramID IS NOT NULL
 				LIMIT 1";
 		if($stmt = $this->_db->prepare($sql))
 		{
@@ -1221,10 +1221,10 @@ public function updateExerciseItem()
 				USING (UserID)
 				WHERE lists.UserID=:userid
 					AND ProgramID<>:MID
-				ORDER BY RAND() LIMIT 2";
+				ORDER BY RAND() LIMIT 4";
 		if($stmt = $this->_db->prepare($sql))
 		{
-			$stmt->bindParam(':userid', $UID, PDO::PARAM_STR);
+			$stmt->bindParam(':userid', $UID, PDO::PARAM_INT);
 			$stmt->bindParam(':MID', $MainID, PDO::PARAM_INT);
 			$stmt->execute();
 			while($row = $stmt->fetch())

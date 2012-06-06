@@ -16,6 +16,7 @@
 	if(isset($_SESSION['LoggedIn']) && $_SESSION['LoggedIn']==1):
 		if($_SESSION['UserID']==$UID):
 		echo "<h2>My Programs</h2>";
+		echo "<h3>Select a program as your main program</h3>";
 		else:
 		echo "<h2>".$Forename1." ".$Surname1."'s Programs</h2>";
 		endif;

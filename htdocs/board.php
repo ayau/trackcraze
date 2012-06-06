@@ -24,9 +24,24 @@
 	echo "<br />Please check your email to verify your Trackcraze account before proceeding";
 	die();
 	endif;
+	if($Gender1 == 0)
+		$him = "him";
+	else if($Gender1 == 1)
+		$him = "her";
+	else
+		$him = "him/her";
+	if(strlen($Forename1)>18)
+		$Forename = substr($Forename1, 0, 18)."..";
+	else
+		$Forename = $Forename1;
 	echo "<div id='container'>";
 	echo "<div id='wrap'>";
-	echo "<div id='profileCon' class='container'><a class='TitleConlink' href='profile.php".$getuser."'><div class='TitleCon hover h3'>".$Forename1." ".$Surname1."</div></a>";
+	echo "<div id='profileCon' class='container'><a class='TitleConlink' href='profile.php".$getuser."'><div class='TitleCon hover h3'>";
+	$name = $Forename1." ".$Surname1;
+	if(strlen($name)>20){
+		$name = substr($name, 0, 20)."..";
+	}
+	echo $name."</div></a>";
 	echo "<div class='photo'>".$news->getProfilePic($cuser)."</div>";
     echo "<div id='profileinfo'>";
     if (isset($DOB1)){
@@ -66,6 +81,15 @@
    		echo $lists->loadProgramListForBoard($cuser);
    		echo "\t\t\t</table></div>";
    	?><script>
+   	if($("#programsCon").find("tr").length==1){
+   		if(<?php echo $_SESSION['UserID']?> == <?php echo $cuser?>){
+   			$("#programsCon").append("<p>You can create your own custom workout program by clicking 'Programs'</p>");
+	   	}else{
+		   	$("#programsCon").append("<p><?php echo $Forename?> doesn't seem to have any workout programs yet. Recommend some to <?php echo $him?>!</p>");
+		}
+	   	   	
+   	}
+   	
    	if("<?php echo $Height1 ?>"==0||""){
    		$("#privacy2").prev().remove();
    		$("#privacy2").remove();   		
@@ -80,7 +104,14 @@
    		$("#privacy1").append("kg");}</script><?php
 	echo "<div id='progressCon' class='container'><a class='TitleConlink' href='progress.php".$getuser."'><div class='TitleCon  h3 hover'>Progress</div></a><table>";
 	$goals = $users->loadGoalsByUserID($cuser,2);
-	$news->loadLastWorkouts($cuser);
+	$lastworkouts = $news->loadLastWorkouts($cuser);
+	echo $lastworkouts;
+	if($lastworkouts == ""){
+		if($cuser == $_SESSION['UserID'])
+			echo "<p>Your recent workouts will show up here after you've worked out.</p><p>Click into 'Progress' and start recording what you've done or create a program in 'Programs' if you haven't done so already.</p>";
+		else
+			echo "<p>This user hasn't worked out yet. What a lazy bum. Go motivate ".$him."!</p>";
+	}
 	if($goals==true)
 	echo "<br /><h3>One of ".$Forename1."'s goals</h3>";
 	echo "</table></div>";
@@ -113,16 +144,36 @@
 			<?php echo "</div>";
 		//echo "<div id='toptracks'><a class='TitleConlink' href='toptracks.php".$getuser."'><div class='TitleCon  h3 hover'>Top Tracks</div></a>";
 		echo "<div id='toptracks'><div class='TitleCon  h3'>Top Tracks</div>";
-		echo $users->getrandTracking($cuser,1);
-    	echo "</div>";
+		$toptracks = $users->getrandTracking($cuser,1);
+		echo $toptracks;
+		if($toptracks == ""){
+			if($cuser == $_SESSION['UserID'])
+				echo "<p>You can choose your top tracks in 'Tracking' for easy access</p>";
+			else    	
+				echo "<p style='padding-top:0px'>".$Forename." hasn't picked any top tracks yet. You should talk to ".$him." and trick ".$him." into picking you</p>";
+		}
+		echo "</div>";
 		echo "<div id='trackerCon'><div class='halftrack'>";
 		echo "<a class='TitleConlink' href='tracking.php".$getuser."'><div class='TitleCon  h3 hover'>Tracking: (".$users->countTrack($cuser,1).")</div></a>";
-    	echo $users->getrandTracking($cuser,0);
-		echo "</div>";
+    	$tracking = $users->getrandTracking($cuser,0);
+    	echo $tracking;
+    	if($tracking == ""){
+    		if($cuser == $_SESSION['UserID'])
+    			echo "<p>You can track your friends' or other people's progress by clicking 'Track' on their page.</p><p style='padding-top:0px'>You can also search for users in the search bar at the top of this page</p>";
+			else
+				echo "<p>".$Forename." doesn't feel the need to track anyone. Let ".$him." know that being self centered won't get you far in life";
+		}		
+    	echo "</div>";
     	echo "<div class='break'></div>";
 		echo "<div class='halftrack'>";
     	echo "<a class='TitleConlink' href='trackers.php".$getuser."'><div class='TitleCon  h3 hover'>Trackers: (".$users->countTrack($cuser,0).")</div></a>";
-		echo $users->getrandTrackers($cuser);
+		$tracker =  $users->getrandTrackers($cuser);
+		echo $tracker;
+    	if($tracker == "")
+    		if($cuser == $_SESSION['UserID'])
+    			echo "<p>Invite your friends to track your progress and give you motivation and advices on your workouts</p>";
+    		else
+				echo "<p>Poor ".$Forename.", has no one tracking ".$him.". Track ".$him." to give ".$him." some support!";
     	echo "</div></div>";
     	?>
     	</div>

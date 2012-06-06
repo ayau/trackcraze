@@ -24,6 +24,7 @@ Please enter the email address you used to sign up with trackCraze:
 </form>
 <script>
 $("#passwordforget").live("click",function(){
+	if($("#username".val()!=null)){
 	$.ajax({
 		type: "POST",
 		url: "db-interaction/users.php",
@@ -37,6 +38,7 @@ $("#passwordforget").live("click",function(){
 	},
 	error:function(){}  
 	});
+	}
 });
 </script>
 <?php

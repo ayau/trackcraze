@@ -18,7 +18,12 @@ if (isset($_SESSION['LoggedIn'])
             header("Location: /account.php?email=$status");
             break;
         case 'changepassword':
-            $status = $userObj->updatePassword() ? "changed" : "nomatch";
+        	$pattern = '/^[a-zA-Z0-9_-]{6,18}$/';
+        	if(preg_match($pattern, $_POST['p'])){
+            	$status = $userObj->updatePassword() ? "changed" : "nomatch";
+            }else{
+            	$status = "failed";
+            }
             header("Location: /account.php?password=$status");
             break;
         case 'deleteaccount':

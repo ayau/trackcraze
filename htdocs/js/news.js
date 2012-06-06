@@ -14,7 +14,7 @@ function initializeNews(get){
     			success: function(r){
     				t=r.split(",");
     				newPostText = replaceURL(newPostText);
-    				$("#posts").prepend("<div id="+t[0]+" class='postcontent' style='display:none'><div class='postHeader'><div class='delete sp' hidden></div><div class='miniphoto'>"+t[2]+"</div><div class='postname'>"+t[1]+"</div><div class='posttext'>"+newPostText+"<p class='agotext'>"+t[3]+"</p><a class='postcomment'>comment</a></div></div><div class='kudos'></div><div class='comments'></div><div class='break'></div></div>");//no kudos. You can't kudos your own post
+    				$("#posts").prepend("<div id="+t[0]+" class='postcontent' style='display:none'><div class='postHeader'><div class='delete sp' hidden></div><div class='miniphoto'>"+t[2]+"</div><div class='postname'>"+t[1]+"</div><div class='posttext'>"+newPostText+"<p class='agotext'>"+t[3]+"</p></div><a class='postcomment'>comment</a></div><div class='kudos'></div><div class='comments'></div><div class='break'></div></div>");//no kudos. You can't kudos your own post
     				$('.url').each( function(){
     					if ($(this).attr('href').substring(0,4)!='http'){
         				$(this).attr('href', 'http://' + $(this).attr('href'));

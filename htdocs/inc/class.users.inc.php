@@ -735,11 +735,13 @@ public function verificationCheck($UID){
     $stmt->bindParam(':uid', $UID, PDO::PARAM_INT);
     $stmt->execute();
     $news = new GSNews();
+    $out = "";
     while($row = $stmt->fetch()){
     	$name = strip_tags($news->getName($row['Tracker']));
     	$profilepic = $news->getProfilePic($row['Tracker']);
-    	echo "<div><div class='miniphoto' title=\"".$name."\">".$profilepic."</div></div>";
+    	$out = $out."<div><div class='miniphoto' title=\"".$name."\">".$profilepic."</div></div>";
 	}
+	return $out;
     $stmt->closeCursor();
    }
   else
@@ -787,19 +789,21 @@ public function verificationCheck($UID){
     $stmt->bindParam(':uid', $UID, PDO::PARAM_INT);
     $stmt->execute();
     $news = new GSNews();
+    $out = "";
     if($pg==2){
 		 while($row = $stmt->fetch()){
-    	$name = strip_tags($news->getName($row['Trackee']));
-    	$profilepic = $news->getProfilePic($row['Trackee']);
-    	echo "<a href=\"/board.php?user=".$row['Trackee']."\">".$name."</a>";
+    		$name = strip_tags($news->getName($row['Trackee']));
+    		$profilepic = $news->getProfilePic($row['Trackee']);
+    		$out = $out."<a href=\"/board.php?user=".$row['Trackee']."\">".$name."</a>";
 		}    	
     }else{
-    while($row = $stmt->fetch()){
-    	$name = strip_tags($news->getName($row['Trackee']));
-    	$profilepic = $news->getProfilePic($row['Trackee']);
-    	echo "<div><div class='miniphoto' title=\"".$name."\">".$profilepic."</div></div>";
+    	while($row = $stmt->fetch()){
+    		$name = strip_tags($news->getName($row['Trackee']));
+    		$profilepic = $news->getProfilePic($row['Trackee']);
+    		$out = $out."<div><div class='miniphoto' title=\"".$name."\">".$profilepic."</div></div>";
+		}
 	}
-	}
+	return $out;
     $stmt->closeCursor();
    }
   else
@@ -1591,7 +1595,7 @@ EMAIL;
     				echo "<div><div class='miniphoto' title=\"".$Ename."\">".$profilepic."</div></div></td>";
     				echo "<td width='150px'>".$name."</td>";
     				$percent = $row['rel']/3.25 * 100;
-    				echo "<td> name match: ".$percent."%</td>";
+    				echo "<td> name match: ".ceil($percent)."%</td>";
     				echo "<tr />";
 					}
 				}

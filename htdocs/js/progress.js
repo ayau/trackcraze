@@ -161,9 +161,9 @@ return numcheck.test(keychar)
 				$(".day").removeClass("selected");
 				$("div[date=\""+viewingDate+"\"]").addClass("selected");
 				after = viewingDate;
-				
+
 				if(before.substring(0, 7)!= after.substring(0, 7)){
-					populateFields(after.substring(6, 7), after.substring(0, 4), get);
+					populateFields(after.substring(5, 7), after.substring(0, 4), get);
 				}
 			},
 			error: function(){
@@ -232,7 +232,7 @@ return numcheck.test(keychar)
 	function loadWeightByUserID(get){
 		$("#PhyTable").append("<div id='loading'><center><div>loading...please wait (or get faster internet)</div><br /><br /><img width='50px' src='/images/loading_circle.gif'/></center></div>");
 		UID = get;//can delete hidden currentid
-		$("#PhyTable").append("<form name='weightchartoptions' id='weightchartoptions'><div id='trendlineonoff'>Trendline</div><input type='checkbox' name='trendlinecheck' value='yes'/></form><div id='weightChart'></div><div id='weightstartfinal'><input id='weightstart' maxlength='10' size='7'/><input id='weightfinal' maxlength='10' size='7'/><input id='weightoptionsubmit' type=button value='change'/></div><div id='weightcontentheader' class='ui-corner-top ui-widget-header'><span class='ui-jqgrid-title'>Weight</span></div><div><table id='weightheader'><tr><td>Date</td></tr><tr><td>Weight</td></tr></table><div id='weightdiv'><table id='weightcontent'></table></div></div>");
+		$("#PhyTable").append("<form name='weightchartoptions' id='weightchartoptions'><div id='trendlineonoff'>Trendline</div><input type='checkbox' name='trendlinecheck' value='yes'/></form><div id='weightChart'></div><div id='weightstartfinal'><h3>Choose the start and end dates for the graph</h3><br /><br /><input id='weightstart' maxlength='10' size='7'/><input id='weightfinal' maxlength='10' size='7'/><input id='weightoptionsubmit' class='fitwidth box' type=button value='change'/></div><div id='weightcontentheader' class='ui-corner-top ui-widget-header'><span class='ui-jqgrid-title'>Weight</span></div><div><table id='weightheader'><tr><td>Date</td></tr><tr><td>Weight</td></tr></table><div id='weightdiv'><table id='weightcontent'></table></div></div>");
 		//,{placeholder:"_"}
 		$("#weightstart").mask("99/99/9999");
 		$("#weightfinal").mask("99/99/9999");
@@ -627,7 +627,7 @@ return numcheck.test(keychar)
 	}
 	});
 	$(".addnewset").live("click",function(){
-		$(this).parent().parent().after("<tr class=\""+$(this).parent().parent().attr('class')+"\" list=\""+$(this).parent().parent().attr('list')+"\" class=recordtable rel=\""+(parseInt($(this).parent().parent().attr('rel'))+1)+"\"><td colspan='2'></td><td><input class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' /><select ><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select></td><td><input class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)' /></td><td></td><td class='zeropadding'><input class='addnewset' type=button value=ad /></td></tr>");
+		$(this).parent().parent().after("<tr class=\""+$(this).parent().parent().attr('class')+"\" list=\""+$(this).parent().parent().attr('list')+"\" class=recordtable rel=\""+(parseInt($(this).parent().parent().attr('rel'))+1)+"\"><td colspan='2'></td><td><input class='weightInputTable' maxlength = '5' size='4' onkeypress='return onlyNumbers(event,1)' /><select ><option selected value='lbs'>lbs</option><option value='kg'>kg</option></select></td><td><input class='repInputTable' maxlength = '3' size='1' onkeypress='return onlyNumbers(event,0)' /></td><td></td><td class='zeropadding'><div class='addnewset add_set_btn sp'></div></td></tr>");
 		commentRow = $(this).parent().parent().parent().find('tr[list='+$(this).parent().parent().attr("list")+'][rel=1]').find(".commentSpan");
 		
 		commentRow.attr('rowspan',commentRow.attr('rowspan')+1);
@@ -808,6 +808,7 @@ return numcheck.test(keychar)
 			if($(this).attr("disabled")!=1){
 			$("#daySelect").attr("disabled",1);
 			$("#recordsbydate").show();
+			$("#TrackTable").show();
 			$("#trackbyExercise").hide();
 			$("#progressSelector").hide();
 			$("#inputLine").hide();
@@ -817,7 +818,8 @@ return numcheck.test(keychar)
 		$("#exerciseSelect").live("click",function(){
 			if($(this).attr("disabled")!=1){
 			$("#exerciseSelect").attr("disabled",1);
-			$("#recordsbydate").hide();	
+			$("#TrackTable").hide();
+			//$("#recordsbydate").hide();	
 			$("#trackbyExercise").show();
 			$("#progressSelector").show();
 			$("#ExerciseSel").show();
@@ -921,20 +923,24 @@ return numcheck.test(keychar)
   		$("#TrackTable").show();
   			if (!$("#TrackTable").children().length){
 				
-				if(!request['date'])
-				loadRecordsByDate(get,stoday);
-				else{
+				if(!request['date']){
+					loadRecordsByDate(get,stoday);
+					calgen();
+					currentMonth=today.getMonth()+1;
+    				currentYear=today.getFullYear();
+					populateFields(today.getMonth()+1, today.getFullYear(), get);
+				}else{
 					//converting to javascript date
 					myDateParts = request['date'].split("/");
 
 					request['date'] = myDateParts[2]+"-"+myDateParts[0]+"-"+myDateParts[1];
 					
 					loadRecordsByDate(get, request['date']);
+					calgen();
+					currentMonth=today.getMonth()+1;
+    				currentYear=today.getFullYear();
+					populateFields(myDateParts[0], myDateParts[2], get);
 				}
-				calgen();
-				currentMonth=today.getMonth()+1;
-    			currentYear=today.getFullYear();
-				populateFields(today.getMonth()+1, today.getFullYear(), get);
 			}
 			$("#RecordSelect").removeAttr("disabled");
 			$("#PhysiqueSelect").removeAttr("disabled");
@@ -1174,7 +1180,10 @@ function getFirstDay(theYear, theMonth){
 var currentMonth;
 var currentYear;
 function populateFields(month, theYear, get) {
-	
+	month = month + "";
+	if(month.substr(0,1)=="0"){
+		month = month.substr(1,2);	
+	};
     // which is the first day of this month?
     var theMonth = month-1;
     var firstDay = getFirstDay(theYear, theMonth);

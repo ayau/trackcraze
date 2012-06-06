@@ -83,7 +83,7 @@ p { margin: 0 0 6px 0; }
 .indextext4{font-family:tahoma; font-size:20px; top:3px;position:relative; left:300px; }
 .box1 {position:relative; left:-100px;width:500px;}
 #emailenter {position:relative; left:392px; top:10px;border: 1px solid #c0cdd8;margin:10px;}
-.indexbg {z-index:-1;position:relative;  top:-190px; background:url(images/indexart.png) no-repeat;width:755px; height:330px}
+.indexbg {z-index:-1;position:relative;  top:-190px; background:url(images/indexartv2.png) no-repeat;width:755px; height:330px}
 #emailbutton {position:relative; left:690px;top:-365px;background:url(images/enter.png) no-repeat;width:32px; height:32px; cursor:pointer}
 #emailerror {position:relative; left:400px; top:-340px;font-size:16px;color:#555;}
 #trackcrazelogo {position:relative;top:20px;right:5px;}
@@ -125,7 +125,7 @@ background: -moz-linear-gradient(top, white 0%, white 55%, #D5E4F3 130%); */
 .usernameurl {color:#104E8B;}
 .logout {background-position:-278px -2px; position:absolute; right:0px;top:38px; width:74px; height:30px;}
 .logout:hover{background-position:-278px -40px}
-.account {background-position:-198px -2px; position:absolute; right:73px; top:38px; width:80px; height:30px}
+.account {background-position:-198px -2px; position:absolute; right:73px; top:38px; width:81px; height:30px}
 .account:hover{background-position:-198px -40px;}
 .programlists {background-position:-120px -2px; position:absolute; right:153px; top:38px; width:85px; height:30px;}
 .programlists:hover{background-position:-120px -40px;}
@@ -164,6 +164,13 @@ FOOTER
  	cursor:pointer;
 }
 
+.nav_button_disabled{
+	font-weight:bold;
+	color:#DDD;
+	opacity:0.4;
+	padding:7px 15px 7px 15px;
+}
+
 /*
     FORM STUFF
 */
@@ -199,7 +206,7 @@ input[name="gender"]{position:relative;top:1px;margin:0px 3px 0px 15px;}
 */
 .message { padding: 10px; margin: 0 0 10px 0; width: 607px; }
 .good { background: #9ff5b6; }
-.bad { color: #ef0040; }
+.bad { background: #FC4444; color:white; }
 
 
 /*
@@ -210,7 +217,7 @@ li {list-style:none;} //ALL LIST = no dots
 //.list li { position: relative; margin: 0 0 8px 0; padding: 20px 0px 20px 40px; width: 700px; }
 //.list li span { padding: 8px; -moz-border-radius: 5px; -webkit-border-radius: 5px; width: 589px; display: block; position: relative;}
 .setnrep {position:relative; margin:1px;}
-.setnrep li{position:relative; padding:2px 0px 30px;width:700px}
+.setnrep li{position:relative; padding:2px 0px 10px;width:700px;min-height:20px}
 #moreprograms{float:right;margin-top:10px}
 
 .noUnderline:hover{text-decoration:none;}
@@ -251,7 +258,7 @@ li {list-style:none;} //ALL LIST = no dots
 .weight{position:absolute; right:385px;}
 .lbkg{position:absolute; left:320px;}
 .rep{position:absolute; left:415px;}
-.comment{position:absolute; left:482px;width: 200px; font: 12px Calibri}
+.comment{position:relative; left:482px;width: 200px; font: 12px Calibri;}
 
 /*Side buttons PROGRAMS
 */
@@ -508,7 +515,7 @@ li {list-style:none;} //ALL LIST = no dots
 
 .container{float:left; width:260px;height:250px;border: 2px solid #c0cdd8;margin:10px; border-radius:5px; }
 
-.TitleCon{width:250;padding:10px;}
+.TitleCon{width:250;padding:10px;overflow:hidden}
 .TitleConlink:hover {text-decoration:none}
 #profileCon .TitleCon {height:18px;padding:10px 10px }
 #profileCon .h3 {font-size:18px;}
@@ -528,6 +535,7 @@ li {list-style:none;} //ALL LIST = no dots
 #profileCon td{height:23px;}
 
 #progressCon h3, table{margin-left:10px;}
+#progressCon p, #toptracks p, #trackerCon p, #programsCon p {padding:10px; color:#666}
 
 #overlay { position: absolute; left: 295px; top: 363px; width: 548px; height:334px; background: url("/images/transpBlue_overlay.png"); }
 #overlay img { position:relative; left:274px; bottom:-10px; }
@@ -590,11 +598,11 @@ li {list-style:none;} //ALL LIST = no dots
 #progressRight {float:right;padding-top:8px;}
 #progressRight p{font-size:20px;float:left;width:3px;padding: 3px 10px;font: bold 20px Calibri; color:black}
 #progressRight a{float:left;font-size:20px;padding: 5px 10px;font: bold 20px Calibri; color:black; cursor:pointer}
-#progressRight a:hover{background:#CCC;text-decoration:none;}
+#progressRight a:hover{background:#DFEDF7;text-decoration:none;}
 #trackoptions {position:relative;height:50px;padding-top:8px;}
 #trackoptions p{font-size:20px;float:left;width:3px;padding: 3px 10px;font: bold 20px Calibri; color:black}
 #trackoptions a{float:left;font-size:20px;padding: 5px 10px;font: bold 20px Calibri; color:black; cursor:pointer}
-#trackoptions a:hover{background:#CCC;text-decoration:none;}/*same as progressright*/
+#trackoptions a:hover{background:#DFEDF7;text-decoration:none;}/*same as progressright*/
 #InputTable .zeropadding {padding:0px;}
 
 
@@ -635,6 +643,8 @@ li {list-style:none;} //ALL LIST = no dots
 
 #calHover {position:absolute; background:white; border:1px solid #000; padding:10px; min-width:88px; min-height:88px; text-align:center}
 
+.add_set_btn {background-position:-2px -200px; width:20px; height:20px; cursor:pointer; }
+
 /*GRAPH*/
 #InputTable {position:relative;top:0px;}
 #inputLine {position:relative;height:30px;top:10px;padding-bottom:30px}
@@ -648,9 +658,13 @@ li {list-style:none;} //ALL LIST = no dots
 #weightdate{float:left; margin:5px 3px 0px 10px; font-weight:bold;font-size:13px;display:inline; color:#999}
 #weightsubmit {float:left; padding:5px 10px;margin:0px 10px;}
 #weightchartoptions {position:relative; height:30px;}
-#weightoptionsubmit {position:relative;left:10px;}
+#weightoptionsubmit {position:relative;left:10px;top:-5px}
 #weightstartfinal {padding:30px;}
 #weightstartfinal input{margin-left:20px;}
+
+#weightstart{top:-5px; position:relative;}
+#weightfinal{top:-5px; position:relative;}
+
 /*TABLE*/
 #weightheader {width: 85px; float:left;border-spacing:0px; margin-left:0px}
 #weightheader td {padding:5px 10px 5px;border:1px solid #D3D3D3; background:#E6E6E6 url(js/images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50% repeat-x; color:#555;font-weight:normal}
@@ -730,3 +744,8 @@ li {list-style:none;} //ALL LIST = no dots
 	background-color: Highlight;
 	color: HighlightText;
 }
+
+
+/*MISC*/
+.shitty_names {margin-top:20px;}
+.shitty_names li{font-size:18px; text-align:left; padding:5px; margin-left:100px; color:#333}

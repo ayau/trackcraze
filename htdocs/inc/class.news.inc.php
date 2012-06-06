@@ -55,6 +55,8 @@
 		$time = $news->getLastNewsVisit();
 		if ($string=="UserID="){
 			echo "Seems like you have no friends.";
+			echo "<p style='color:#666; padding-top:10px'>Invite your friends to trackCraze and track them!</p>";
+			echo "<p style='color:#666; padding-top:10px'>Or search for other users in the search bar at the top of this page</p>";
 		}else{
 		$tr = $news -> getMiniAcceptedTR($time);
 		$post = $news->getMiniPost($string, $time);
@@ -596,10 +598,12 @@
 			$stmt->bindParam(':uid', $UID, PDO::PARAM_INT);
 			$stmt->execute();
 			$news = new GSNews();
+			$out = "";
 			while($row = $stmt->fetch()){
 				$name = $news->getName($row['UserID']);
-				echo "<div class='shortStory'>".$name." has worked out on <a class='link' href=\"/progress.php?user=".$row['UserID']."&view=track&date=".$row['newsContent']."\">$row[newsContent]</a></div>";
+				$out = $out."<div class='shortStory'>".$name." has worked out on <a class='link' href=\"/progress.php?user=".$row['UserID']."&view=track&date=".$row['newsContent']."\">$row[newsContent]</a></div>";
 			}
+			return $out;
 		}else{
 			echo "Something went wrong";
 		}

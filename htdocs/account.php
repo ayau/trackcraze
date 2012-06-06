@@ -26,6 +26,9 @@
         {
             echo "<div class='message bad'>The two passwords "
                 . "did not match. Try again!</div>";
+        }elseif(isset($_GET['password']) && $_GET['password']=="failed")
+        {
+            echo "<div class='message bad'>Password should be 6-18 characters. Letters, numbers, underscores and hyphens allowed</div>";
         }
  
         if(isset($_GET['delete']) && $_GET['delete']=="failed")
@@ -39,7 +42,7 @@
  		<div id="loginheading">
         <h2>Your Account</h2>
         </div>
-        <form method="post" action="db-interaction/users.php">
+        <!--<form method="post" action="db-interaction/users.php">
             <div>
                 <input type="hidden" name="userid"
                     value="<?php echo $userID ?>" />
@@ -52,7 +55,7 @@
                     id="change-email-submit" value="Change Email"
                     class="lightgreen wide box" />
             </div>
-        </form><br /><br />
+        </form><br /><br /> -->
  
         <form method="post" action="db-interaction/users.php"
             id="change-password-form">

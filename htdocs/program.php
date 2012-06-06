@@ -104,6 +104,8 @@ if(isset($_SESSION['LoggedIn']) && isset($_SESSION['Username'])&&($UID!=NULL)&& 
 	if ($_SESSION['UserID']==$UID && ($OSID!=$PID)):	//Prevent editing Default program
 		echo "<a id='editview' href=\"programedit.php?program=".$PID."\" class='orange fitwidth box noUnderline'>Edit Program</a>";
 		$bool=true;
+	else:
+		echo "<p style='color:#666'>The Default program contains all the random, uncategorized exercises that you have done.</p><p style='color:#666'>You cannot edit this. Create a new program instead!</p>";
 	endif;
 if ($_SESSION['UserID']==$UID||$privacy==0||($privacy==1&&$relationship==2)):
 list($LID, $URL) = $program->loadProgramByProgramID($PID);

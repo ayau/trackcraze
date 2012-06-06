@@ -7,15 +7,15 @@
 <body style='background:none'>
 	<div id='index'>
 <link rel="shortcut icon"  href="images/favicon.ico" type="images/favicon.ico" />
-<center id='trackcrazelogo'><a href='login.php'><img src='images/trackcrazelogo.png'></a></center>
+<center id='trackcrazelogo'><a href='login.php'><img src='images/trackcrazelogov2.png'></a></center>
 
 <a href='login.php'><img src='images/indexlogo.png'></a>
-	<h2>Coming Soon</h2>
+	<h2>Currently in Alpha testing</h2><center><h3><a style='color:#555' href='/contact.php'>Let us know if you wish to participate in our alpha version test run.</a></h3></center>
 	<br />
 	<div class='box1'>
 		<p class='indextext4'>A simple workout tracking application.</p>
 	<p class='indextext'>Connect with your friends, share your goals and post snapshots at the gym.</p>
-</div> <br /> <p class='indextext2'>Join our exclusive e-mail list </p><p class='indextext3'>today to participate in our alpha version test run.</p>
+</div> <br /> <p class='indextext2'>Join our exclusive e-mail list </p><p class='indextext3'>today to be notified of future updates.</p>
 <input id='emailenter' class='inputfields' type='text' placeholder='Enter Email' autocomplete='off'/>
 <div class='indexbg'></div>
 <div id='emailbutton'></div>
