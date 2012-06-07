@@ -243,7 +243,7 @@
 ?>
 <script>
 var relationship = <?php echo $users->trackingCheck($_SESSION['UserID'],$_GET['user']) ?>;
-var privacy = baseTenConvert(<?php echo $Privacy1 ?>,15);
+var privacy = baseTenConvert(<?php echo $Privacy1 ?>,16);
 for (var i=1; i<3; i++)
     	{
     		if (privacy[i]==2)

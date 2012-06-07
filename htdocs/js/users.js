@@ -65,8 +65,8 @@ function profileEdit(mofb,yofb,ddofb,sex,wunit,privacy,trackO,previousLocation,p
 //!!!FINISH DATEPICKER!!!!
 	$("#topbar").hide();//hide it in the sidebar?	
 	var priarray = new Array
-	priarray = baseTenConvert(privacy,15);
-	for (var i=0; i<20; i++)
+	priarray = baseTenConvert(privacy,16);
+	for (var i=0; i<16; i++)
 	{
 		$("#privacy"+i).val(priarray[i]);
 	}
@@ -820,6 +820,7 @@ $.ajax({
        "&privacy13="+$("#privacy12").val()+
        "&privacy14="+$("#privacy13").val()+
        "&privacy15="+$("#privacy14").val()+
+       "&privacy16="+$("#privacy15").val()+
        "&tprivacy0="+$("#tprivacy0").val()+
        "&tprivacy1="+$("#tprivacy1").val()+
        "&tprivacy2="+$("#tprivacy2").val()+

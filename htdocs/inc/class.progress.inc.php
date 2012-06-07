@@ -1772,4 +1772,27 @@ class GSProgress
 					
     	echo "<td class='zeropadding'><div class='addnewset add_set_btn sp'></div></td></tr>";
     }
+    function loadProgressPrivacy($UID){
+    	$sql = "SELECT Privacy
+		FROM profile
+		WHERE UserID=:id
+		LIMIT 1";
+		if($stmt = $this->_db->prepare($sql))
+		{
+			$stmt->bindParam(':id', $UID, PDO::PARAM_INT);
+			$stmt->execute();
+			$row = $stmt->fetch();
+			$privacy = $row['Privacy'];
+			$stmt->closeCursor();
+		}
+		else{
+			echo "\t\t\t\t<li> Something went wrong. ", $db->errorInfo, "</li>\n";
+		}
+		$converted = array();
+		for ($i=0; $i<16; $i++){
+			$converted[$i] = $privacy%3;
+			$privacy = ($privacy-$converted[$i])/3;
+		}
+		return array($converted[1],$converted[15]);
+    }
 }

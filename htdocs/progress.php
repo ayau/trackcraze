@@ -34,7 +34,7 @@
 	//echo "<div id='inputLine'><input id='weightdate' display:none maxlength='10' size='7'/><input id='weightsubmit' type=button value='Enter' hidden/><div id='errordate'></div></div>";
    		echo "<div id='TrackTable'></div>"; 
    		echo "<div id='PhyTable'></div>";
-   		?><script>	
+   		?><script>
    				today = new Date();
 		if (today.getMonth()+1<10){
     		month = "0"+eval(today.getMonth()+1);

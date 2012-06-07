@@ -165,7 +165,7 @@
     		if ($cuser!=$_SESSION['UserID']):
     	?>
     	<script type="text/javascript">
-    	privacy = baseTenConvert(<?php echo $Privacy ?>,15);
+    	privacy = baseTenConvert(<?php echo $Privacy ?>,16);
     	var splitDOB = "<?php echo $DOB ?>".split("-")
     	today = new Date();
     	$(".toEditProfile").each(function(){
