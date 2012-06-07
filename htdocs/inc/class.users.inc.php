@@ -501,15 +501,15 @@ public function verificationCheck($UID){
    $Ph = strip_tags(urldecode(trim($_POST["phone"])), WHITELIST);
    $Em = strip_tags(urldecode(trim($_POST["email"])), WHITELIST);
    $Loc = strip_tags(urldecode(trim($_POST["location"])), WHITELIST);
-   $P = (array($_POST["privacy1"],$_POST["privacy2"],$_POST["privacy3"],$_POST["privacy4"],$_POST["privacy5"],$_POST["privacy6"],$_POST["privacy7"],$_POST["privacy8"],$_POST["privacy9"],$_POST["privacy10"],$_POST["privacy11"],$_POST["privacy12"],$_POST["privacy13"],$_POST["privacy14"],$_POST["privacy15"],$_POST["privacy16"],$_POST["privacy17"],$_POST["privacy18"],$_POST["privacy19"],$_POST["privacy20"]));
+   $P = (array($_POST["privacy1"],$_POST["privacy2"],$_POST["privacy3"],$_POST["privacy4"],$_POST["privacy5"],$_POST["privacy6"],$_POST["privacy7"],$_POST["privacy8"],$_POST["privacy9"],$_POST["privacy10"],$_POST["privacy11"],$_POST["privacy12"],$_POST["privacy13"],$_POST["privacy14"],$_POST["privacy15"],$_POST["privacy16"]));
    $T = (array($_POST["tprivacy0"],$_POST["tprivacy1"],$_POST["tprivacy2"],$_POST["tprivacy3"],$_POST["tprivacy4"],$_POST["tprivacy5"],$_POST["tprivacy6"]));
    $DOB = $BY."-".$BM."-".$BD;
    $Pr = 0;
    $To = 0;
    $settingu = 0;
-   $measure = serialize(array($_POST["m0"],$_POST["m1"],$_POST["m2"],$_POST["m3"],$_POST["m4"],$_POST["m5"],$_POST["m6"],$_POST["m7"],$_POST["m8"]));
-   $unit = array($_POST["u0"],$_POST["u1"],$_POST["u2"],$_POST["u3"],$_POST["u4"],$_POST["u5"],$_POST["u6"],$_POST["u7"],$_POST["u8"]);
-   $setting = array($_POST["setting0"]);
+   $measure = serialize(array($_POST["m0"],$_POST["m1"],$_POST["m2"],$_POST["m3"],$_POST["m4"],$_POST["m5"],$_POST["m6"],$_POST["m7"],$_POST["m8"])); //Body measurements
+   $unit = array($_POST["u0"],$_POST["u1"],$_POST["u2"],$_POST["u3"],$_POST["u4"],$_POST["u5"],$_POST["u6"],$_POST["u7"],$_POST["u8"]); //Body measurement units
+   $setting = array($_POST["setting0"]); //Value to tell if weight updates automatically
    $measureunit = 0;
    for ($i=0; $i<sizeof($P); $i++)
 	   {
@@ -527,11 +527,6 @@ public function verificationCheck($UID){
 		{
 			$measureunit = $measureunit+$unit[$i]*pow(2, $i);
 		}
-	
-  //for ($i=0;$i< sizeof($mySplitResult); $i++){
-          // $newValue[$i] = strip_tags(urldecode(trim($mySplitResult[$i])), WHITELIST);
-     //}
-     //$newValue = strip_tags(urldecode(trim($_POST["value"])), WHITELIST);
         $sql = "UPDATE profile
        SET
           Gender = '$GV',
