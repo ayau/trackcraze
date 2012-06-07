@@ -71,7 +71,7 @@ function initializeNews(get){
 	});
 	$(".commentitem").live("mouseover", function(){
 		$(this).find(".delete").show();
-		$(this).css('background','#bed5fd');
+		$(this).css('background','#D1E4F3');
 	});
 	$(".commentitem").live("mouseout", function(){
 		$(this).find(".delete").hide();

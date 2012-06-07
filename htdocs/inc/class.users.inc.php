@@ -1491,9 +1491,10 @@ public function addemail(){
 	$email = $_POST['email'];
 	$date= $_POST['date'];
 	$time = date("Y-m-d H:i:s");
+	return $time;
 	$sql = "SELECT email
   FROM failemails
-	  WHERE email=:em";//PUT A LIMIT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	  WHERE email=:em LIMIT 1";//PUT A LIMIT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   if($stmt = $this->_db->prepare($sql))
    {
    	$stmt->bindParam(':em',$email, PDO::PARAM_STR);

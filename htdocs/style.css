@@ -339,9 +339,9 @@ li {list-style:none;} //ALL LIST = no dots
     RIGHT SIDEBAR
 */
 #ribbon { float:right; width: 110px; padding-top:20px;} /*fix height problem later*/
-#ribbon ul {position:relative; list-style: none;background-color: #e1f0fd; width:149px;top:-20px;padding:0px 20px 20px; }
+#ribbon ul {position:relative; list-style: none;background-color: #e1f0fd;  width:149px;top:-20px;padding:0px 20px 20px; }
 #ribbon ul li {color: #555; width:150px; padding: 10px 0 10px 0; margin: 10px 0 10px 0; 	font-family: "lucida grande",tahoma,verdana,arial,sans-serif;font-size:14px;	border-top: 1px solid #c0cdd8; margin-bottom: 1em}
-#rsidetitle {position:relative; right: 0; background: #D6E4F0; width:189px; height:40px; top: -10px; border-top: 1px solid #c0cdd8;}
+#rsidetitle {position:relative; right: 0; background: #D1E4F3; width:189px; height:40px; top: -10px; border-top: 1px solid #c0cdd8;}
 #rsidetitle p {text-align:center; margin-top:10px; color: black; font: 20px Calibri;}
 .feedback {background-position: -2px -130px;  width:103px; height:32px;  cursor:pointer}
 .feedbacktext {position:relative; top:-33px; left:110px;width:75px;font-size:14px}
@@ -438,7 +438,7 @@ li {list-style:none;} //ALL LIST = no dots
 	padding:7px;
 }
 .hoverheading:hover{
-	background:#bed5fd;cursor:pointer;
+	background:#D1E4F3;cursor:pointer;
 }
 
 /*Edit profile*/
@@ -449,19 +449,19 @@ li {list-style:none;} //ALL LIST = no dots
 #trackeroptions{ padding:7px;}
 #goaloptions{ padding:7px;}
 #eprofile:hover {
-	background:#bed5fd;cursor:pointer;
+	background:#D1E4F3;cursor:pointer;
 }
 #privacyoptions:hover{
-	background:#bed5fd;cursor:pointer;
+	background:#D1E4F3;cursor:pointer;
 }
 #trackeroptions:hover{
-	background:#bed5fd;cursor:pointer;
+	background:#D1E4F3;cursor:pointer;
 }
 #goaloptions:hover{
-	background:#bed5fd;cursor:pointer;
+	background:#D1E4F3;;cursor:pointer;
 }
 .hovered {
-	background:#bed5fd;cursor:pointer;
+	background:#D1E4F3;cursor:pointer;
 }
 #othergoals {
 	width:200px;
