@@ -5,9 +5,31 @@
         echo "<div id='container'>";
 		include_once "common/sidebar.php";
 		include_once "common/rsidebar.php";
-		
+		include_once 'inc/class.users.inc.php';
+   		$users = new GymScheduleUsers($db);
 	?>
+		<script type="text/javascript" src="js/jquery-ui-1.7.2.custom.min.js"></script>
 		<script type="text/javascript" src="js/progress.js"></script>
+		 <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="excanvas.js"></script><![endif]-->
+			 <script language="javascript" type="text/javascript" src="js/jqplot/jquery.jqplot.min.js"></script>
+			 <script language="javascript" type="text/javascript" src="js/jqplot/jqplot.trendline.min.js"></script>
+			 <script language="javascript" type="text/javascript" src="js/jqplot/jqplot.dateAxisRenderer.min.js"></script>
+			  <script language="javascript" type="text/javascript" src="js/jqplot/jqplot.highlighter.min.js"></script>
+			  <script language="javascript" type="text/javascript" src="js/jquery.maskedinput.min.js"></script>			  
+			<link rel="stylesheet" type="text/css" href="js/jqplot/jquery.jqplot.css" />
+            <script type="text/javascript" src="js/jquery.jeditable.mini.js"></script>
+             <script language="javascript" src="js/datepicker/js/datepicker.js" type="text/javascript"></script>
+            <script type="text/javascript">
+ 				initializeProgress('<?php echo $cuser?>', '<?php echo $_SESSION["UserID"]?>'); //Need a better way so people cannot edit this
+            </script>
+            <link rel="stylesheet" type="text/css" media="screen" href="js/datepicker/css/datepicker.css" />
+            <script src="js/jqgrid/grid.locale-en.js" type="text/javascript"></script>
+			<script src="js/jqgrid/jquery.jqGrid.min.js" type="text/javascript"></script>
+			<link rel="stylesheet" type="text/css" media="screen" href="js/jqgrid/ui.jqgrid.css" />
+			<link rel="stylesheet" type="text/css" media="screen" href="js/jquery-ui-1.8.16.custom.css" />
+			
+			
+			
         <div id="main">
             <noscript>This site just doesn't work, period, without JavaScript</noscript>
 <?php
@@ -27,13 +49,35 @@
    		echo "</div>";	
    		echo "<div id='TrackTable' hidden></div>";
    		echo "<div id='PhyTable' hidden></div>";
-   	else://DOESN"T WORK YET. NEED TO PUT IN THE INPUT TABLE, PHY TABLE AND TRACKTABLE" and TRACKBYEXERCISE
-   	echo "<div id='progressRight'><p>|</p><a id='TrackSelect' disabled='1'>Track</a><a id='PhysiqueSelect'>Physique</a></div></div>";
+   	else:	//not your own progress
+   	$is_tracking = $users->trackingCheck($_SESSION['UserID'],$cuser);
+   	list($weight_privacy, $progress_privacy) = $progress ->loadProgressPrivacy($cuser);
+   	
+   	if($progress_privacy==0 || ($progress_privacy == 1 && $is_tracking==2))
+   		$progress_enabled = true;
+   	else
+	   	$progress_enabled = false;
+	
+	if($weight_privacy==0 || ($weight_privacy == 1 && $is_tracking==2))
+   		$weight_enabled = true;
+   	else
+	   	$weight_enabled = false;
+	  
+   	echo "<div id='progressRight'><p>|</p>";
+   	if($progress_enabled){
+   		echo "<a id='TrackSelect' disabled='1'>Track</a>";
+   	}
+   	if($weight_enabled){
+   		echo "<a id='PhysiqueSelect'>Physique</a>";
+   	}
+   	echo "</div></div>";
+   	
+   	if($progress_enabled):
 	//echo "<div id='progressSelector'><p>Select Program</p><p>Select Split</p></div>";
    	echo "<div id='trackoptions' ><a id='daySelect'>By Day</a></div>";//<a id='exerciseSelect'>By Exercise</a><a>Graphs and other shit</a></div>";	
 	//echo "<div id='inputLine'><input id='weightdate' display:none maxlength='10' size='7'/><input id='weightsubmit' type=button value='Enter' hidden/><div id='errordate'></div></div>";
    		echo "<div id='TrackTable'></div>"; 
-   		echo "<div id='PhyTable'></div>";
+   		
    		?><script>
    				today = new Date();
 		if (today.getMonth()+1<10){
@@ -53,6 +97,12 @@
     			currentYear=today.getFullYear();
 				populateFields(today.getMonth()+1, today.getFullYear(), '<?php echo $cuser?>');
   			 </script><?php
+  		elseif($weight_enabled):
+  			echo "<div id='PhyTable'></div>";
+  			?><script>$("#PhysiqueSelect").click();</script><?php
+  		else:
+  			echo "<br /><br /><br /><h3>This user has chosen to hide his/her progress.. Probably slacking off</h3>";
+  		endif; //weight_enable
    endif;
    //echo "<div id='calHover'></div>";
    		//$progress->loadInputExercise();
@@ -64,24 +114,6 @@
 
 
 			 <input type="hidden" id="current-id" value="<?php echo $_SESSION['UserID']; ?>" /><!--ENCRYPT THIS-->
-			 <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="excanvas.js"></script><![endif]-->
-			 <script language="javascript" type="text/javascript" src="js/jqplot/jquery.jqplot.min.js"></script>
-			 <script language="javascript" type="text/javascript" src="js/jqplot/jqplot.trendline.min.js"></script>
-			 <script language="javascript" type="text/javascript" src="js/jqplot/jqplot.dateAxisRenderer.min.js"></script>
-			  <script language="javascript" type="text/javascript" src="js/jqplot/jqplot.highlighter.min.js"></script>
-			  <script language="javascript" type="text/javascript" src="js/jquery.maskedinput.min.js"></script>			  
-			<link rel="stylesheet" type="text/css" href="js/jqplot/jquery.jqplot.css" />
-			<script type="text/javascript" src="js/jquery-ui-1.7.2.custom.min.js"></script>
-            <script type="text/javascript" src="js/jquery.jeditable.mini.js"></script>
-             <script language="javascript" src="js/datepicker/js/datepicker.js" type="text/javascript"></script>
-            <script type="text/javascript">
- 				initializeProgress('<?php echo $cuser?>', '<?php echo $_SESSION["UserID"]?>'); //Need a better way so people cannot edit this
-            </script>
-            <link rel="stylesheet" type="text/css" media="screen" href="js/datepicker/css/datepicker.css" />
-            <script src="js/jqgrid/grid.locale-en.js" type="text/javascript"></script>
-			<script src="js/jqgrid/jquery.jqGrid.min.js" type="text/javascript"></script>
-			<link rel="stylesheet" type="text/css" media="screen" href="js/jqgrid/ui.jqgrid.css" />
-			<link rel="stylesheet" type="text/css" media="screen" href="js/jquery-ui-1.8.16.custom.css" />
 </div>
 
 <?php

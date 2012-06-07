@@ -27,6 +27,9 @@
    		echo "\t\t\t</table>";
 	   	echo "<input type='button' class='programprivacy mid lightgreen box' id='updateprogram' value='Update'/><div id='updateconfirmation'></div>";
 	 if ($_SESSION['UserID']!=$UID):
+	 if ($lists->loadMainProgramByUser($UID)==-1):
+	 ?><script> $(".program").prev().css("width",'5px'); </script><?php
+	 endif;
 	 ?><script> $("input[name='mainprogram']").filter("[value="+<?php echo $lists->loadMainProgramByUser($UID)?> +"]").removeAttr("class"); $(".programprivacy").remove();</script><?php
 	 endif;
 ?>

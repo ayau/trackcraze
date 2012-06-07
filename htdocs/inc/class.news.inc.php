@@ -1053,7 +1053,7 @@
 				}else{
 					$deletetext="";
 				}
-				echo "<div id=\"".$row['CommentID']."comment\">".$deletetext.$name."<p class='commenttext'>".$row['CommentText']."</p><p class='agotext'>".$agotext."</p></div>";
+				echo "<div id=\"".$row['CommentID']."comment\" class='commentitem'><div class='delete sp' hidden></div>".$deletetext.$name."<p class='commenttext'>".$row['CommentText']."</p><p class='agotext'>".$agotext."</p></div>";
 			}
 			$stmt->closeCursor();
 
