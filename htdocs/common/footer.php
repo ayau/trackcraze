@@ -20,7 +20,7 @@
       
       	<ul style='float:left'>
         	<h3>Getting started</h3>
-        	<li><div class='nav_button'>Quick tutorial</div></li>
+        	<li><a href="txt/trackCraze_tutorial.pdf" target="_blank" class='noUnderline'><div class='nav_button'>Quick tutorial</div></a></li>
         	<li><div class='nav_button_disabled'>Useful tips</div></li>
  			<li><div class='nav_button_disabled'>FAQ</div></li>
  			<li><a href="/feedback.php" class='noUnderline'><div class='nav_button'>Feedback</div></a></li>

@@ -40,7 +40,6 @@ p { margin: 0 0 6px 0; }
 .headerbutton {position:relative; padding:4px 7px; margin:5px; background-position:-2px -72px; width:58px; height:27px; top:40px; color:white; font: 16px Calibri; border:none;cursor:pointer; }
 .headerbutton:hover {background-position:-2px -100px; text-decoration:none}
 .headertext {position:relative;left:65px;width:160px;top:23px;text-align:right; font-size:18px}
-.programName {width:75%;border-bottom: 1px solid #c0cdd8; padding-bottom:10px}
 
 .wide {width:350px;height:50px; font-size:20px; border-radius: 5px;}
 .fitwidth {padding:6px 12px 6px 12px;}
@@ -129,7 +128,7 @@ background: -moz-linear-gradient(top, white 0%, white 55%, #D5E4F3 130%); */
 .account:hover{background-position:-198px -40px;}
 .programlists {background-position:-120px -2px; position:absolute; right:153px; top:38px; width:85px; height:30px;}
 .programlists:hover{background-position:-120px -40px;}
-#mainNSB{float:left;padding:0px 20px 0px; }
+#mainNSB{width:810px; float:left;padding:0px 20px 0px; }
 #main {float:left;padding:0px 20px 0px;width:690px; }
 
 
@@ -240,7 +239,7 @@ li {list-style:none;} //ALL LIST = no dots
 #programlist {width:720px;}
 .tablesure {width:110px;}
 
-#editview {float:right;margin-top:10px; margin-right:20px;}
+#editview {float:right;margin-top:10px;}
 
 /*FOR INPUT
 */
@@ -305,11 +304,13 @@ li {list-style:none;} //ALL LIST = no dots
 .sectionname .deletered {float:left; margin:15px 5px; }
 .readydelete {float:left;width:110px;margin:10px 5px;font-weight:bold;color:#900;font-family: "lucida grande",tahoma,verdana,arial,sans-serif;	font-size:16px;}
 
-.programName{height:40px; padding-bottom:15px}/*same line as sectionname*/
-.programName h1{float:left;}
+.programName{width:540px; overflow:auto; padding-bottom:15px; border-bottom: 1px solid #c0cdd8;}/*same line as sectionname*/
+.programName h1{max-width:450px; float:left}
 .programName .edit{float:left;margin:10px 5px 10px 10px;}
 .programName button{border:none;background:none;margin-left:10px; position:relative; top:-2px;}
 .programName input{font-size:20px;}
+
+
 /* Left Side Bar
 */
 .photo{height:120px; width:120px;}
@@ -533,6 +534,7 @@ li {list-style:none;} //ALL LIST = no dots
 #toptracks {float:left; width:260px;height:100px;border: 2px solid #c0cdd8;margin:9px; border-radius:5px}
 #profileCon table{padding-left:5px;}
 #profileCon td{height:23px;}
+#programsCon {overflow:hidden;}
 
 #progressCon h3, table{margin-left:10px;}
 #progressCon p, #toptracks p, #trackerCon p, #programsCon p {padding:10px; color:#666}
@@ -608,10 +610,10 @@ li {list-style:none;} //ALL LIST = no dots
 
 #recordsubmit {position:relative; left:20px; top:-2px;}
 
-#progressSelector {width:400px; padding-top:15px; }
-#progressSelector p {width:200px; padding:0px 10px; font-weight:bold;font-size:15px;display:inline}
-#inputLine #programoption {margin:5px 10px;}
-#inputLine #splitoption {margin:5px 20px;}
+#progressSelector {width:600px; padding-top:15px; }
+#progressSelector p {width:200px; padding-left:10px; padding-right:80px; font-weight:bold;font-size:15px;display:inline}
+#inputLine #programoption {margin:5px 0px;; width:200px;}
+#inputLine #splitoption {margin:5px 5px; width:150px}
 #InputTable td {padding:5px 0px}
 .InputTitle {font-size:20px;word-wrap:break-word;font-family: "lucida grande",tahoma,verdana,arial,sans-serif;}
 .prevInputTable {font-size:13px;color:#666;word-wrap:break-word;font-family: "lucida grande",tahoma,verdana,arial,sans-serif;}
@@ -632,7 +634,7 @@ li {list-style:none;} //ALL LIST = no dots
 .samelast{float:left;margin:1px;background-position: -70px -31px; width:30px; height:30px; cursor:pointer}
 .prevnotes {float:left;margin:1px;background-position: -2px -165px; width:42px; height:33px; cursor:pointer}
 
-#selectandbutton {position:absolute; left:250px;}
+#inputLine #exerciseoption {margin-left:20px; width:200px}
 #viewbyExercise {position:relative; left:20px; top:3px;}
 #sortby {padding:10px 0px 10px;}
 #sortby input{margin-left: 10px;}
@@ -647,7 +649,7 @@ li {list-style:none;} //ALL LIST = no dots
 
 /*GRAPH*/
 #InputTable {position:relative;top:0px;}
-#inputLine {position:relative;height:30px;top:10px;padding-bottom:30px}
+#inputLine {position:relative;height:30px;top:10px;padding-bottom:30px; margin-left:10px;}
 #inputLine a{float:left; margin:6px 0px}
 #errordate {float:right;width:200px;margin:0px; background:red}
 #weightChart {left:20px; width:650px; height:300px;}
@@ -657,7 +659,8 @@ li {list-style:none;} //ALL LIST = no dots
 #inputLine p{float:left;padding:5px 10px; font-weight:bold;font-size:15px;display:inline;}
 #weightdate{float:left; margin:5px 3px 0px 10px; font-weight:bold;font-size:13px;display:inline; color:#999}
 #weightsubmit {float:left; padding:5px 10px;margin:0px 10px;}
-#weightchartoptions {position:relative; height:30px;}
+#weightchartoptions {position:relative; height:30px; margin-left:30px}
+#trendlineonoff {display:inline; margin-right:5px; background:none;color:black; top:-2px}
 #weightoptionsubmit {position:relative;left:10px;top:-5px}
 #weightstartfinal {padding:30px;}
 #weightstartfinal input{margin-left:20px;}

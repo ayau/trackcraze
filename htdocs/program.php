@@ -99,12 +99,15 @@ if(isset($_SESSION['LoggedIn']) && isset($_SESSION['Username'])&&($UID!=NULL)&& 
 	$users = new GymScheduleUsers($db);
 	$relationship = $users->trackingCheck($_SESSION['UserID'],$UID);
 	$privacy = $program->getprogramprivacy($PID);
+	echo "<div style='float:right; width:150px'>";
 	echo "<a id='moreprograms' href=\"programlists.php?user=".$UID."\" class='fitwidth box noUnderline'>View More Programs</a>";
 	$bool=false;
 	if ($_SESSION['UserID']==$UID && ($OSID!=$PID)):	//Prevent editing Default program
 		echo "<a id='editview' href=\"programedit.php?program=".$PID."\" class='orange fitwidth box noUnderline'>Edit Program</a>";
 		$bool=true;
+		echo "</div>";
 	else:
+		echo "</div>";
 		echo "<p style='color:#666'>The Default program contains all the random, uncategorized exercises that you have done.</p><p style='color:#666'>You cannot edit this. Create a new program instead!</p>";
 	endif;
 if ($_SESSION['UserID']==$UID||$privacy==0||($privacy==1&&$relationship==2)):

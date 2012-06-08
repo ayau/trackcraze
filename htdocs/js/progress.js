@@ -232,7 +232,7 @@ return numcheck.test(keychar)
 	function loadWeightByUserID(get){
 		$("#PhyTable").append("<div id='loading'><center><div>loading...please wait (or get faster internet)</div><br /><br /><img width='50px' src='/images/loading_circle.gif'/></center></div>");
 		UID = get;//can delete hidden currentid
-		$("#PhyTable").append("<form name='weightchartoptions' id='weightchartoptions'><div id='trendlineonoff'>Trendline</div><input type='checkbox' name='trendlinecheck' value='yes'/></form><div id='weightChart'></div><div id='weightstartfinal'><h3>Choose the start and end dates for the graph</h3><br /><br /><input id='weightstart' maxlength='10' size='7'/><input id='weightfinal' maxlength='10' size='7'/><input id='weightoptionsubmit' class='fitwidth box' type=button value='change'/></div><div id='weightcontentheader' class='ui-corner-top ui-widget-header'><span class='ui-jqgrid-title'>Weight</span></div><div><table id='weightheader'><tr><td>Date</td></tr><tr><td>Weight</td></tr></table><div id='weightdiv'><table id='weightcontent'></table></div></div>");
+		$("#PhyTable").append("<form name='weightchartoptions' id='weightchartoptions'><label id='trendlineonoff' for='trendline'>Trendline</label><input type='checkbox' id='trendline' name='trendlinecheck' value='yes'/></form><div id='weightChart'></div><div id='weightstartfinal'><h3>Choose the start and end dates for the graph</h3><br /><br /><input id='weightstart' maxlength='10' size='7'/><input id='weightfinal' maxlength='10' size='7'/><input id='weightoptionsubmit' class='fitwidth box' type=button value='change'/></div><div id='weightcontentheader' class='ui-corner-top ui-widget-header'><span class='ui-jqgrid-title'>Weight</span></div><div><table id='weightheader'><tr><td>Date</td></tr><tr><td>Weight</td></tr></table><div id='weightdiv'><table id='weightcontent'></table></div></div>");
 		//,{placeholder:"_"}
 		$("#weightstart").mask("99/99/9999");
 		$("#weightfinal").mask("99/99/9999");
@@ -822,7 +822,7 @@ return numcheck.test(keychar)
 			//$("#recordsbydate").hide();	
 			$("#trackbyExercise").show();
 			$("#progressSelector").show();
-			$("#ExerciseSel").show();
+			$("#ExerciseSel").show().css("display","inline");
 			$("#inputLine").show();	
 			$("#recordLine").show();
 			$("#recordsubmit").hide();
@@ -872,7 +872,8 @@ return numcheck.test(keychar)
 			$("#InputTable").show();
 			$("#TrackTable").hide();
 			$("#PhyTable").hide();			
-			$("#trackoptions").hide();			
+			$("#trackoptions").hide();
+			$("#ExerciseSel").hide();	//"Select Exercise" from track by exercise	
 			$("#inputLine").show();
 			$("#weightdate").show();
 			$(".date-picker-control").show();

@@ -24,8 +24,10 @@
 
 if(isset($_SESSION['LoggedIn']) && isset($_SESSION['Username'])&&($_SESSION['UserID']==$UID))://PROBLEM HERE IS THAT USERID COULD BE NULL(VISITOR)AND ABLE TO VIEW PAGES THAT DON"T EXIST"
 if($PID!=$OSID):
+echo "<div style='float:right; width:150px'>";
 echo "<a id='moreprograms' href=\"programlists.php?user=".$UID."\" class='fitwidth box noUnderline'>View More Programs</a>";
 echo "<a id='editview' href=\"program.php?program=".$PID."\" class='lightgreen fitwidth box noUnderline'>View Program</a>";
+echo "</div>";
 list($LID, $URL, $order) = $program->loadProgramByUser($PID);    //ORDER IS WRONG BECAUSE IT IS READING PER FORMAT LIST. DONT NEED ORDER IF WE DONT ALLOW EDIT POSITION OF SPLITS IN MAIN PAGE
                
 ?>			

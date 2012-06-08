@@ -10,23 +10,7 @@
 	?>
 		<script type="text/javascript" src="js/jquery-ui-1.7.2.custom.min.js"></script>
 		<script type="text/javascript" src="js/progress.js"></script>
-		 <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="excanvas.js"></script><![endif]-->
-			 <script language="javascript" type="text/javascript" src="js/jqplot/jquery.jqplot.min.js"></script>
-			 <script language="javascript" type="text/javascript" src="js/jqplot/jqplot.trendline.min.js"></script>
-			 <script language="javascript" type="text/javascript" src="js/jqplot/jqplot.dateAxisRenderer.min.js"></script>
-			  <script language="javascript" type="text/javascript" src="js/jqplot/jqplot.highlighter.min.js"></script>
-			  <script language="javascript" type="text/javascript" src="js/jquery.maskedinput.min.js"></script>			  
-			<link rel="stylesheet" type="text/css" href="js/jqplot/jquery.jqplot.css" />
-            <script type="text/javascript" src="js/jquery.jeditable.mini.js"></script>
-             <script language="javascript" src="js/datepicker/js/datepicker.js" type="text/javascript"></script>
-            <script type="text/javascript">
- 				initializeProgress('<?php echo $cuser?>', '<?php echo $_SESSION["UserID"]?>'); //Need a better way so people cannot edit this
-            </script>
-            <link rel="stylesheet" type="text/css" media="screen" href="js/datepicker/css/datepicker.css" />
-            <script src="js/jqgrid/grid.locale-en.js" type="text/javascript"></script>
-			<script src="js/jqgrid/jquery.jqGrid.min.js" type="text/javascript"></script>
-			<link rel="stylesheet" type="text/css" media="screen" href="js/jqgrid/ui.jqgrid.css" />
-			<link rel="stylesheet" type="text/css" media="screen" href="js/jquery-ui-1.8.16.custom.css" />
+
 			
 			
 			
@@ -99,7 +83,6 @@
   			 </script><?php
   		elseif($weight_enabled):
   			echo "<div id='PhyTable'></div>";
-  			?><script>$("#PhysiqueSelect").click();</script><?php
   		else:
   			echo "<br /><br /><br /><h3>This user has chosen to hide his/her progress.. Probably slacking off</h3>";
   		endif; //weight_enable
@@ -115,13 +98,42 @@
 
 			 <input type="hidden" id="current-id" value="<?php echo $_SESSION['UserID']; ?>" /><!--ENCRYPT THIS-->
 </div>
-
+		 <!--[if lt IE 9]><script language="javascript" type="text/javascript" src="excanvas.js"></script><![endif]-->
+			 <script language="javascript" type="text/javascript" src="js/jqplot/jquery.jqplot.min.js"></script>
+			 <script language="javascript" type="text/javascript" src="js/jqplot/jqplot.trendline.min.js"></script>
+			 <script language="javascript" type="text/javascript" src="js/jqplot/jqplot.dateAxisRenderer.min.js"></script>
+			  <script language="javascript" type="text/javascript" src="js/jqplot/jqplot.highlighter.min.js"></script>
+			  <script language="javascript" type="text/javascript" src="js/jquery.maskedinput.min.js"></script>			  
+			<link rel="stylesheet" type="text/css" href="js/jqplot/jquery.jqplot.css" />
+            <script type="text/javascript" src="js/jquery.jeditable.mini.js"></script>
+             <script language="javascript" src="js/datepicker/js/datepicker.js" type="text/javascript"></script>
+            <script type="text/javascript">
+ 				initializeProgress('<?php echo $cuser?>', '<?php echo $_SESSION["UserID"]?>'); //Need a better way so people cannot edit this
+            </script>
+            <link rel="stylesheet" type="text/css" media="screen" href="js/datepicker/css/datepicker.css" />
+            <script src="js/jqgrid/grid.locale-en.js" type="text/javascript"></script>
+			<script src="js/jqgrid/jquery.jqGrid.min.js" type="text/javascript"></script>
+			<link rel="stylesheet" type="text/css" media="screen" href="js/jqgrid/ui.jqgrid.css" />
+			<link rel="stylesheet" type="text/css" media="screen" href="js/jquery-ui-1.8.16.custom.css" />
 <?php
-  //  else:
-  //      header("Location: ");
-  //      exit;
-  //  endif;
-?>
+	
+	//This has to go here after the javascript. Tried moving the javascript earlier but the weight date thing messes up. Duplicate code.
+  	list($weight_privacy, $progress_privacy) = $progress ->loadProgressPrivacy($cuser);
+   	$is_tracking = $users->trackingCheck($_SESSION['UserID'],$cuser);
+   	if($progress_privacy==0 || ($progress_privacy == 1 && $is_tracking==2))
+   		$progress_enabled = true;
+   	else
+	   	$progress_enabled = false;
+	
+	if($weight_privacy==0 || ($weight_privacy == 1 && $is_tracking==2))
+   		$weight_enabled = true;
+   	else
+	   	$weight_enabled = false;
+	if(!$progress_enabled && $weight_enabled):?>
+  		<script>$("#PhysiqueSelect").click();</script>
+  	<?php endif; ?>
+
+
 <?php
     include_once "common/footer.php";
 ?>
