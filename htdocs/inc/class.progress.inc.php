@@ -1041,7 +1041,7 @@ class GSProgress
 			$stmt->bindParam(':uid', $UID, PDO::PARAM_INT);
 			$stmt->execute();
 			echo"[";
-			$row = $stmt->fetch();
+			if($row = $stmt->fetch()){
 			$date= (date_format(date_create($row["weightdate"]), 'd-M-Y'));
 				echo ("['$date'".","."$row[weight]]");
 			while($row = $stmt->fetch())
@@ -1049,6 +1049,7 @@ class GSProgress
 				echo ",";
 				$date= (date_format(date_create($row["weightdate"]), 'd-M-Y'));
 				echo ("['$date',$row[weight]]");
+			}
 			}
 			echo "]";
 			$stmt->closeCursor();
@@ -1102,6 +1103,8 @@ class GSProgress
 			$diff = floor((strtotime($row["final"]) - strtotime($row["start"])) / (60*60*24*6));
 			$weightstart = (date_format(date_create($row["start"]), 'm/d/Y'));
 			$weightfinal = (date_format(date_create($row["final"]), 'm/d/Y'));
+			if($diff == 0)
+				$diff = 1;
 			echo"['$start','$final','$diff"." day','$weightstart','$weightfinal']";
 			$stmt->closeCursor();
 		}
@@ -1138,6 +1141,8 @@ class GSProgress
 	$start1= (date_format(date_create($sstart), 'M j Y'));
 	$final1= (date_format(date_create($sfinal), 'M j Y'));
 	$diff = floor((strtotime($sfinal) - strtotime($sstart)) / (60*60*24*6));
+	if($diff == 0)
+		$diff = 1;
 	echo"['$start1','$final1','$diff"." day','$start','$final']";
 		
 	}

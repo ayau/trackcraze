@@ -283,7 +283,7 @@ return numcheck.test(keychar)
     			}
     		});  
 	}
-	var weightmaxmin;
+	var weightmaxmin=[150, 100];	//default values for max and min
 	//Gets maximum and minimum weight within a range
 	function getmaxminweight(get){
 		$.ajax({
@@ -362,6 +362,7 @@ return numcheck.test(keychar)
 				},
     				
     			success: function(r){	//(Start, final, diff, vertical tick marks (in days), start(option), final(option))
+    				
     				if(parseInt(r[2])>0){	//If this fails, something is internally wrong with the database!!!
     					weightoption=r;
     					$("#weightstart").val(weightoption[3]);
@@ -386,6 +387,11 @@ return numcheck.test(keychar)
 		//alert(parseInt(maxmin));
 		//maxmin.split(",");
 		//alert(Math.max(127,128));
+		if(weightdata.length==0){
+			$("#PhyTable").append("<div id='no_graph' style='position:absolute; left:300px; top:400px'>Enter your weight and a graph will magically appear</div>");
+		}else{
+			$("#no_graph").remove();
+		}
 		$("#loading").remove();
 		var plot = $.jqplot('weightChart',  [weightdata],
 			{ title:'Weight',
@@ -1071,6 +1077,7 @@ return numcheck.test(keychar)
 				},
     				
     			success: function(r){
+    				
     				if(parseInt(r[2])>0){
     					weightoption=r;
     					$("#weightstart").val(weightoption[3]);

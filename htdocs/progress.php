@@ -55,13 +55,13 @@
    		echo "<a id='PhysiqueSelect'>Physique</a>";
    	}
    	echo "</div></div>";
-   	
+   
    	if($progress_enabled):
 	//echo "<div id='progressSelector'><p>Select Program</p><p>Select Split</p></div>";
    	echo "<div id='trackoptions' ><a id='daySelect'>By Day</a></div>";//<a id='exerciseSelect'>By Exercise</a><a>Graphs and other shit</a></div>";	
 	//echo "<div id='inputLine'><input id='weightdate' display:none maxlength='10' size='7'/><input id='weightsubmit' type=button value='Enter' hidden/><div id='errordate'></div></div>";
    		echo "<div id='TrackTable'></div>"; 
-   		
+   		echo "<div id='PhyTable'></div>";
    		?><script>
    				today = new Date();
 		if (today.getMonth()+1<10){

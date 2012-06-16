@@ -1573,7 +1573,7 @@ EMAIL;
 		$item1 = urldecode(str_replace('+','|',urlencode($item)));
 		$item1 = str_replace("+","|",$item1);
 		$count = (strlen($item1)-substr_count($item1,"|"))/(substr_count($item1,"|")+1);//average word length
-		echo $item1; echo $item;
+		
 		$sql = "SELECT *, (Forename REGEXP '$item1') + (Surname REGEXP '$item1') +0.5*('$item' REGEXP Surname)+0.5*('$item' REGEXP Forename)+ 0.5*(1-ABS(length(concat(Forename,Surname))-'$count')/length(concat(Forename,Surname))) AS rel
   				FROM profile
   				WHERE (Surname REGEXP '$item1' OR Forename REGEXP '$item1' OR '$item' REGEXP Surname OR '$item' REGEXP Forename)

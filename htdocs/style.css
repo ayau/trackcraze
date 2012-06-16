@@ -675,7 +675,7 @@ li {list-style:none;} //ALL LIST = no dots
 #weightcontent {width:100%; table-layout:fixed;border-spacing:0px;border-left: 1px solid #999;}
 #weightcontent td {width:85px;height:28px;text-align: center;border-bottom:1px solid #999;border-right: 1px solid #999; cursor:default}
 .weightcontenthover {background:#DADADA url(js/images/ui-bg_glass_75_dadada_1x400.png) 50% 50% repeat-x;}
-.weightdelete {position:relative; left:35px; background-position: -16px -40px; width:12.1px; height:12.1px; cursor:pointer}
+.weightdelete {position:relative; margin:0 auto; background-position: -16px -40px; width:12.1px; height:12.1px; cursor:pointer}
 #weightcontentheader {padding: 5px 10px; position: relative;margin-top:10px}
 
 

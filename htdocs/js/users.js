@@ -538,6 +538,7 @@ $("#sportsinput").autocomplete({
        		});
 $("#addsportsbutton").live("click",function(){
 	var found=false;
+	if($("#sportsinput").val().replace(/\s+/g, '').length>0){
 	for(i=0;i<search.length;i++){
 		if($("#sportsinput").val()==search[i][0]){//short cut the search function!!!!!!!!!!!!!!!!!!!!!!!
 			var sportid = search[i][1];
@@ -573,7 +574,7 @@ $("#addsportsbutton").live("click",function(){
 	    data: "action=addsport&sportid="+sportid+
 	    "&sportname="+$("#sportsinput").val(),		
 			success:function(){
-			$("#existingsports").append("<li sports='"+$("#sportsinput").val()+"'>"+$("#sportsinput").val()+" <button type='button' class='sportremove'>Remove Sport</button></li>");
+			$("#existingsports").append("<li sports='"+$("#sportsinput").val()+"'>"+$("#sportsinput").val()+" <button type='button' class='sportremove small red box'>Remove Sport</button></li>");
 			$("li:contains('"+$("#sportsinput").val()+"')").find(".sportremove").click(function(){
 				var thiscache = $(this).parent();
 				$.ajax({
@@ -588,6 +589,7 @@ $("#addsportsbutton").live("click",function(){
 			},
 			error:function(){}
 		});
+	}
 	}
 });
 $(".sportremove").live("click", function(){
