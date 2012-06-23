@@ -6,7 +6,10 @@
    
         include_once 'inc/class.users.inc.php';
         $users = new GymScheduleUsers($db); 
+        
+        if(isset($_SESSION['UserID']))
         list($Surname, $Forename, $Gender, $DOB, $Weight, $lbkg, $Height, $Heighti, $Phone, $Email, $Location, $Privacy, $TrackerO, $status, $Bmeasurements, $Unit, $Setting) = $users->loadProfileByUser($_SESSION['UserID']);//user might not be logged in. Need to change this when public launch!!!!!
+    	
         //if($users->accountLogin()===TRUE):
         //    echo "<meta HTTP-EQUIV='REFRESH' content='0; /board.php'>";
         //	exit;

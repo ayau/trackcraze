@@ -1,7 +1,7 @@
 <html style='overflow-x:hidden'>
 <title>trackCraze</title>
-<meta name='KEYWORDS' content='trackcraze,fitness,tracking,gym,workout,log,exercise,record,share'>
-<meta name='Description' content="Trackcraze lets you follow other people's workout, record your own, and share it with others. Track your friends, your idol, and most importantly, yourself. Make fitness simple, customizable and motivating.">
+<meta name='KEYWORDS' content='trackcraze,fitness,tracking,gym,workout,log,exercise,record,share'/>
+<meta name='Description' content="Trackcraze lets you follow other people's workout, record your own, and share it with others. Track your friends, your idol, and most importantly, yourself. Make fitness simple, customizable and motivating."/>
 <link rel="stylesheet" href="/style.css" type="text/css" />
 <head><meta name="google-site-verification" content="ZsfdLKxUCoT4ItYyO2KQNsM1kx8IqP8bE8ZB_su4h_4" /></head>
 <body style='background:none'>
@@ -31,7 +31,7 @@ $("#emailbutton").live("click",function(){
 	addemail();
 });
  function addemail(){
-    	 var exp = /^[A-Za-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[A-Za-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum)\b$/
+    	 var exp = /^[A-Za-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[A-Za-z0-9!#$%&'*+\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[a-z]{2}|com|org|net|gov|mil|biz|info|mobi|name|aero|jobs|museum)\b$/
     	if($("#emailenter").val().match(exp)){
     		$.ajax({
        						type: "POST",

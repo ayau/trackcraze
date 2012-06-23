@@ -7,7 +7,7 @@
 	endif;?>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
-
+	
 <?php
 	if(substr($_SERVER['REQUEST_URI'],0,12)!="/profile.php"):
 ?>
