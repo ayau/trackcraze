@@ -9,6 +9,7 @@
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="style.css" type="text/css" />
 	<script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js?ver=1.3.2'></script>
+	<script type='text/javascript' src='js/jquery.min.js'></script>
 </head>
 
 <body style='margin:0px; width:100%; height:100%'>
@@ -21,13 +22,16 @@
 
 <center id='index_logo' ><img style='margin-right:30px' src='images/trackcraze_logo.png'/></center>
 <div id='index_strip'>
+	<div style='position:absolute; top:50%; width:100%'>
 	<div id='index_top_strip'></div>
+	</div>
 	<div style='position:absolute; top:50%; margin-top:80px; width:100%;'>
 		<div id='index_divider' style='position:relative; background-color:#004F75; height:1px; border-top: 9px solid #005E8D; border-bottom: 1px solid #005E8D; '></div>
 		<div style='background-color:#006699; width:100%; height:60px; border-bottom: 3px solid #004F75;'></div>
 		<div style='background-color:rgba(0,0,0,0.30); width:100%; height:5px;'></div>
 	</div>
 </div>
+<div style='position:absolute; top:50%; width:100%'> <!--for firefox (doesn't support negative margins -->
 <div id='index_container'>
 		<div id='title_container'><p id='title'>trackCraze</p><p style='display:none' id='mini_title'>Log in</p></div>
 	<center>
@@ -38,6 +42,7 @@
 			<input hidden id='password_enter' style='position:relative; top:-20px; margin-bottom:10px' class='input' type='text' placeholder='Password' autocomplete='off'/>
 			<div id='index_button' class='btn'>Log in</div>
 		</div></center>
+</div>
 </div>
 <div style='position:absolute; top:50%; margin-top:100px; width:100%'>
 	<div style='position:relative; left:50%'>
@@ -68,8 +73,8 @@
 $(function () {
 	var page = 0;	//0 -> default, 1 -> login, 2 -> signup
 	var expanded = false;
+	var transition_done = true;
 	var index_bg = $("#index_bg");
-	
 	
 	var descriptions = ["Create custom workout programs", "Record your workouts", "Track your progress",  "Monitor your goals", "Post snapshots at the gym", "Connect with your friends"];
 	var desc_counter = 0;
@@ -103,38 +108,41 @@ $(function () {
 	
 	$("#login").live("click",function(){
 		
-		if(page != 1){
-			page = 1;
-		
-		$("#index_button").hide();
-		
-			if(!expanded){
-				$("#index_logo").fadeOut();
-				$("#mini_title").hide();
-				$("#index_top_strip").animate({
-						'margin-top': '-120px',
-						height: '230px'
-					}, {
-		    		"duration": 300,
-		    		specialEasing: {
-		    			'margin-top': 'easeOutBounce',
-		      			height: 'easeOutBounce'
-		    		},complete: function() {
-				  		populateLoginInput();
-		    		}
-				})
-				$("#index_container").animate({
-						'margin-top': '-125px'
-					}, {
-		    		"duration": 400,
-		    		specialEasing: {
-		      		'margin-top': 'easeOutBounce'
-		    		}
-				})
-				$("#email_button").css("visibility","hidden");
-				expanded = true;
-			}else{
-				populateLoginInput();
+			if(page != 1){
+				if(transition_done){
+				transition_done = false;
+				page = 1;
+			
+			$("#index_button").hide();
+			
+				if(!expanded){
+					$("#index_logo").fadeOut();
+					$("#mini_title").hide();
+					$("#index_top_strip").animate({
+							top: '-120px',
+							height: '230px'
+						}, {
+			    		"duration": 300,
+			    		specialEasing: {
+			    			top: 'easeOutBounce',
+			      			height: 'easeOutBounce'
+			    		},complete: function() {
+					  		populateLoginInput();
+			    		}
+					})
+					$("#index_container").animate({
+							top: '-125px'
+						}, {
+			    		"duration": 400,
+			    		specialEasing: {
+			      		top: 'easeOutBounce'
+			    		}
+					})
+					$("#email_button").css("visibility","hidden");
+					expanded = true;
+				}else{
+					populateLoginInput();
+				}
 			}
 		}
 	})
@@ -170,64 +178,68 @@ $(function () {
 			  	}, complete:function(){	
 			  		$("#index_button").text("Log in");
 			  		$("#index_button").fadeIn();
+			  		transition_done = true;
 			  	}
 			 })
 	}
 		
 	$("#signup").live("click",function(){
-		if(page != 2){
-			page = 2;
-		
-		$("#index_button").hide(); 		
-		
-			if(!expanded){
-				$("#index_logo").fadeOut();
-				$("#mini_title").hide();
-				$("#index_divider").animate({
-		  			top: '60px'
-		  		}, {
-		    		"duration": 300,
-		    		specialEasing: {
-		    			top: 'easeOutBounce',
-		      			height: 'easeOutBounce'
-		  			}
-		  		})
-				$("#index_top_strip").animate({
-						'margin-top': '-120px',
-						height: '230px'
-					}, {
-		    		"duration": 300,
-		    		specialEasing: {
-		    			'margin-top': 'easeOutBounce',
-		      			height: 'easeOutBounce'
-		    		},complete: function() {
-		    			populateSignUpInput();
-		    		}
-				})
-				$("#index_container").animate({
-						'margin-top': '-125px'
-					}, {
-		    		"duration": 400,
-		    		specialEasing: {
-		      		'margin-top': 'easeOutBounce'
-		    		}
-				})
-				$("#email_button").css("visibility","hidden");
-				expanded = true;
-			}else{
-				$("#index_divider").animate({
-		  			top: '60px'
-		  		}, {
-		    		"duration": 400,
-		    		specialEasing: {
-		    			top: 'easeOutBounce',
-		      			height: 'easeOutBounce'
-		  			},complete:function(){		
-						populateSignUpInput();
-		  			}
-		  		})
+			if(page != 2){
+				if(transition_done){
+				transition_done = false;
+				page = 2;
+			
+			$("#index_button").hide(); 		
+			
+				if(!expanded){
+					$("#index_logo").fadeOut();
+					$("#mini_title").hide();
+					$("#index_divider").animate({
+			  			top: '60px'
+			  		}, {
+			    		"duration": 300,
+			    		specialEasing: {
+			    			top: 'easeOutBounce',
+			      			height: 'easeOutBounce'
+			  			}
+			  		})
+					$("#index_top_strip").animate({
+							top: '-120px',
+							height: '230px'
+						}, {
+			    		"duration": 300,
+			    		specialEasing: {
+			    			top: 'easeOutBounce',
+			      			height: 'easeOutBounce'
+			    		},complete: function() {
+			    			populateSignUpInput();
+			    		}
+					})
+					$("#index_container").animate({
+							top: '-125px'
+						}, {
+			    		"duration": 400,
+			    		specialEasing: {
+			      		top: 'easeOutBounce'
+			    		}
+					})
+					$("#email_button").css("visibility","hidden");
+					expanded = true;
+				}else{
+					$("#index_divider").animate({
+			  			top: '60px'
+			  		}, {
+			    		"duration": 400,
+			    		specialEasing: {
+			    			top: 'easeOutBounce',
+			      			height: 'easeOutBounce'
+			  			},complete:function(){		
+							populateSignUpInput();
+			  			}
+			  		})
+				}
+				$("#tag_line").css("visibility", "hidden");
 			}
-			$("#tag_line").css("visibility", "hidden");
 		}
 	})
 	
@@ -239,6 +251,8 @@ $(function () {
 	    		"duration": 400,
 	    		specialEasing: {
 	      			right: 'easeOutBounce'
+	  			},complete:function(){
+	  				transition_done = true;
 	  			}
 	  		});	  				
 	  				
@@ -250,46 +264,51 @@ $(function () {
 	}
 	
 	$(".forgot_password").live("click",function(){
-		$("#index_button").hide();
-		$("#email_button").css("visibility","visible");
-		$("#mini_title").hide();
-		$("#mini_title").text("Forgot Password");
-	  	$("#mini_title").fadeIn();
-	  	
-	  	$("#tag_line").animate({
-	  		left:'-285px'
-	  	})
-
-	  	$("#tag_line").fadeIn();
-	  	$("#tag_line h6").text("Please enter the email address you used to sign up with trackCraze");
-	  	$("#tag_line").removeClass('forgot_password');
-	  	$("#tag_line").css("visibility","visible");
-	  	$("#tag_line h6").css({"color":"#CCC"});
-
-
-	  	//$("#tag_line").css("visibility","hidden");
-	  	$("#password_enter").fadeOut();
-	  	$("#index_top_strip").animate({
-						'margin-top': '-70px',
-						height: '200px'
-					}, {
-		    		"duration": 300,
-		    		specialEasing: {
-		    			'margin-top': 'easeOutBounce',
-		      			height: 'easeOutBounce'
-		    		},complete: function() {
-		    		}
-				})
-				$("#index_container").animate({
-					'margin-top': '-70px',
-					}, {
-		    		"duration": 400,
-		    		specialEasing: {
-		      		'margin-top': 'easeOutBounce'
-		    		}
-				})
-		expanded = false;
-		page = 3;
+		if(transition_done){
+			transition_done = false;
+			$("#index_button").hide();
+			$("#email_button").css("visibility","visible");
+			$("#mini_title").hide();
+			$("#mini_title").text("Forgot Password");
+		  	$("#mini_title").fadeIn();
+		  	
+		  	$("#tag_line").animate({
+		  		left:'-285px'
+		  	})
+	
+		  	$("#tag_line").fadeIn();
+		  	$("#tag_line h6").text("Please enter the email address you used to sign up with trackCraze");
+		  	$("#tag_line").removeClass('forgot_password');
+		  	$("#tag_line").css("visibility","visible");
+		  	$("#tag_line h6").css({"color":"#CCC"});
+	
+	
+		  	//$("#tag_line").css("visibility","hidden");
+		  	$("#password_enter").fadeOut(function(){
+		  	$("#index_top_strip").animate({
+							top: '-70px',
+							height: '200px'
+						}, {
+			    		"duration": 300,
+			    		specialEasing: {
+			    			top: 'easeOutBounce',
+			      			height: 'easeOutBounce'
+			    		},complete: function() {
+			    			transition_done = true;
+			    		}
+					})
+					$("#index_container").animate({
+						top: '-70px',
+						}, {
+			    		"duration": 300,
+			    		specialEasing: {
+			      		top: 'easeOutBounce'
+			    		}
+					})
+				});
+			expanded = false;
+			page = 3;
+		}
 	})
 	
 });

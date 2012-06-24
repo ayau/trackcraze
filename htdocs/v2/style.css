@@ -10,7 +10,7 @@ h6 {color:white; font-size:20px; margin:0px;  text-shadow: rgba(0,0,0,0.3) 1px 1
 
 .noUnderline{text-decoration:none;}
 
-.input {width:300px;
+.input {width:280px;
 	height:40px; 
 	position:relative;
 	left:3px;
@@ -74,9 +74,9 @@ h6 {color:white; font-size:20px; margin:0px;  text-shadow: rgba(0,0,0,0.3) 1px 1
 /*INDEX*/
 #index_logo {position:absolute; top:50%; margin-top:-220px; width:100%;}
 
-#index_container{position:absolute; top:50%; margin-top:-70px; width:100%}
+#index_container{position:relative; top:-70px; width:100%}
 #index_top_container{position:relative;}
-#index_top_strip {position:absolute; top:50%; margin-top:-70px; width:100%; background-color:#05689A; height:200px; border-top: 3px solid #005E8D; }
+#index_top_strip {position:relative; top:-70px; width:100%; background-color:#05689A; height:200px; border-top: 3px solid #005E8D; }
 
 #index_bg{background: url("images/blur_bg.png") no-repeat center center fixed; width:100%; height:100%;}
 
@@ -87,7 +87,7 @@ h6 {color:white; font-size:20px; margin:0px;  text-shadow: rgba(0,0,0,0.3) 1px 1
 #tag_line{position:relative; left:40px; top:-4px; white-space:nowrap;}
 #description {color:black;  font-size:20px; margin:0px; text-shadow: rgba(255,255,255,0.3) 1px 1px 2px;}
 
-#email_button {position:relative; top:-37px;left:135px; background:url(images/enter.png) no-repeat;width:32px; height:32px; cursor:pointer}
+#email_button {position:relative; top:-37px;left:125px; background:url(images/enter.png) no-repeat;width:32px; height:32px; cursor:pointer}
 
 .forgot_password:hover{cursor:pointer; opacity:0.7}
 
