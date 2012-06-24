@@ -5,11 +5,16 @@
 body{font-family: Museo;}
 
 /*COMMON*/
+
+h6 {color:white; font-size:20px; margin:0px;  text-shadow: rgba(0,0,0,0.3) 1px 1px 2px;font-weight:normal}
+
 .noUnderline{text-decoration:none;}
 
 .input {width:300px;
 	height:40px; 
-	padding:10px; 
+	position:relative;
+	left:3px;
+	padding-left:10px;
 	font-size:16px; 
 	border:none;
 	-moz-box-shadow: 0px 0px 3px #333 inset;
@@ -63,22 +68,27 @@ body{font-family: Museo;}
 
 /*FOOTER*/
 #footer_items {position:relative; top:20px;  width:950px;}
-#footer_items li{float:left; padding:10px 30px 0px 0px; color:white}
+#footer_items li{float:left; padding:10px 30px 0px 0px; color:white; list-style-type: none;}
 
 
 /*INDEX*/
-#index_logo {position:absolute; top:100px; width:100%;}
+#index_logo {position:absolute; top:50%; margin-top:-220px; width:100%;}
 
-#index_container{position:absolute; top:250px; width:100%}
+#index_container{position:absolute; top:50%; margin-top:-70px; width:100%}
 #index_top_container{position:relative;}
-#index_top_strip {position:absolute; top:250px; width:100%; background-color:#05689A; height:200px; border-top: 3px solid #005E8D; }
+#index_top_strip {position:absolute; top:50%; margin-top:-70px; width:100%; background-color:#05689A; height:200px; border-top: 3px solid #005E8D; }
 
-#index_bg{background-image: url("images/blur_bg.png"); background-size: 100%; width:100%; height:100%;}
+#index_bg{background: url("images/blur_bg.png") no-repeat center center fixed; width:100%; height:100%;}
 
-#title {position:relative; color:white; font-size:64px; text-shadow: rgba(0,0,0,0.3) 2px 1px 2px; display:inline}
-#mini_title {position:absolute; color:white; opacity:0.9; text-shadow: rgba(0,0,0,0.3) 2px 1px 2px; font-size:32px; display:inline}
-#tag_line {color:white;  font-size:20px; margin:0px;  text-shadow: rgba(0,0,0,0.3) 1px 1px 2px;}
+#title_container {margin:20px 0px 0px; position:relative; left:50%}
+#title {position:relative; left:-160px; color:white; font-size:64px; text-shadow: rgba(0,0,0,0.3) 2px 1px 2px; display:inline}
+#mini_title {position:absolute; left:100px; top:-5px; color:white; opacity:0.9; text-shadow: rgba(0,0,0,0.3) 2px 1px 2px; font-size:32px; display:inline}
+
+#tag_line{position:relative; left:40px; top:-4px; white-space:nowrap;}
 #description {color:black;  font-size:20px; margin:0px; text-shadow: rgba(255,255,255,0.3) 1px 1px 2px;}
 
-#email_button {position:relative; top:-35px;left:130px; background:url(images/enter.png) no-repeat;width:32px; height:32px; cursor:pointer}
+#email_button {position:relative; top:-37px;left:135px; background:url(images/enter.png) no-repeat;width:32px; height:32px; cursor:pointer}
 
+.forgot_password:hover{cursor:pointer; opacity:0.7}
+
+#index_button {position:relative; left:330px; top:-72px; float:left; font-size:24px; background: rgba(0,0,0,0.3); display:none}
