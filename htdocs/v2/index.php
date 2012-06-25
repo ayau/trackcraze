@@ -311,5 +311,9 @@ $(function () {
 		}
 	})
 	
+	$("#index_button").live("click",function(){
+		window.location ='program.php';
+	})
+	
 });
 </script>

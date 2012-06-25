@@ -6,6 +6,8 @@ body{font-family: Museo;}
 
 /*COMMON*/
 
+p{margin:0px;}
+
 h6 {color:white; font-size:20px; margin:0px;  text-shadow: rgba(0,0,0,0.3) 1px 1px 2px;font-weight:normal}
 
 .noUnderline{text-decoration:none;}
@@ -66,10 +68,50 @@ h6 {color:white; font-size:20px; margin:0px;  text-shadow: rgba(0,0,0,0.3) 1px 1
 	cursor:pointer;
 }
 
+.medium_pic {
+	-moz-box-shadow:    0px 1px 3px 1px rgba(0,0,0,0.5);
+  	-webkit-box-shadow: 0px 1px 3px 1px rgba(0,0,0,0.5);
+ 	box-shadow:         0px 1px 3px 1px rgba(0,0,0,0.5);}
+
 /*FOOTER*/
 #footer_items {position:relative; top:20px;  width:950px;}
 #footer_items li{float:left; padding:10px 30px 0px 0px; color:white; list-style-type: none;}
 
+/*HEADER*/
+#header_title {color:white; font-size:64px; text-shadow: rgba(0,0,0,0.3) 2px 1px 2px; display:inline;}
+
+#profile_info p{font-family:impact; color:#999; text-shadow: 0px 1px 0px rgba(255,255,255,.5);}
+
+
+/*GENERAL*/
+#container {width:900px; position:relative; top:30px; overflow:auto; margin:0 auto; background: rgba(0,0,0,0.5);
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	-moz-box-shadow:    0px 1px 1px 1px rgba(0,0,0,0.5);
+  	-webkit-box-shadow: 0px 1px 1px 1px rgba(0,0,0,0.5);
+ 	box-shadow:         0px 1px 1px 1px rgba(0,0,0,0.5);
+}
+#content {float:right; background: rgba(255,255,255,0.9); width:700px; height:900px; margin:10px; overflow:hidden;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	-moz-box-shadow:    0px 2px 3px 3px rgba(0,0,0,0.3);
+  	-webkit-box-shadow: 0px 2px 3px 3px rgba(0,0,0,0.3);
+ 	box-shadow:         0px 2px 3px 3px rgba(0,0,0,0.3);
+}
+
+#profile_header {
+	-moz-box-shadow:    0px 1px 3px 1px rgba(0,0,0,0.1);
+  	-webkit-box-shadow: 0px 1px 3px 1px rgba(0,0,0,0.1);
+ 	box-shadow:         0px 1px 3px 1px rgba(0,0,0,0.1);
+}
+
+#nav_left {float:left;width:170px; height:300px; margin:10px 0px 0px 10px; background: rgba(0,0,0,0.2);
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
 
 /*INDEX*/
 #index_logo {position:absolute; top:50%; margin-top:-220px; width:100%;}
@@ -82,7 +124,7 @@ h6 {color:white; font-size:20px; margin:0px;  text-shadow: rgba(0,0,0,0.3) 1px 1
 
 #title_container {margin:20px 0px 0px; position:relative; left:50%}
 #title {position:relative; left:-160px; color:white; font-size:64px; text-shadow: rgba(0,0,0,0.3) 2px 1px 2px; display:inline}
-#mini_title {position:absolute; left:100px; top:-5px; color:white; opacity:0.9; text-shadow: rgba(0,0,0,0.3) 2px 1px 2px; font-size:32px; display:inline}
+#mini_title {position:absolute; left:100px; top:25px; color:white; opacity:0.9; text-shadow: rgba(0,0,0,0.3) 2px 1px 2px; font-size:32px; display:inline}
 
 #tag_line{position:relative; left:40px; top:-4px; white-space:nowrap;}
 #description {color:black;  font-size:20px; margin:0px; text-shadow: rgba(255,255,255,0.3) 1px 1px 2px;}
@@ -92,3 +134,11 @@ h6 {color:white; font-size:20px; margin:0px;  text-shadow: rgba(0,0,0,0.3) 1px 1
 .forgot_password:hover{cursor:pointer; opacity:0.7}
 
 #index_button {position:relative; left:330px; top:-72px; float:left; font-size:24px; background: rgba(0,0,0,0.3); display:none}
+
+/*PROGRAM*/
+
+.workout_table {margin-left:20px;}
+.workout_table td{vertical-align:top; padding:5px}
+.workout_comment {color:#AAA;}
+.workout_set {width:150px;}
+.workout_exercise {width:250px;}
