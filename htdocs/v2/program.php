@@ -1,15 +1,27 @@
 <!DOCTYPE html>
 <html style='background: url("images/blur_bg.png") no-repeat center center fixed;'>
+
+<head>
+<!--[if lt IE 9]>
+<script src="js/html5shiv.js"></script>
+<![endif]-->
 <link rel="stylesheet" href="style.css" type="text/css" />
+</head>
 
 <body style='margin:0px'>
 <div style='position:fixed;background: rgba(0,0,0,0.3); height:150px; width:100%'>
 		<center style='position:relative; top:10px'><p id='header_title'>trackCraze</p></center></div>
 
 <div id='container' style='top:200px'>
-	<!--<nav id='nav_left'>
-		
-	</nav>-->
+	<nav id='nav_left'>
+		<div><img src='images/profile.png' style='float:left; margin-top:-15px; margin-right:10px; '/><p>Profile</p></div>
+		<div><img src='images/record.png' style='float:left; margin-top:-15px; margin-right:10px;'/><p>Record</p></div>
+		<div><img src='images/diary.png' style='float:left; margin-top:-15px; margin-right:10px;'/><p>Diary</p></div>
+		<div><p>Tracking: 45</p></div>
+		<div><p>Tracked by: 52</p></div>
+		<div class='selected'><p>Summer 2012 workout program</p></div>
+		<div><p>Thor workout</p></div>
+	</nav>
 	
 	<section id='content'>
 		<section id='profile_header' style='background: rgba(0,0,0,0.02); width:100%; height:100px; overflow:hidden'>
