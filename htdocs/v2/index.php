@@ -1,5 +1,35 @@
+<?php
+require 'utils/facebook/facebook.php';
+
+$facebook = new Facebook(array(
+  'appId'  => '104011209743511',
+  'secret' => 'f3142bf48ff18c093903afb90c6eb49d',
+));
+
+// See if there is a user from a cookie
+$user = $facebook->getUser();
+
+if ($user) {
+  try {
+    // Proceed knowing you have a logged in user who's authenticated.
+    $user_profile = $facebook->api('/me');
+    header('Location: program.php' ) ;
+  } catch (FacebookApiException $e) {
+    //echo '<pre>'.htmlspecialchars(print_r($e, true)).'</pre>';
+    $user = null;
+  }
+}
+
+// Login or logout url will be needed depending on current user state.
+if ($user) {
+  $logoutUrl = $facebook->getLogoutUrl();
+} else {
+  $loginUrl = $facebook->getLoginUrl();
+}
+?>
+
 <!DOCTYPE html>
-<html style='overflow:hidden; width:100%; height:100%'>
+<html style='overflow:hidden; width:100%; height:100%' xmlns:fb="http://www.facebook.com/2008/fbml">
 
 <head>
 	<title>trackCraze</title>
@@ -35,13 +65,21 @@
 <div id='index_container'>
 		<div id='title_container'><p id='title'>trackCraze</p><p style='display:none' id='mini_title'>Log in</p></div>
 	<center>
-		<div style='z-index:100; width:320px;'>
+		<div style='z-index:2; width:320px;'>
 			<input id='name_enter' class='input' type='text' placeholder='Your Name' autocomplete='off' style='margin-bottom:12px; display:none' />
 			<input id='email_enter' class='input' type='text' placeholder='Email' autocomplete='off'/>
 			<div id='email_button'></div>
 			<input hidden id='password_enter' style='position:relative; top:-20px; margin-bottom:10px' class='input' type='text' placeholder='Password' autocomplete='off'/>
 			<div id='index_button' class='btn'>Log in</div>
-		</div></center>
+			<div id='facebook_login' hidden style='position:relative; left:-150px; top:-2px; z-index:2'>
+				 <?php if ($user) { ?>
+    				<a href="<?php echo $logoutUrl; ?>">Logout</a>
+				<?php } else { ?>
+				<fb:login-button size="large"></fb:login-button><div id="fb-root"></div>
+				<?php } ?>
+			</div>
+		</div>
+	</center>
 </div>
 </div>
 <div style='position:absolute; top:50%; margin-top:100px; width:100%'>
@@ -177,8 +215,11 @@ $(function () {
 			    	top: 'easeOutBounce'
 			  	}, complete:function(){	
 			  		$("#index_button").text("Log in");
-			  		$("#index_button").fadeIn();
-			  		transition_done = true;
+			  		$("#index_button").fadeIn(function(){
+			  			transition_done = true;
+			  		});
+			  		$("#facebook_login").fadeIn();
+			  		
 			  	}
 			 })
 	}
@@ -190,7 +231,7 @@ $(function () {
 				page = 2;
 			
 			$("#index_button").hide(); 		
-			
+			$("#facebook_login").hide();
 				if(!expanded){
 					$("#index_logo").fadeOut();
 					$("#mini_title").hide();
@@ -266,6 +307,7 @@ $(function () {
 	$(".forgot_password").live("click",function(){
 		if(transition_done){
 			transition_done = false;
+			$("#facebook_login").hide();
 			$("#index_button").hide();
 			$("#email_button").css("visibility","visible");
 			$("#mini_title").hide();
@@ -280,7 +322,7 @@ $(function () {
 		  	$("#tag_line h6").text("Please enter the email address you used to sign up with trackCraze");
 		  	$("#tag_line").removeClass('forgot_password');
 		  	$("#tag_line").css("visibility","visible");
-		  	$("#tag_line h6").css({"color":"#CCC"});
+		  	$("#tag_line h6").css({"color":"#EEE"});
 	
 	
 		  	//$("#tag_line").css("visibility","hidden");
@@ -316,4 +358,28 @@ $(function () {
 	})
 	
 });
+</script>
+
+<script type='text/javascript'>               
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId: '<?php echo $facebook->getAppID() ?>', 
+          cookie: true, 
+          xfbml: true,
+          oauth: true
+        });
+        FB.Event.subscribe('auth.login', function(response) {
+        	window.location.reload();
+        });
+        FB.Event.subscribe('auth.logout', function(response) {
+          window.location.reload();
+        });
+      };
+      (function() {
+        var e = document.createElement('script'); e.async = true;
+        e.src = document.location.protocol +
+          '//connect.facebook.net/en_US/all.js';
+        document.getElementById('fb-root').appendChild(e);
+      }());
+      
 </script>

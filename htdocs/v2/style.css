@@ -72,6 +72,8 @@ h6 {color:white; font-size:20px; margin:0px;  text-shadow: rgba(0,0,0,0.3) 1px 1
 	-moz-box-shadow:    0px 1px 3px 1px rgba(0,0,0,0.5);
   	-webkit-box-shadow: 0px 1px 3px 1px rgba(0,0,0,0.5);
  	box-shadow:         0px 1px 3px 1px rgba(0,0,0,0.5);}
+ 	
+.text-shadow {text-shadow: rgba(0,0,0,0.2) 1px 1px 1px;}
 
 /*FOOTER*/
 #footer_items {position:relative; top:20px;  width:950px;}
@@ -82,9 +84,11 @@ h6 {color:white; font-size:20px; margin:0px;  text-shadow: rgba(0,0,0,0.3) 1px 1
 
 #profile_info p{font-family:impact; color:#999; text-shadow: 0px 1px 0px rgba(255,255,255,.5);}
 
+.header_link{text-decoration:none; color:black}
+.header_link:hover{text-decoration:underline; cursor:pointer}
 
 /*GENERAL*/
-#container {width:900px; position:relative; top:30px; overflow:auto; margin:0 auto; 
+#container {width:900px; position:relative; top:30px; overflow:auto; margin:0 auto;
 	background: #254D5B; /* The Fallback */
 	background: rgba(0,0,0,0.5);
 	-webkit-border-radius: 5px;
@@ -94,15 +98,15 @@ h6 {color:white; font-size:20px; margin:0px;  text-shadow: rgba(0,0,0,0.3) 1px 1
   	-webkit-box-shadow: 0px 1px 1px 1px rgba(0,0,0,0.5);
  	box-shadow:         0px 1px 1px 1px rgba(0,0,0,0.5);
 }
-#content {float:right; width:700px; height:900px; margin:10px 10px 10px 0px; overflow:hidden;
+#content {float:right; width:700px; padding-bottom:50px; margin:10px 10px 10px 0px; overflow:hidden; min-height:900px;
 	background: white; /* The Fallback */
 	background: rgba(255,255,255,0.9);
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
 	border-radius: 5px;
-	-moz-box-shadow:    0px 2px 3px 3px rgba(0,0,0,0.3);
-  	-webkit-box-shadow: 0px 2px 3px 3px rgba(0,0,0,0.3);
- 	box-shadow:         0px 2px 3px 3px rgba(0,0,0,0.3);
+	-moz-box-shadow:    0px 2px 3px 3px rgba(0,0,0,0.5);
+  	-webkit-box-shadow: 0px 2px 3px 3px rgba(0,0,0,0.5);
+ 	box-shadow:         0px 2px 3px 3px rgba(0,0,0,0.5);
 }
 
 #profile_header {
@@ -121,7 +125,9 @@ h6 {color:white; font-size:20px; margin:0px;  text-shadow: rgba(0,0,0,0.3) 1px 1
 }
 #nav_left .selected{background: rgba(0,0,0,0.4);}
 #nav_left div:hover{background: rgba(0,0,0,0.4); cursor:pointer; }
-#nav_left div p{color:rgba(255,255,255,0.7); text-shadow:0 -1px -1px rgba(0, 0, 0, 0.5);}
+#nav_left div p{color:rgba(255,255,255,0.7); text-shadow:0 -1px -1px rgba(0, 0, 0, 0.5); margin-left:10px;}
+#nav_left img{float:left; margin-top:-15px; margin-right:10px;}
+
 /*INDEX*/
 #index_logo {position:absolute; top:50%; margin-top:-220px; width:100%;}
 
@@ -142,7 +148,7 @@ h6 {color:white; font-size:20px; margin:0px;  text-shadow: rgba(0,0,0,0.3) 1px 1
 
 .forgot_password:hover{cursor:pointer; opacity:0.7}
 
-#index_button {position:relative; left:330px; top:-72px; float:left; font-size:24px; background: rgba(0,0,0,0.3); display:none}
+#index_button {z-index:10; position:relative; left:330px; top:-72px; float:left; font-size:24px; background: rgba(0,0,0,0.3); display:none}
 
 /*PROGRAM*/
 

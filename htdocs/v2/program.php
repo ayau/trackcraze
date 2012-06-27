@@ -1,40 +1,67 @@
-<!DOCTYPE html>
-<html style='background: url("images/blur_bg.png") no-repeat center center fixed;'>
+<?php
+require 'utils/facebook/facebook.php';
 
-<head>
-<!--[if lt IE 9]>
-<script src="js/html5shiv.js"></script>
-<![endif]-->
-<link rel="stylesheet" href="style.css" type="text/css" />
-</head>
+$facebook = new Facebook(array(
+  'appId'  => '104011209743511',
+  'secret' => 'f3142bf48ff18c093903afb90c6eb49d',
+));
 
-<body style='margin:0px'>
-<div style='position:fixed;background: rgba(0,0,0,0.3); height:150px; width:100%'>
-		<center style='position:relative; top:10px'><p id='header_title'>trackCraze</p></center></div>
+// See if there is a user from a cookie
+$user = $facebook->getUser();
+
+if ($user) {
+  try {
+    // Proceed knowing you have a logged in user who's authenticated.
+    $user_profile = $facebook->api('/me');
+  } catch (FacebookApiException $e) {
+    $user = null;
+  }
+}
+
+// Login or logout url will be needed depending on current user state.
+if ($user) {
+  $logoutUrl = $facebook->getLogoutUrl();
+} else {
+  $loginUrl = $facebook->getLoginUrl();
+}
+
+if($user_profile){
+	$profile_pic = "https://graph.facebook.com/".$user."/picture?type=large";
+}else{
+	$profile_pic = "images/alex_pic.jpg";
+}
+?>
+<?php 
+	$pageTitle = "Alex Yau";
+	include_once "common/header.php"
+?>
 
 <div id='container' style='top:200px'>
 	<nav id='nav_left'>
-		<div><img src='images/profile.png' style='float:left; margin-top:-15px; margin-right:10px; '/><p>Profile</p></div>
-		<div><img src='images/record.png' style='float:left; margin-top:-15px; margin-right:10px;'/><p>Record</p></div>
-		<div><img src='images/diary.png' style='float:left; margin-top:-15px; margin-right:10px;'/><p>Diary</p></div>
+		<div><img src='images/profile.png'/><p>Profile</p></div>
+		<div><img src='images/record.png'/><p>Record</p></div>
+		<div><img src='images/diary.png'/><p>Diary</p></div>
 		<div><p>Tracking: 45</p></div>
 		<div><p>Tracked by: 52</p></div>
 		<div class='selected'><p>Summer 2012 workout program</p></div>
 		<div><p>Thor workout</p></div>
+		<div><img src='images/addprogram.png'/><p>New Program</p></div>
 	</nav>
 	
 	<section id='content'>
 		<section id='profile_header' style='background: rgba(0,0,0,0.02); width:100%; height:100px; overflow:hidden'>
-		<img src='images/alex_pic.jpg' style='height:100px; width:100px; float:left;' class='medium_pic'/>
+		<img src="<?php echo $profile_pic?>" style='height:100px; width:100px; float:left;' class='medium_pic'/>
 		<div style='float:left; margin-left:10px'>
-			<h3 style='padding:10px 0px; margin:0px'>Alex Yau</h3>
+			<h3 style='padding:10px 0px; margin:0px' class='text-shadow'>Alex Yau</h3>
+			<!--<div style='float:left; position:absolute; top:15px; left:400px;' class='btn'>Track</div>-->
 			<p>CEO and Co-Founder of trackCraze. Casual gym goer</p>
 			<div id='profile_info' style='margin-top:10px'>
 				<img src='images/birthday.png' style='float:left; width:15px;position:relative; top:-3px; opacity:0.7'/><p style='float:left; margin-left:10px'>03/12/91</p>
 			</div>
 		</div>
 	</section>
-		<p style='font-size:28px;margin:10px 0px 10px 20px'>Summer 2012 workout program</p>
+		<!--<div style='float:left; position:absolute; top:125px; right:30px;' class='btn'>Edit</div>-->
+		<p style='font-size:28px;margin:10px 0px 10px 20px' class='text-shadow'>Summer 2012 workout program</p>
 		<article style='margin-top:20px'>
 			<p style='font-size:24px;margin:10px 0px 10px 20px'>Chest</p>
 			<table class='workout_table'>
@@ -66,7 +93,4 @@
 	
 </div>
 
-</body>
-
-
-</html>
+<?php include_once "common/footer.php" ?>
