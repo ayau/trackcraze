@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html style='background: url("images/blur_bg.png") no-repeat center center fixed;' xmlns:fb="http://www.facebook.com/2008/fbml">
+<html style='background: url("images/blur_bg.png") no-repeat center center fixed;'>
 
 <head>
 <!--[if lt IE 9]>
@@ -21,10 +21,10 @@
 <div style='position:fixed; background: rgba(0,0,0,0.3); height:160px; width:100%'>
 		<center style='position:relative; top:10px'><p id='header_title' style='margin-left:30px'>trackCraze</p><p class='text-shadow' style='display:inline; color:white; font-size:12px'>BETA</p>
 			<input id='search_enter' class='input' type='text' placeholder='Search trackCraze' autocomplete='off' style='display:block'/>
-		<a class='header_link' onclick="FB.logout();" style='position:relative; top:-120px; left:250px;'>Log out</a>
+		<a onclick='FB.logout()' class='header_link' style='position:relative; top:-120px; left:250px;'>Log out</a>
 	</div>
 	<div id="fb-root"></div>
-	<script type='text/javascript'>               
+	<script type='text/javascript'>
       window.fbAsyncInit = function() {
         FB.init({
           appId: '<?php echo $facebook->getAppID() ?>', 
@@ -32,11 +32,22 @@
           xfbml: true,
           oauth: true
         });
-        FB.Event.subscribe('auth.login', function(response) {
-        	window.location.reload();
-        });
+
         FB.Event.subscribe('auth.logout', function(response) {
-          window.location = 'index.php';
+        	//destroy session
+        	$.ajax({
+	    			type: "POST",
+	    			url: "db-interaction/user.php",
+	    			data: {
+	    				"action":"logout"
+					},	
+	    			success: function(){
+	    				window.location = "index.php";
+	    			},
+	    			error: function(){
+	    			    // should be some error functionality here
+	    			}
+	    		});   
         });
       };
       (function() {
@@ -45,5 +56,5 @@
           '//connect.facebook.net/en_US/all.js';
         document.getElementById('fb-root').appendChild(e);
       }());
-      
+
 </script>

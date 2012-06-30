@@ -1,31 +1,31 @@
-<?php
-require 'utils/facebook/facebook.php';
+<?php 
+	require 'common/base.php';
+	require 'model/class.user.php';
+	$user = new User();
+	
+	require 'utils/facebook/facebook.php';
 
-$facebook = new Facebook(array(
-  'appId'  => '104011209743511',
-  'secret' => 'f3142bf48ff18c093903afb90c6eb49d',
-));
+	if(isset($_SESSION['loggedin']) && $_SESSION['loggedin'] === true && isset($_SESSION['uid']) && $_SESSION['uid'] != 0){
+		header('Location: program.php');
+	}else{
+		$facebook = new Facebook(array(
+	  		'appId'  => FB_APID,
+	  		'secret' => FB_SECRET,
+		));
+		// See if there is a user from a cookie
+		$fb_user = $facebook->getUser();
 
-// See if there is a user from a cookie
-$user = $facebook->getUser();
+		if (isset($fb_user)) {
+		    try {
+			    // Proceed knowing you have a logged in user who's authenticated.
+			    $fb_user_profile = $facebook->api('/me');
+			    echo "<meta http-equiv='Refresh' content='0;URL=program.php'>";
+		  	} catch (FacebookApiException $e) {
+		    	$fb_user = null;
+		  	}
+		}
 
-if ($user) {
-  try {
-    // Proceed knowing you have a logged in user who's authenticated.
-    $user_profile = $facebook->api('/me');
-    header('Location: program.php' ) ;
-  } catch (FacebookApiException $e) {
-    //echo '<pre>'.htmlspecialchars(print_r($e, true)).'</pre>';
-    $user = null;
-  }
-}
-
-// Login or logout url will be needed depending on current user state.
-if ($user) {
-  $logoutUrl = $facebook->getLogoutUrl();
-} else {
-  $loginUrl = $facebook->getLoginUrl();
-}
+	}
 ?>
 
 <!DOCTYPE html>
@@ -72,11 +72,7 @@ if ($user) {
 			<input hidden id='password_enter' style='position:relative; top:-20px; margin-bottom:10px' class='input' type='text' placeholder='Password' autocomplete='off'/>
 			<div id='index_button' class='btn'>Log in</div>
 			<div id='facebook_login' hidden style='position:relative; left:-150px; top:-2px; z-index:2'>
-				 <?php if ($user) { ?>
-    				<a href="<?php echo $logoutUrl; ?>">Logout</a>
-				<?php } else { ?>
 				<fb:login-button size="large"></fb:login-button><div id="fb-root"></div>
-				<?php } ?>
 			</div>
 		</div>
 	</center>
@@ -369,10 +365,35 @@ $(function () {
           oauth: true
         });
         FB.Event.subscribe('auth.login', function(response) {
-        	window.location.reload();
+        	FB.api('/me', function(response) {
+  				
+        		$.ajax({
+	    			type: "POST",
+	    			url: "db-interaction/user.php",
+	    			data: {
+	    				"action":"facebook_login",
+	    				"data":  JSON.stringify(response)
+					},
+	    			beforeSend: function(x) {
+            			if (x && x.overrideMimeType) {
+              				x.overrideMimeType("application/j-son;charset=UTF-8");
+            			}
+          			},	
+	    			success: function(r){
+	    				if(r)
+	    					window.location = "program.php";
+	    				else
+	    					alert("Something went wrong. Try again?");
+	    			},
+	    			error: function(){
+	    			    // should be some error functionality here
+	    			}
+	    		});    
+  				//alert('Your name is ' + response.name);
+			});	
         });
         FB.Event.subscribe('auth.logout', function(response) {
-          window.location.reload();
+          //window.location.reload();
         });
       };
       (function() {

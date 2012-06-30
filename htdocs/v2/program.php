@@ -1,39 +1,30 @@
 <?php
+require 'common/base.php';
+require 'model/class.user.php';
+$user = new User();
+
 require 'utils/facebook/facebook.php';
 
 $facebook = new Facebook(array(
-  'appId'  => '104011209743511',
-  'secret' => 'f3142bf48ff18c093903afb90c6eb49d',
+	'appId'  => FB_APID,
+	'secret' => FB_SECRET,
 ));
 
-// See if there is a user from a cookie
-$user = $facebook->getUser();
+$fb_user = $facebook->getUser();
 
-if ($user) {
-  try {
-    // Proceed knowing you have a logged in user who's authenticated.
-    $user_profile = $facebook->api('/me');
-  } catch (FacebookApiException $e) {
-    $user = null;
-  }
-}
+$me = $user -> getME($fb_user);
 
-// Login or logout url will be needed depending on current user state.
-if ($user) {
-  $logoutUrl = $facebook->getLogoutUrl();
-} else {
-  $loginUrl = $facebook->getLoginUrl();
-}
-
-if($user_profile){
-	$profile_pic = "https://graph.facebook.com/".$user."/picture?type=large";
+if(isset($me)){
+	$profile_pic = $me['profile_pic'];
+	$name = $me['first_name']." ".$me['last_name'];
 }else{
 	$profile_pic = "images/alex_pic.jpg";
+	$name = "Alex Yau";
 }
 ?>
 <?php 
-	$pageTitle = "Alex Yau";
-	include_once "common/header.php"
+	$pageTitle = $name;
+	include_once "common/header.php";
 ?>
 
 <div id='container' style='top:200px'>
@@ -52,7 +43,7 @@ if($user_profile){
 		<section id='profile_header' style='background: rgba(0,0,0,0.02); width:100%; height:100px; overflow:hidden'>
 		<img src="<?php echo $profile_pic?>" style='height:100px; width:100px; float:left;' class='medium_pic'/>
 		<div style='float:left; margin-left:10px'>
-			<h3 style='padding:10px 0px; margin:0px' class='text-shadow'>Alex Yau</h3>
+			<h3 style='padding:10px 0px; margin:0px' class='text-shadow'><?php echo $name?></h3>
 			<!--<div style='float:left; position:absolute; top:15px; left:400px;' class='btn'>Track</div>-->
 			<p>CEO and Co-Founder of trackCraze. Casual gym goer</p>
 			<div id='profile_info' style='margin-top:10px'>

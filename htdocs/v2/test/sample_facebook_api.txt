@@ -1,0 +1,112 @@
+            
+        Array
+(
+    [id] =&gt; 519585436
+    [name] =&gt; Alex Yau
+    [first_name] =&gt; Alex
+    [last_name] =&gt; Yau
+    [link] =&gt; http://www.facebook.com/alex.yau.52
+    [username] =&gt; alex.yau.52
+    [work] =&gt; Array
+        (
+            [0] =&gt; Array
+                (
+                    [employer] =&gt; Array
+                        (
+                            [id] =&gt; 248487078532118
+                            [name] =&gt; Everyme
+                        )
+
+                    [position] =&gt; Array
+                        (
+                            [id] =&gt; 150249864991820
+                            [name] =&gt; Android Development Intern
+                        )
+
+                    [start_date] =&gt; 0000-00
+                )
+
+        )
+
+    [education] =&gt; Array
+        (
+            [0] =&gt; Array
+                (
+                    [school] =&gt; Array
+                        (
+                            [id] =&gt; 104041052964426
+                            [name] =&gt; South Island School
+                        )
+
+                    [year] =&gt; Array
+                        (
+                            [id] =&gt; 142963519060927
+                            [name] =&gt; 2010
+                        )
+
+                    [type] =&gt; High School
+                )
+
+            [1] =&gt; Array
+                (
+                    [school] =&gt; Array
+                        (
+                            [id] =&gt; 355170494495602
+                            [name] =&gt; St. Paul's College Primary School
+                        )
+
+                    [type] =&gt; High School
+                    [classes] =&gt; Array
+                        (
+                            [0] =&gt; Array
+                                (
+                                    [id] =&gt; 109012522509649
+                                    [name] =&gt; 6B
+                                    [with] =&gt; Array
+                                        (
+                                            [0] =&gt; Array
+                                                (
+                                                    [id] =&gt; 641863658
+                                                    [name] =&gt; Chan Jonathan Chung
+                                                )
+
+                                        )
+
+                                    [from] =&gt; Array
+                                        (
+                                            [id] =&gt; 641863658
+                                            [name] =&gt; Chan Jonathan Chung
+                                        )
+
+                                )
+
+                        )
+
+                )
+
+            [2] =&gt; Array
+                (
+                    [school] =&gt; Array
+                        (
+                            [id] =&gt; 112520115426955
+                            [name] =&gt; University of Pennsylvania
+                        )
+
+                    [year] =&gt; Array
+                        (
+                            [id] =&gt; 143641425651920
+                            [name] =&gt; 2014
+                        )
+
+                    [type] =&gt; College
+                )
+
+        )
+
+    [gender] =&gt; male
+    [timezone] =&gt; -7
+    [locale] =&gt; en_US
+    [verified] =&gt; 1
+    [updated_time] =&gt; 2012-06-27T05:25:55+0000
+)
+      
