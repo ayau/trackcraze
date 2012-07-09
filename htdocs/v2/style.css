@@ -10,6 +10,14 @@ p{margin:0px;}
 
 h6 {color:white; font-size:20px; margin:0px;  text-shadow: rgba(0,0,0,0.3) 1px 1px 2px;font-weight:normal}
 
+::-webkit-input-placeholder {
+ 	font-family:arial;
+}
+
+:-moz-placeholder {  
+   font-family:arial; 
+}
+
 .noUnderline{text-decoration:none;}
 
 .input {width:280px;
@@ -88,7 +96,7 @@ h6 {color:white; font-size:20px; margin:0px;  text-shadow: rgba(0,0,0,0.3) 1px 1
 .header_link:hover{text-decoration:underline; cursor:pointer}
 
 /*GENERAL*/
-#container {width:900px; position:relative; top:30px; overflow:auto; margin:0 auto;
+#container {width:900px; position:relative; top:30px; overflow:auto; margin:0 auto; margin-bottom:40px;
 	background: #254D5B; /* The Fallback */
 	background: rgba(0,0,0,0.5);
 	-webkit-border-radius: 5px;
@@ -117,16 +125,30 @@ h6 {color:white; font-size:20px; margin:0px;  text-shadow: rgba(0,0,0,0.3) 1px 1
 
 #nav_left {float:left;width:190px; margin-top:49px;}
 
-#nav_left div{padding:20px 10px; border-bottom: 1px solid rgba(0,0,0,0.5); border-top: 1px solid rgba(255,255,255,0.2);
+#nav_left div{ border-bottom: 1px solid rgba(0,0,0,0.5); border-top: 1px solid rgba(255,255,255,0.2);
 	background: rgba(0,0,0,0.0); 
 	background: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,0)), to(rgba(0,0,0,0.1)));
 	background: -moz-linear-gradient(top,  rgba(0,0,0,0),  rgba(0,0,0,0.1));
 	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#254D5B', endColorstr='#1B3842');
 }
+
 #nav_left .selected{background: rgba(0,0,0,0.4);}
+#nav_left .selected:hover {cursor:default;}
+
 #nav_left div:hover{background: rgba(0,0,0,0.4); cursor:pointer; }
-#nav_left div p{color:rgba(255,255,255,0.7); text-shadow:0 -1px -1px rgba(0, 0, 0, 0.5); margin-left:10px;}
+#nav_left div p{color:rgba(255,255,255,0.7); text-shadow:0 -1px -1px rgba(0, 0, 0, 0.5); margin-left:25px;}
 #nav_left img{float:left; margin-top:-15px; margin-right:10px;}
+#nav_left a{text-decoration:none; padding:20px 10px; display:block;}
+
+#new_program_name {width: 153px; background: rgba(255,255,255,0.9); font-family:Museo; padding:5px; resize:none;}
+#new_program {padding:20px 10px;}
+#new_program_create:hover {text-decoration: underline; cursor:pointer;}
+
+#nav_left .program_select{background: url("images/star.png");}
+#nav_left .star, #nav_left .program_select{width:20px; height:20px; float:left; margin:0px; position:relative; left:10px; top:19px; background-size:100%; cursor:pointer;}
+#nav_left div:hover .program_select.star {background: url("images/star.png");}
+#nav_left div:hover .star{background: url("images/star_hover.png"); }
+#nav_left div:hover .star:hover{background: url("images/star.png");}
 
 /*INDEX*/
 #index_logo {position:absolute; top:50%; margin-top:-220px; width:100%;}
@@ -157,3 +179,13 @@ h6 {color:white; font-size:20px; margin:0px;  text-shadow: rgba(0,0,0,0.3) 1px 1
 .workout_comment {color:#AAA;}
 .workout_set {width:150px;}
 .workout_exercise {width:250px;}
+
+#button_container {background:url("images/buttons_bg.png"); width:36px; height:61px; position:absolute; top:310px; right:50%; margin-right:-475px;}
+
+#program_delete {background:url('images/delete.png'); margin-left:2px; height:31px; width:31px;}
+#program_edit {margin-left:7px; margin-top:-1px; background: url('images/edit.png'); height:22px; width:22px;}
+#program_edit:hover {cursor:pointer; background:url("images/edit_hover.png");}
+#program_delete:hover {cursor:pointer; background:url("images/delete_hover.png");}
+
+#button_container.fixed {position:fixed; top:10px;}
+#button_container.hidden {display:none;}

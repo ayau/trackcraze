@@ -5,22 +5,19 @@ session_start();
 include_once "../utils/constants.php";
 include_once "../model/class.user.php";
 include_once "../model/class.program.php";
-$user = new User();
+$program = new Program();
 
 
 if(!empty($_POST['action'])){
     
     switch($_POST['action'])
     {
-        case 'facebook_login':
-            echo $user->facebook_login();
+        case 'createProgram':
+            echo $program->createProgram();
             break;
-        case 'logout':
-        	$user->destroySession();
+        case 'deleteProgram':
+        	echo $program->deleteProgram();
         	break;
-        case 'setMainProgram':
-            $user->setMainProgram($_POST['pid']);
-            break;
         default:
         	header("../index.php");
         	break;

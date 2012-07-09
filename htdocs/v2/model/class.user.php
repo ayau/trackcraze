@@ -13,7 +13,7 @@
 
 class User{
 
-	private $_db;
+	public $_db;
  
     //Checks for a database object and creates one if none is found
 
@@ -173,7 +173,7 @@ class User{
     }
 
 
-    //Given a fb token or something, return me.
+/*    //Given a fb token or something, return me.
     public function getMe($facebook_id){
         $sql = "SELECT id, first_name, last_name, profile_pic, gender
                     FROM users
@@ -187,6 +187,76 @@ class User{
                 $stmt->closeCursor();
                 return $row;
             }
+    }*/
+
+    //Given a fb token or something, return me.
+    public function getMe($uid){
+        $sql = "SELECT id, first_name, last_name, profile_pic, gender
+                    FROM users
+                    LEFT JOIN profile
+                    ON users.id = profile.user_id
+                    WHERE users.id=:uid";
+            if($stmt = $this->_db->prepare($sql)) {
+                $stmt->bindParam(":uid", $uid, PDO::PARAM_INT);
+                $stmt->execute();
+                $row = $stmt -> fetch();
+                $stmt->closeCursor();
+                return $row;
+            }
+    }
+
+    //Given a user_id and a privacy index, return user
+    public function getProfile($uid){
+        $sql = "SELECT id, first_name, last_name, profile_pic, gender
+                    FROM users
+                    LEFT JOIN profile
+                    ON users.id = profile.user_id
+                    WHERE users.id=:uid";
+            if($stmt = $this->_db->prepare($sql)) {
+                $stmt->bindParam(":uid", $uid, PDO::PARAM_INT);
+                $stmt->execute();
+                $row = $stmt -> fetch();
+                $stmt->closeCursor();
+                return $row;
+            }
+    }
+
+    public function getMainProgram($uid){
+        $sql = "SELECT main_program_id
+                FROM users
+                WHERE id=:uid
+                LIMIT 1";
+            if($stmt = $this->_db->prepare($sql)) {
+                $stmt->bindParam(":uid", $uid, PDO::PARAM_INT);
+                $stmt->execute();
+                $row = $stmt -> fetch();
+                return $row['main_program_id'];
+            }
+    }
+
+    public function setMainProgram($pid){
+        $uid = $_SESSION['uid'];
+        
+        if(Program::getOwner($pid) == $uid || $pid == 0){
+
+            $sql = "UPDATE users
+                    SET main_program_id =:pid
+                    WHERE id=:uid
+                    LIMIT 1";
+            try{
+                $stmt = $this->_db->prepare($sql);
+                $stmt->bindParam(":uid", $uid, PDO::PARAM_INT);
+                $stmt->bindParam(":pid", $pid, PDO::PARAM_INT);
+                $stmt->execute();
+                $stmt->closeCursor();
+                return true;
+            }
+            catch(PDOException $e)
+            {
+                echo $e->getMessage();
+                return false;
+            }
+        }
     }
 } 	
     	

@@ -18,8 +18,9 @@
 
 
 <body style='margin:0px'>
-<div style='position:fixed; background: rgba(0,0,0,0.3); height:160px; width:100%'>
-		<center style='position:relative; top:10px'><p id='header_title' style='margin-left:30px'>trackCraze</p><p class='text-shadow' style='display:inline; color:white; font-size:12px'>BETA</p>
+<div style='background: rgba(0,0,0,0.3); height:160px; width:100%'>
+		<center style='position:relative; top:10px'>
+			<a style='text-decoration:none' href='program.php'><p id='header_title' style='margin-left:30px'>trackCraze</p><p class='text-shadow' style='display:inline; color:white; font-size:12px'>BETA</p></a>
 			<input id='search_enter' class='input' type='text' placeholder='Search trackCraze' autocomplete='off' style='display:block'/>
 		<a onclick='FB.logout()' class='header_link' style='position:relative; top:-120px; left:250px;'>Log out</a>
 	</div>
